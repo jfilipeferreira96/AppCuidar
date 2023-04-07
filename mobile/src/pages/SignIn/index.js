@@ -4,15 +4,10 @@ import {useNavigation} from '@react-navigation/native';
 import {RectButton} from 'react-native-gesture-handler';
 /* import {useAuth} from '../../contexts/auth';
  */
-/* import lock from '../../assets/icons/lock.png';
- */
+import Grandpa from '../../assets/Grandpa.png';
 
-type Nav = {
-  navigate: (value: string) => void;
-};
-
-const SignIn: React.FC = () => {
-  const navigation = useNavigation<Nav>();
+const SignIn = () => {
+  const navigation = useNavigation();
 
   /* const {signed, signIn} = useAuth(); */
   const [email, setEmail] = useState('');
@@ -24,7 +19,7 @@ const SignIn: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/*       <Image source={lock} style={styles.image} />*/}
+      <Image source={Grandpa} style={styles.image} />
       <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
@@ -45,7 +40,7 @@ const SignIn: React.FC = () => {
         Don't have an account? Sign up
       </Text>
       <RectButton style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>SignIn</Text>
+        <Text style={styles.buttonText}>Sign In</Text>
       </RectButton>
     </View>
   );
@@ -60,6 +55,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '60%',
+    height: 300,
     resizeMode: 'contain',
   },
   label: {

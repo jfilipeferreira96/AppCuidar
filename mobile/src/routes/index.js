@@ -6,7 +6,7 @@ import AppRoutes from './app.routes';
 import AuthRoutes from './auth.routes';
 
 //este componente controla as rotas, caso esta logged in são apresentadas as AppRoutes.
-const Routes: React.FC = () => {
+const Routes = () => {
   /* const {signed, loading} = useAuth(); */
 
   /*   if (loading) {
@@ -16,7 +16,7 @@ const Routes: React.FC = () => {
       </View>
     );
   } */
-  let teste = 1;
+  let teste = 2;
   return teste === 1 ? <AppRoutes /> : <AuthRoutes />;
 };
 

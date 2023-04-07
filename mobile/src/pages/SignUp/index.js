@@ -7,39 +7,88 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel,
+} from 'react-native-simple-radio-button';
+
 import {useNavigation} from '@react-navigation/native';
 import api from '../../services/api';
 
 import {RectButton} from 'react-native-gesture-handler';
-/* import user from '../../assets/icons/user.png';
- */
+import user from '../../assets/user.png';
 
-type Nav = {
-  navigate: (value: string) => void;
-};
-
-const SignUp: React.FC = () => {
-  const navigation = useNavigation<Nav>();
+const SignUp = () => {
+  const navigation = useNavigation();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedOption, setSelectedOption] = useState(0);
 
-  async function handleSubmit() {
+  const options = [
+    {label: 'Admin', value: 0},
+    {label: 'Owner', value: 1},
+    {label: 'User', value: 2},
+  ];
+  console.log('options');
+
+  const handleSubmit = async () => {
+    console.log('entrei');
     if (name === '' || email === '' || password === '') {
       return;
     }
 
-    const data = {name, email, password};
+    const data = {
+      name,
+      email,
+      password,
+      option: options.find(option => option.value === selectedOption),
+    };
+    console.log(data);
 
-    await api.post('/sign-up', data);
-    navigation.navigate('SignIn');
-  }
+    /*  await api.post('/sign-up', data);
+    navigation.navigate('SignIn'); */
+  };
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/*  <Image source={user} style={styles.image} /> */}
+        <Image source={user} style={styles.image} />
+
+        <Text style={styles.label}>Choose an Option:</Text>
+        <RadioForm formHorizontal={true}>
+          {options.map(option => (
+            <RadioButton labelHorizontal={true} key={option.value}>
+              <RadioButtonInput
+                obj={option}
+                isSelected={selectedOption === option.value}
+                onPress={() => setSelectedOption(option.value)}
+                borderWidth={1}
+                buttonInnerColor={'#2196f3'}
+                buttonOuterColor={
+                  selectedOption === option.value ? '#2196f3' : '#000'
+                }
+                buttonSize={20}
+                buttonOuterSize={30}
+                buttonStyle={{}}
+                buttonWrapStyle={{marginLeft: 10}}
+              />
+              <RadioButtonLabel
+                obj={option}
+                labelHorizontal={true}
+                onPress={() => setSelectedOption(option.value)}
+                labelStyle={{
+                  fontSize: 16,
+                  color: selectedOption === option.value ? '#2196f3' : '#000',
+                }}
+                labelWrapStyle={{}}
+              />
+            </RadioButton>
+          ))}
+        </RadioForm>
+
         <Text style={styles.label}>Name</Text>
         <TextInput
           style={styles.input}
@@ -66,7 +115,7 @@ const SignUp: React.FC = () => {
         />
 
         <RectButton style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>SignIn</Text>
+          <Text style={styles.buttonText}>Sign Up</Text>
         </RectButton>
       </View>
     </ScrollView>

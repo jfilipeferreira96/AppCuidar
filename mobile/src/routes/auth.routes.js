@@ -7,7 +7,7 @@ import SignUp from '../pages/SignUp';
 
 const AuthStack = createNativeStackNavigator();
 
-const AuthRoutes: React.FC = () => {
+const AuthRoutes = () => {
   return (
     <AuthStack.Navigator>
       <AuthStack.Screen

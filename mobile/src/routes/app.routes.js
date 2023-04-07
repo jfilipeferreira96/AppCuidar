@@ -5,7 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const AppStack = createNativeStackNavigator();
 
-const AppRoutes: React.FC = () => (
+const AppRoutes = () => (
   <AppStack.Navigator>
     <AppStack.Screen
       name="Dashboard"

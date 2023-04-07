@@ -6,7 +6,7 @@ import {View} from 'react-native';
 import Routes from './routes';
 /*import {AuthProvider} from './contexts/auth'; */
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <NavigationContainer>
       {/* <AuthProvider>

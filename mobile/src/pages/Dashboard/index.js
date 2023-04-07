@@ -5,7 +5,7 @@ import {RectButton} from 'react-native-gesture-handler';
  */
 /* import unlock from '../../assets/icons/unlock.png'; */
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   /* const {signOut, user} = useAuth();
 
   function handleSignOut() {
