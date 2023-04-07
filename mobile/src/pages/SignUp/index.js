@@ -6,17 +6,18 @@ import {
   TextInput,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
+import Toast from 'react-native-toast-message';
 
 import {useNavigation} from '@react-navigation/native';
 import api from '../../services/api';
 
-import {RectButton} from 'react-native-gesture-handler';
 import user from '../../assets/user.png';
 
 const SignUp = () => {
@@ -32,10 +33,10 @@ const SignUp = () => {
     {label: 'Owner', value: 1},
     {label: 'User', value: 2},
   ];
-  console.log('options');
 
   const handleSubmit = async () => {
     console.log('entrei');
+    showToast();
     if (name === '' || email === '' || password === '') {
       return;
     }
@@ -47,16 +48,23 @@ const SignUp = () => {
       option: options.find(option => option.value === selectedOption),
     };
     console.log(data);
+    showToast();
 
     /*  await api.post('/sign-up', data);
     navigation.navigate('SignIn'); */
   };
 
+  function showToast() {
+    Toast.show({
+      type: 'success',
+      text1: 'Success, your account has been created!',
+    });
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
         <Image source={user} style={styles.image} />
-
+        <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
         <Text style={styles.label}>Choose an Option:</Text>
         <RadioForm formHorizontal={true}>
           {options.map(option => (
@@ -114,9 +122,9 @@ const SignUp = () => {
           secureTextEntry={true}
         />
 
-        <RectButton style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Sign Up</Text>
-        </RectButton>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

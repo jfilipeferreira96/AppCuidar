@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {RectButton} from 'react-native-gesture-handler';
 /* import {useAuth} from '../../contexts/auth';
  */
 import Grandpa from '../../assets/Grandpa.png';
@@ -39,9 +45,10 @@ const SignIn = () => {
       <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>
         Don't have an account? Sign up
       </Text>
-      <RectButton style={styles.button} onPress={handleSignIn}>
+
+      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Sign In</Text>
-      </RectButton>
+      </TouchableOpacity>
     </View>
   );
 };
