@@ -1,26 +1,22 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
-/* import {useAuth} from '../../contexts/auth';
- */
-/* import unlock from '../../assets/icons/unlock.png'; */
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {useAuth} from '../../contexts/auth';
 
 const Dashboard = () => {
-  /* const {signOut, user} = useAuth();
-
-  function handleSignOut() {
-    signOut();
-  } */
+  const {signOut, user} = useAuth();
 
   return (
     <View style={styles.container}>
-      {/*  <Image source={unlock} style={styles.image} /> */}
       <Text style={styles.welcome}>Welcome,</Text>
-      {/* <Text style={styles.user}>{user?.name}</Text> */}
+      <Text style={styles.user}>{user?.name}</Text>
 
-      <RectButton style={styles.button} onPress={() => console.log(123)}>
+      <Text style={styles.welcome}>
+        This is the main screen of this project
+      </Text>
+
+      <TouchableOpacity style={styles.button} onPress={signOut}>
         <Text style={styles.buttonText}>Sign out</Text>
-      </RectButton>
+      </TouchableOpacity>
     </View>
   );
 };

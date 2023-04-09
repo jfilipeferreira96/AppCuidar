@@ -15,7 +15,7 @@ import Grandpa from '../../assets/Grandpa.png';
 const SignIn = () => {
   const navigation = useNavigation();
 
-  /* const {signed, signIn} = useAuth(); */
+  /* const {isSigned, signIn} = useAuth(); */
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
