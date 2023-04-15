@@ -1,8 +1,8 @@
-import React, {useState, useEffect, createContext, useContext} from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
-import api from '../service/api';
+import React, {createContext, useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../services/api';
 
-const AuthContext = createContext();
+const AuthContext = createContext({signed: false, user: {}});
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
@@ -24,9 +24,9 @@ export const AuthProvider = ({children}) => {
   }, []);
 
   async function signIn(email, password) {
-    const response = await api.post('/sing-in', {email, password});
+    const response = await api.post('/sign-in', {email, password});
 
-    setUser(response.data.user);
+    setUser(response.user);
 
     api.defaults.headers['Authorization'] = `${response.data.token}`;
 
@@ -51,8 +51,4 @@ export const AuthProvider = ({children}) => {
   );
 };
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  return context;
-}
+export default AuthContext;

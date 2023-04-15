@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {useAuth} from '../../contexts/auth';
+import AuthContext from '../../contexts/auth';
 
 const Dashboard = () => {
-  const {signOut, user} = useAuth();
+  const {isSigned, user, signOut} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,19 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-/* import {useAuth} from '../../contexts/auth';
- */
+import AuthContext from '../../contexts/auth';
+
 import Grandpa from '../../assets/Grandpa.png';
 
 const SignIn = () => {
   const navigation = useNavigation();
+  const {isSigned, signIn} = useContext(AuthContext);
 
-  /* const {isSigned, signIn} = useAuth(); */
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
-    //signIn(email, password);
+    signIn(email, password);
   };
 
   return (
