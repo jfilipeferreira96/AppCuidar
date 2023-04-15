@@ -35,8 +35,6 @@ const SignUp = () => {
   ];
 
   const handleSubmit = async () => {
-    console.log('entrei');
-    showToast();
     if (name === '' || email === '' || password === '') {
       return;
     }
@@ -48,18 +46,31 @@ const SignUp = () => {
       option: options.find(option => option.value === selectedOption),
     };
     console.log(data);
-    showToast();
 
-    /*  await api.post('/sign-up', data);
-    navigation.navigate('SignIn'); */
+    const signup = await api.post('/sign-up', data);
+    if (signup) {
+      showToast('success');
+      navigation.navigate('SignIn');
+    } else {
+      showToast('error');
+    }
   };
 
-  function showToast() {
-    Toast.show({
-      type: 'success',
-      text1: 'Success, your account has been created!',
-    });
+  function showToast(type) {
+    if (type === 'success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Success, your account has been created!',
+      });
+    }
+    if (type === 'error') {
+      Toast.show({
+        type: 'error',
+        text1: 'Something went error, please try again!',
+      });
+    }
   }
+
   return (
     <ScrollView>
       <View style={styles.container}>
