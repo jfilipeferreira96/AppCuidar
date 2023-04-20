@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,20 +14,21 @@ import Grandpa from '../../assets/Grandpa.png';
 
 const SignIn = () => {
   const navigation = useNavigation();
-  const {isSigned, signIn} = useContext(AuthContext);
+  const {isSigned, signIn, error} = useContext(AuthContext);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSignIn = () => {
-    console.log(login);
     signIn(login, password);
-    console.log("acabou");
   };
 
   return (
     <View style={styles.container}>
       <Image source={Grandpa} style={styles.image} />
+      {error &&<Text>{error}</Text>}
       <Text style={styles.label}>Login</Text>
       <TextInput
         style={styles.input}

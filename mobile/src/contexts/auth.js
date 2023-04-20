@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function loadStorageData() {
+
       const storageUser = await AsyncStorage.getItem('@RNAuth:user');
       const storageToken = await AsyncStorage.getItem('@RNAuth:token');
 
@@ -26,13 +27,15 @@ export const AuthProvider = ({ children }) => {
 
   async function signIn(email, password) {
     try {
+      setError("");
       const response = await api.post('/auth', { username: email, password });
       const token = response.headers.authorization;
-      const userName = response.data.body.user;
+      const userName = response.data.body.name;
 
+      console.log(userName);
       setUser(userName);
-      api.defaults.headers['Authorization'] = `${token}`;
 
+      api.defaults.headers['Authorization'] = `${token}`;
       await AsyncStorage.setItem('@RNAuth:user', JSON.stringify(userName));
       await AsyncStorage.setItem('@RNAuth:token', token);
     } catch (error) {
@@ -68,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signed: user ? true : false, user, loading, error, signIn, signOut }}>
+      value={{ isSigned: user ? true : false, user, loading, error, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
