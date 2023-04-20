@@ -16,23 +16,26 @@ const SignIn = () => {
   const navigation = useNavigation();
   const {isSigned, signIn} = useContext(AuthContext);
 
-  const [email, setEmail] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
-    signIn(email, password);
+    console.log(login);
+    signIn(login, password);
+    console.log("acabou");
   };
 
   return (
     <View style={styles.container}>
       <Image source={Grandpa} style={styles.image} />
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>Login</Text>
       <TextInput
         style={styles.input}
-        onChangeText={text => setEmail(text)}
-        value={email}
-        keyboardType={'email-address'}
-        textContentType={'emailAddress'}
+        onChangeText={text => setLogin(text)}
+        value={login}
+        keyboardType={'default'}
+        autoCapitalize='none'
+        textContentType={'username'}
       />
       <Text style={styles.label}>Password</Text>
       <TextInput

@@ -1,12 +1,13 @@
-import React, {createContext, useState, useEffect} from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 
-const AuthContext = createContext({signed: false, user: {}});
+const AuthContext = createContext({ signed: false, user: {} });
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadStorageData() {
@@ -17,24 +18,46 @@ export const AuthProvider = ({children}) => {
         setUser(JSON.parse(storageUser));
         api.defaults.headers['Authorization'] = `${storageToken}`;
       }
+      setLoading(false);
     }
 
     loadStorageData();
-    setLoading(false);
   }, []);
 
   async function signIn(email, password) {
-    const response = await api.post('/sign-in', {email, password});
+    try {
+      const response = await api.post('/auth', { username: email, password });
+      const token = response.headers.authorization;
+      const userName = response.data.body.user;
 
-    setUser(response.user);
+      setUser(userName);
+      api.defaults.headers['Authorization'] = `${token}`;
 
-    api.defaults.headers['Authorization'] = `${response.data.token}`;
+      await AsyncStorage.setItem('@RNAuth:user', JSON.stringify(userName));
+      await AsyncStorage.setItem('@RNAuth:token', token);
+    } catch (error) {
+      console.log(error.response.status);
+      setError(handleResponses(error.response.status));
+    }
+  }
 
-    await AsyncStorage.setItem(
-      '@RNAuth:user',
-      JSON.stringify(response.data.user),
-    );
-    await AsyncStorage.setItem('@RNAuth:token', response.data.token);
+  function handleResponses(code) {
+    let message = '';
+    switch (code) {
+      case 401:
+        message = 'Não está autorizado a executar esta ação!';
+        break;
+      case 403:
+        message = 'Dados das credenciais errados!';
+        break;
+      case 406:
+        message = 'Dados do utilizador já existentes!';
+        break;
+      default:
+        message = 'Mensagem desconhecida';
+        break;
+    }
+    return message;
   }
 
   function signOut() {
@@ -45,7 +68,7 @@ export const AuthProvider = ({children}) => {
 
   return (
     <AuthContext.Provider
-      value={{isSigned: user ? true : false, user, loading, signIn, signOut}}>
+      value={{ signed: user ? true : false, user, loading, error, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
