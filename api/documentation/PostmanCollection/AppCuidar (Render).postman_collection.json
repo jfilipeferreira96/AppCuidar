@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1a3b4ddc-f46f-4cfb-90b1-43849b5fc798",
+		"_postman_id": "8528ba79-c513-4795-b3e1-913e5d4ad303",
 		"name": "AppCuidar (Render)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1881489"
@@ -24,12 +24,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/",
-					"protocol": "http",
+					"raw": "https://appcuidar.onrender.com/",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"appcuidar",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						""
 					]
@@ -52,12 +53,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/auth",
-					"protocol": "http",
+					"raw": "https://appcuidar.onrender.com/auth",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"appcuidar",
+						"onrender",
+						"com"
 					],
-					"port": "8080",
 					"path": [
 						"auth"
 					]
@@ -72,15 +74,15 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6InA0dXVycGc0NnI2MzZmYzYxNjkwZjVkZDAwMDRjN2RiNTciLCJpYXQiOjE2ODE0NzA2OTcsImV4cCI6MTY4MTQ4NTY5NywiaXNzIjoiRkNBIn0.0XoMINift8QMglaiMnKdQzi74DVvqfOrbUqpkJrWh-g",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6InA0dXVycGc0NnI2MzZmYzYxNjkwZjVkZDAwMDRjN2RiNTciLCJpYXQiOjE2ODIxMDg4NjUsImV4cCI6MTY4MjEyMzg2NSwiaXNzIjoiRkNBIn0.36g3xErpt-_fIfsK_EQLa9Vk16_TpIBYJ7ORuZZ7IQ0",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "https://appcuidar.onrender.com/users",
+					"raw": "https://appcuidar-api.onrender.com/users",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
@@ -111,7 +113,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"location\": {\n        \"city\": \"Odivelas\",\n        \"district\": \"\",\n        \"country\": \"Portugal\"\n    },\n    \"auth\": {\n        \"username\": \"alex1\",\n        \"password\": \"alex1\"\n    },\n    \"gamification\": {\n        \"points\": \"\",\n        \"quiz\": \"\"\n    },\n    \"active\": true,\n    \"name\": \"Daniela\",\n    \"type\": \"admin\",\n    \"birth_date\": \"\",\n    \"description\": \"\"\n}",
+					"raw": "{\n    \"location\": {\n        \"city\": \"Odivelas\",\n        \"district\": \"\",\n        \"country\": \"Portugal\"\n    },\n    \"auth\": {\n        \"username\": \"alex1\",\n        \"password\": \"alex1\"\n    },   \n    \"active\": true,\n    \"name\": \"Daniela\",\n    \"type\": \"admin\",\n    \"birth_date\": \"\",\n    \"description\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -119,10 +121,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://appcuidar.onrender.com/users",
+					"raw": "https://appcuidar-api.onrender.com/users",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
@@ -161,10 +163,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://appcuidar.onrender.com/users",
+					"raw": "https://appcuidar-api.onrender.com/users",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
@@ -194,10 +196,10 @@
 					}
 				],
 				"url": {
-					"raw": "https://appcuidar.onrender.com/dailyregistries",
+					"raw": "https://appcuidar-api.onrender.com/dailyregistries",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
@@ -229,10 +231,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://appcuidar.onrender.com/dailyregistries",
+					"raw": "https://appcuidar-api.onrender.com/dailyregistries",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
@@ -255,10 +257,10 @@
 					}
 				],
 				"url": {
-					"raw": "https://appcuidar.onrender.com/patients",
+					"raw": "https://appcuidar-api.onrender.com/patients",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
@@ -290,10 +292,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://appcuidar.onrender.com/patients",
+					"raw": "https://appcuidar-api.onrender.com/patients",
 					"protocol": "https",
 					"host": [
-						"appcuidar",
+						"appcuidar-api",
 						"onrender",
 						"com"
 					],
