@@ -2,9 +2,12 @@ module.exports = (app, callback) => {
   const CONFIG = require("../config/config");
   //Connect to DB
   const mongoose = require("mongoose");
+
+  mongoose.set("useNewUrlParser", true);
+  mongoose.set("useFindAndModify", false);
+  mongoose.set("useCreateIndex", true);
+
   let settings = {
-    reconnectTries: Number.MAX_VALUE,
-    autoReconnect: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
