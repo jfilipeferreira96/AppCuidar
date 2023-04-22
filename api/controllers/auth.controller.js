@@ -12,15 +12,16 @@ exports.getInfo = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  console.log(req.body);
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  let username = req.body.username;
+  let email = req.body.email;
   let password = escape(req.body.password);
 
   User.findOne(
     {
-      "auth.username": username,
+      "auth.email": email,
     },
     (error, user) => {
       if (error) throw error;
@@ -47,7 +48,7 @@ exports.login = (req, res) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { auth, name, type, location, password } = req.body;
+    const { auth, name, type, password } = req.body;
     console.log(req.body);
 
     const hashedPassword = await bcrypt.hashSync(escape(password), bcrypt.genSaltSync(2));
@@ -55,22 +56,19 @@ module.exports.register = async (req, res, next) => {
     const user = await User.create({
       auth: {
         email: auth.email,
-        username: auth.username,
         password: hashedPassword,
       },
       name: name,
       type: type,
-      location: location,
     });
 
-    return res.json({ status: true, user: { _id: user._id, username: auth.username, email: auth.email, name: name, type: type } });
+    return res.json({ status: true, user: { _id: user._id, email: auth.email, name: name, type: type } });
   } catch (ex) {
     next(ex);
   }
 };
 
 exports.checkAuth = (req, res, callback) => {
-  // return callback();
   let token = req.headers.authorization;
   if (!token) return res.status(AuthMessages.error.e1.http).send(AuthMessages.error.e1);
 

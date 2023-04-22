@@ -16,27 +16,27 @@ const SignIn = () => {
   const navigation = useNavigation();
   const {isSigned, signIn, error} = useContext(AuthContext);
 
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignIn = () => {
-    signIn(login, password);
+    signIn(email, password);
   };
 
   return (
     <View style={styles.container}>
       <Image source={Grandpa} style={styles.image} />
-      {error &&<Text>{error}</Text>}
-      <Text style={styles.label}>Login</Text>
+      {error && <Text>{error}</Text>}
+      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
-        onChangeText={text => setLogin(text)}
-        value={login}
+        onChangeText={text => setEmail(text)}
+        value={email}
         keyboardType={'default'}
-        autoCapitalize='none'
-        textContentType={'username'}
+        autoCapitalize="none"
+        textContentType={'email'}
       />
       <Text style={styles.label}>Password</Text>
       <TextInput
@@ -47,11 +47,11 @@ const SignIn = () => {
         secureTextEntry={true}
       />
       <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>
-        Don't have an account? Sign up
+        Não tem uma conta? Inscreva-se.
       </Text>
 
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Sign In</Text>
+        <Text style={styles.buttonText}>Iniciar sessão</Text>
       </TouchableOpacity>
     </View>
   );

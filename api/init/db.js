@@ -12,9 +12,11 @@ module.exports = (app, callback) => {
     useUnifiedTopology: true,
     useFindAndModify: false,
   };
+  CONFIG.mongodb.uri, settings;
   global.mongoConnection = mongoose.createConnection(CONFIG.mongodb.uri, settings, (error) => {
-    if (error) throw error;
-    console.log("--------------Connected to DB----------------------------");
+    if (error) console.log("Not Connected to Database ERROR! ", err);
+
+    console.log("---------------------------- Connected to DB ----------------------------");
     return callback();
   });
 };

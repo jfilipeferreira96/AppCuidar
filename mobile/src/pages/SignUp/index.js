@@ -24,15 +24,14 @@ const SignUp = () => {
   const navigation = useNavigation();
 
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [selectedOption, setSelectedOption] = useState('admin');
 
   const options = [
     {label: 'Admin', value: 'admin'},
-    {label: 'User', value: 'user'},
-    {label: 'Care Taker', value: 'caregiver'},
+    {label: 'Utilizador', value: 'user'},
+    {label: 'Cuidador', value: 'caretaker'},
   ];
 
   const handleSubmit = async () => {
@@ -49,16 +48,14 @@ const SignUp = () => {
     console.log(data);
 
     try {
-      const signup = await api.post('/auth/register', JSON.stringify(data));
+      const signup = await api.post('/auth/register', data);
       console.log(signup);
       if (signup) {
         showToast('success');
         navigation.navigate('SignIn');
-      } else {
-        showToast('error');
       }
     } catch (error) {
-      console.error(error);
+      showToast('error');
     }
   };
 
@@ -66,13 +63,13 @@ const SignUp = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Success, your account has been created!',
+        text1: 'Sucesso, a sua conta foi criada!',
       });
     }
     if (type === 'error') {
       Toast.show({
         type: 'error',
-        text1: 'Something went error, please try again!',
+        text1: 'Algo correu mal, por favor tente novamente!',
       });
     }
   }
@@ -82,7 +79,7 @@ const SignUp = () => {
       <View style={styles.container}>
         <Image source={user} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
-        <Text style={styles.label}>Choose an Option:</Text>
+        <Text style={styles.label}>Selecione uma opção:</Text>
         <RadioForm formHorizontal={true}>
           {options.map(option => (
             <RadioButton labelHorizontal={true} key={option.value}>
@@ -114,17 +111,10 @@ const SignUp = () => {
           ))}
         </RadioForm>
 
-        <Text style={styles.label}>Name</Text>
+        <Text style={styles.label}>Nome</Text>
         <TextInput
           style={styles.input}
           onChangeText={text => setName(text)}
-          value={name}
-        />
-
-        <Text style={styles.label}>Username</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setUsername(text)}
           value={name}
         />
 
@@ -134,7 +124,7 @@ const SignUp = () => {
           onChangeText={text => setEmail(text)}
           value={email}
           keyboardType={'email-address'}
-          textContentType={'emailAddress'}
+          textContentType={'email-address'}
         />
 
         <Text style={styles.label}>Password</Text>
@@ -147,7 +137,7 @@ const SignUp = () => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+          <Text style={styles.buttonText}>Criar conta</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
