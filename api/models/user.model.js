@@ -1,44 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const CONFIG = require('../config/config');
+const CONFIG = require("../config/config");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new Schema({
-    name: String,
-    type: String,
-    location: {
-        city: String,
-        country: String
+  name: String,
+  type: String,
+  auth: {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      max: 50,
     },
-    auth: {
-        username: {
-            type: String,
-            unique: true
-        },
-        password: String,
-        public_key: String,
-        private_key: String
+    password: {
+      type: String,
+      required: true,
+      min: 6,
     },
-    registration_date: {
-        type: Date,
-        default: Date.now
-    },
-    active: {
-        type: Boolean,
-        default: true
-    }
-
+  },
+  registration_date: {
+    type: Date,
+    default: Date.now,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
-userSchema
-    .pre("save", function (callback) {
+userSchema.pre("save", function (callback) {
+  this.auth.password = bcrypt.hashSync(escape(this.auth.password), bcrypt.genSaltSync(2));
 
-        this.auth.public_key = Math.random().toString(36).substring(2) + this._id;
-        this.auth.private_key = Math.random().toString(36).substring(2) + this._id;
-
-        this.auth.password = bcrypt.hashSync(escape(this.auth.password), bcrypt.genSaltSync(2));
-
-        callback();
-    })
+  callback();
+});
 
 module.exports = global.mongoConnection.model(CONFIG.mongodb.collections.user, userSchema);

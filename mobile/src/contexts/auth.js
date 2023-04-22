@@ -1,17 +1,16 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, {createContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 
-const AuthContext = createContext({ signed: false, user: {} });
+const AuthContext = createContext({isSigned: false, user: {}});
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadStorageData() {
-
       const storageUser = await AsyncStorage.getItem('@RNAuth:user');
       const storageToken = await AsyncStorage.getItem('@RNAuth:token');
 
@@ -27,8 +26,9 @@ export const AuthProvider = ({ children }) => {
 
   async function signIn(email, password) {
     try {
-      setError("");
-      const response = await api.post('/auth', { username: email, password });
+      setError('');
+      const response = await api.post('/auth', {username: email, password});
+
       const token = response.headers.authorization;
       const userName = response.data.body.name;
 
@@ -71,7 +71,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isSigned: user ? true : false, user, loading, error, signIn, signOut }}>
+      value={{
+        isSigned: user ? true : false,
+        user,
+        loading,
+        error,
+        signIn,
+        signOut,
+      }}>
       {children}
     </AuthContext.Provider>
   );

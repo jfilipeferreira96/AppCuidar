@@ -24,14 +24,15 @@ const SignUp = () => {
   const navigation = useNavigation();
 
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedOption, setSelectedOption] = useState('admin');
 
   const options = [
-    {label: 'Admin', value: 0},
-    {label: 'Owner', value: 1},
-    {label: 'User', value: 2},
+    {label: 'Admin', value: 'admin'},
+    {label: 'User', value: 'user'},
+    {label: 'Care Taker', value: 'caregiver'},
   ];
 
   const handleSubmit = async () => {
@@ -47,12 +48,17 @@ const SignUp = () => {
     };
     console.log(data);
 
-    const signup = await api.post('/sign-up', data);
-    if (signup) {
-      showToast('success');
-      navigation.navigate('SignIn');
-    } else {
-      showToast('error');
+    try {
+      const signup = await api.post('/auth/register', JSON.stringify(data));
+      console.log(signup);
+      if (signup) {
+        showToast('success');
+        navigation.navigate('SignIn');
+      } else {
+        showToast('error');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -112,6 +118,13 @@ const SignUp = () => {
         <TextInput
           style={styles.input}
           onChangeText={text => setName(text)}
+          value={name}
+        />
+
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setUsername(text)}
           value={name}
         />
 
