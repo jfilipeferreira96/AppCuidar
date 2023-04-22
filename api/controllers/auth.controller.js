@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 const { validationResult } = require("express-validator");
 const AuthMessages = require("../messages/auth.messages");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const CONFIG = require("../config/config");
 
@@ -12,21 +12,21 @@ exports.getInfo = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  console.log(req.body);
-  const errors = validationResult(req).array();
-  if (errors.length > 0) return res.status(406).send(errors);
-
   let email = req.body.email;
-  let password = escape(req.body.password);
+  let password = req.body.password;
 
   User.findOne(
     {
       "auth.email": email,
     },
-    (error, user) => {
+    async (error, user) => {
       if (error) throw error;
 
-      if (!user || !bcrypt.compareSync(password, user.auth.password)) return res.header("Authorization", null).status(AuthMessages.error.e0.http).send(AuthMessages.error.e0);
+      const isPasswordValid = await bcrypt.compare(password.toString(), user.auth.password.toString());
+
+      if (!user || !isPasswordValid) {
+        return res.header("Authorization", null).status(AuthMessages.error.e0.http).send(AuthMessages.error.e0);
+      }
 
       let payload = {
         pk: user.auth.public_key,
@@ -48,21 +48,20 @@ exports.login = (req, res) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { auth, name, type, password } = req.body;
-    console.log(req.body);
+    const { email, name, option, password } = req.body;
 
-    const hashedPassword = await bcrypt.hashSync(escape(password), bcrypt.genSaltSync(2));
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
       auth: {
-        email: auth.email,
+        email: email,
         password: hashedPassword,
       },
       name: name,
-      type: type,
+      type: option.value,
     });
 
-    return res.json({ status: true, user: { _id: user._id, email: auth.email, name: name, type: type } });
+    return res.json({ status: true, user: { _id: user._id, email: user.auth.email, name: user.name, type: user.type } });
   } catch (ex) {
     next(ex);
   }

@@ -45,11 +45,10 @@ const SignUp = () => {
       password,
       option: options.find(option => option.value === selectedOption),
     };
-    console.log(data);
 
     try {
       const signup = await api.post('/auth/register', data);
-      console.log(signup);
+
       if (signup) {
         showToast('success');
         navigation.navigate('SignIn');
@@ -124,7 +123,7 @@ const SignUp = () => {
           onChangeText={text => setEmail(text)}
           value={email}
           keyboardType={'email-address'}
-          textContentType={'email-address'}
+          textContentType={'emailAddress'}
         />
 
         <Text style={styles.label}>Password</Text>

@@ -1,11 +1,8 @@
 module.exports = {
   mongodb: {
-    uri: "mongodb://localhost:27017",
+    uri: "mongodb://localhost:27017/CuidarBD",
     collections: {
       user: "users",
-      user_levels: "user_levels",
-      dayRegistry: "dayregistries",
-      patient: "patients",
     },
   },
   auth: {

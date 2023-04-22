@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
@@ -9,26 +10,38 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AuthContext from '../../contexts/auth';
-
+import Toast from 'react-native-toast-message';
 import Grandpa from '../../assets/Grandpa.png';
 
 const SignIn = () => {
   const navigation = useNavigation();
-  const {isSigned, signIn, error} = useContext(AuthContext);
-
+  const {signIn, error} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignIn = () => {
     signIn(email, password);
   };
 
+  function showToast() {
+    Toast.show({
+      type: 'error',
+      text1: error,
+    });
+  }
+
+  useEffect(() => {
+    if (error) {
+      showToast();
+    }
+  }, [error]);
+
   return (
     <View style={styles.container}>
       <Image source={Grandpa} style={styles.image} />
-      {error && <Text>{error}</Text>}
+
+      <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
+
       <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
@@ -36,7 +49,7 @@ const SignIn = () => {
         value={email}
         keyboardType={'default'}
         autoCapitalize="none"
-        textContentType={'email'}
+        textContentType={'emailAddress'}
       />
       <Text style={styles.label}>Password</Text>
       <TextInput

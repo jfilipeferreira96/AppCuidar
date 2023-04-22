@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const CONFIG = require("../config/config");
-const bcrypt = require("bcryptjs");
 
 const userSchema = new Schema({
   name: String,
@@ -16,8 +15,10 @@ const userSchema = new Schema({
     password: {
       type: String,
       required: true,
-      min: 6,
+      min: 4,
     },
+    public_key: String,
+    private_key: String,
   },
   registration_date: {
     type: Date,
@@ -30,7 +31,8 @@ const userSchema = new Schema({
 });
 
 userSchema.pre("save", function (callback) {
-  this.auth.password = bcrypt.hashSync(escape(this.auth.password), bcrypt.genSaltSync(2));
+  this.auth.public_key = Math.random().toString(36).substring(2) + this._id;
+  this.auth.private_key = Math.random().toString(36).substring(2) + this._id;
 
   callback();
 });

@@ -3,19 +3,19 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import AuthContext from '../../contexts/auth';
 
 const Dashboard = () => {
-  const {isSigned, user, signOut} = useContext(AuthContext);
+  const {user, signOut} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome,</Text>
-      <Text style={styles.user}>{user?.name}</Text>
-
-      <Text style={styles.welcome}>
-        This is the main screen of this project
+      <Text style={styles.welcome}>Bem-vindo/a,</Text>
+      <Text style={styles.user}>
+        {user?.name} ({user?.type})
       </Text>
 
+      <Text style={styles.welcome}>Este é o ecrã principal deste projeto.</Text>
+
       <TouchableOpacity style={styles.button} onPress={signOut}>
-        <Text style={styles.buttonText}>Sign out</Text>
+        <Text style={styles.buttonText}>Terminar sessão</Text>
       </TouchableOpacity>
     </View>
   );
@@ -36,12 +36,11 @@ const styles = StyleSheet.create({
     color: '#27B4FD',
     alignSelf: 'flex-start',
     paddingHorizontal: '10%',
-    marginTop: -25,
   },
   user: {
     fontSize: 40,
     color: '#484848',
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     paddingHorizontal: '10%',
   },
   button: {

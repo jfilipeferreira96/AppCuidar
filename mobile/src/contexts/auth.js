@@ -27,20 +27,20 @@ export const AuthProvider = ({children}) => {
   async function signIn(email, password) {
     try {
       setError('');
-      const response = await api.post('/auth', {username: email, password});
+      const response = await api.post('/auth', {email: email, password});
 
       const token = response.headers.authorization;
-      const userName = response.data.body.name;
 
-      console.log(userName);
-      setUser(userName);
+      setUser(response.data.body);
 
       api.defaults.headers['Authorization'] = `${token}`;
-      await AsyncStorage.setItem('@RNAuth:user', JSON.stringify(userName));
+      await AsyncStorage.setItem(
+        '@RNAuth:user',
+        JSON.stringify(response.data.body),
+      );
       await AsyncStorage.setItem('@RNAuth:token', token);
-    } catch (error) {
-      console.log(error.response.status);
-      setError(handleResponses(error.response.status));
+    } catch (err) {
+      setError(handleResponses(err));
     }
   }
 
