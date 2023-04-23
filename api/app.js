@@ -15,6 +15,12 @@ require("./init/db.js")(app, () => {
   app.listen(port, host, (error) => {
     if (error) throw error;
     console.log("Your app is listening on " + port);
-    console.log(`If you are in localhost, use the following ip for the react-native ${networkInterfaces["Ethernet"][3]?.address}:${port}`);
+    const interfaces = require('os').networkInterfaces();
+    const ethernet = interfaces['Ethernet'];
+    if (ethernet && ethernet[3]) {
+      console.log(`If you are in localhost, use the following ip for the react-native ${ethernet[3].address}:${port}`);
+    } else {
+      console.log('Cannot find Ethernet interface or index 3 is undefined');
+    }
   });
 });

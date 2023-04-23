@@ -14,7 +14,7 @@ module.exports = (app, callback) => {
   };
   CONFIG.mongodb.uri, settings;
   global.mongoConnection = mongoose.createConnection(CONFIG.mongodb.uri, settings, (error) => {
-    if (error) console.log("Not Connected to Database ERROR! ", err);
+    if (error) console.log("Not Connected to Database ERROR! ", error);
 
     console.log("---------------------------- Connected to DB ----------------------------");
     return callback();
