@@ -1,6 +1,6 @@
 module.exports = {
   mongodb: {
-    uri: "mongodb://localhost:27017/CuidarBD",
+    uri: process.env.MONGODB_URI,
     collections: {
       user: "users",
     },
