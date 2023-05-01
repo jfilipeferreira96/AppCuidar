@@ -4,14 +4,12 @@ import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 function CardWithImage({id, title, image}) {
   return (
     <View style={{flex: 1, justifyContent: 'center', padding: 15}}>
-      <TouchableOpacity onPress={() => console.log(123)}>
-        <View style={styles.container}>
-          {image ? <Image style={styles.image} source={{uri: image}} /> : <></>}
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>{title}</Text>
-          </View>
+      <View style={styles.container}>
+        {image ? <Image style={styles.image} source={{uri: image}} /> : <></>}
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{title}</Text>
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 }

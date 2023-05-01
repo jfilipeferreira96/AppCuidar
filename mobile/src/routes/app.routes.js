@@ -1,8 +1,8 @@
-//Rotas que o Utilizador pode navegar enquanto está autenticado!
 import React, {useContext} from 'react';
 import UserHomeScreen from '../pages/UserHomeScreen';
 import CareTakerHomeScreen from '../pages/CareTakerHomeScreen';
 import AdminHomeScreen from '../pages/AdminHomeScreen';
+import ListUsers from '../pages/ListUsers';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthContext from '../contexts/auth';
@@ -27,13 +27,20 @@ const AppRoutes = () => {
           component={CareTakerHomeScreen}
           options={{headerShown: false}}
         />
-      ) : (
+      ) : userType === 'admin' ? (
         <AppStack.Screen
-          name="UserHomeScreen"
-          component={UserHomeScreen}
+          name="AdminHomeScreen"
+          component={AdminHomeScreen}
           options={{headerShown: false}}
         />
+      ) : (
+        <></>
       )}
+      <AppStack.Screen
+        name="ListUsers"
+        component={ListUsers}
+        options={{headerShown: false}}
+      />
     </AppStack.Navigator>
   );
 };
