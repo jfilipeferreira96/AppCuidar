@@ -5,6 +5,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import AuthContext from '../../contexts/auth';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {useNavigation} from '@react-navigation/native';
+import Header from '../../components/Header';
 
 const ListItem = ({item, onDeletePress, onEditPress}) => {
   return (
@@ -61,6 +62,8 @@ const ListUsers = () => {
       {/* <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
         <Item title="Go Back" iconName="arrow-back" onPress={handleGoBack} />
       </HeaderButtons> */}
+      <Header />
+
       <Text style={styles.headerTitle}>Users List</Text>
 
       <FlatList
