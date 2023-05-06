@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -32,41 +32,59 @@ const AddUtente = () => {
   const [showPicker, setShowPicker] = useState(false);
   const [date, setDate] = useState(new Date(1980, 0, 1));
   const [selectedSexo, setSelectedSexo] = useState(null);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        const response = await api.get('/users?type=user');
+        const data = response.data.body;
+
+        if (data) {
+          const usersOptions = data.map(item => {
+            return {
+              label: item.name,
+              value: item._id,
+            };
+          });
+          setUsers(usersOptions);
+        }
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    }
+    getUsers();
+  }, []);
 
   const sexoOptions = [
     {label: 'Masculino', value: 'Masculino'},
     {label: 'Feminino', value: 'Feminino'},
   ];
 
-  const options = [
-    {label: 'Option 1', value: 1},
-    {label: 'Option 2', value: 2},
-  ];
-
   const handleSubmit = async () => {
-    if (!name || !selectedSexo || !selectedUser || !date) {
+    if (!name || !selectedSexo || !date) {
       console.log('Por favor, preencha todos os campos.');
       showToast('empty');
       return;
     }
 
-    console.log('Dados preenchidos:', name, selectedSexo, selectedUser, date);
-
     const data = {
-      name,
-      selectedSexo,
-      selectedUser,
-      date,
+      name: name,
+      sex: selectedSexo,
+      users: selectedUser,
+      birth_date: date,
     };
-
+    console.log(data);
     try {
-      const signup = await api.post('/utente/add', data);
-
-      if (signup) {
+      const addUtente = await api.post('/patients', data);
+      console.log('addUtente', addUtente);
+      if (addUtente) {
         showToast('success');
         navigation.navigate('ListUtentes');
       }
     } catch (error) {
+      console.error(error);
       showToast('error');
     }
   };
@@ -175,7 +193,7 @@ const AddUtente = () => {
         <Text style={styles.label}>Selecione um parente</Text>
 
         <SelectDropdown
-          data={options}
+          data={users}
           onSelect={(selectedItem, index) =>
             setSelectedUser(selectedItem.value)
           }
