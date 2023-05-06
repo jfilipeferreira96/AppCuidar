@@ -1,11 +1,9 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import AuthContext from '../../contexts/auth';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
+import api from '../../services/api';
 
 const ListItem = ({item, onDeletePress, onEditPress}) => {
   return (
@@ -34,23 +32,50 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
 };
 
 const ListUtentes = () => {
-  const {user, signOut} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [data, setData] = useState([]);
 
-  const [data, setData] = useState([
-    {id: 1, title: 'Item 1'},
-    {id: 2, title: 'Item 2'},
-    {id: 3, title: 'Item 3'},
-  ]);
+  async function getPatients() {
+    try {
+      const response = await api.get('/patients');
+      const patients = response.data.body;
 
-  const handleDeleteItem = item => {
-    const newData = data.filter(i => i.id !== item.id);
-    setData(newData);
+      if (patients) {
+        const patientsObject = patients.map(item => {
+          return {
+            title: item.name,
+            id: item._id,
+          };
+        });
+        setData(patientsObject);
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    getPatients();
+  }, []);
+
+  const handleDeleteItem = async item => {
+    console.log('entrei', item);
+
+    await api.delete('/patients/' + item.id);
+    getPatients();
   };
 
   const handleEditItem = item => {
     // implementar ação de edição do item
     console.log('Editar item:', item);
+    // AQUI DEVO ENVIAR PARA O SCREEN PATIENT EDIT
+    //navigation.navigate('EditUtente', {item});
+
+    /*  dentro da pagian EditUtente terei de ter algo assim:
+    const EditUtente() {
+  const route = useRoute();
+  const user = route.params.user; */
   };
 
   return (
@@ -67,17 +92,26 @@ const ListUtentes = () => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={data}
-        renderItem={({item}) => (
-          <ListItem
-            item={item}
-            onDeletePress={handleDeleteItem}
-            onEditPress={handleEditItem}
-          />
-        )}
-        keyExtractor={item => item.id.toString()}
-      />
+      {data?.length === 0 && (
+        <View style={{flex: 1, marginTop: 50, alignItems: 'center'}}>
+          <Icon name="user-times" size={32} />
+          <Text style={{marginTop: 8}}>Não existem utentes</Text>
+        </View>
+      )}
+
+      {data?.length > 0 && (
+        <FlatList
+          data={data}
+          renderItem={({item}) => (
+            <ListItem
+              item={item}
+              onDeletePress={handleDeleteItem}
+              onEditPress={handleEditItem}
+            />
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
+      )}
     </>
   );
 };

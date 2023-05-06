@@ -17,9 +17,8 @@ exports.get = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  console.log("entrei");
   const errors = validationResult(req).array();
-  console.log(errors);
+
   if (errors.length > 0) return res.status(406).send(errors);
 
   new Patient({
