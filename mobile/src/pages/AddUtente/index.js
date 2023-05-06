@@ -64,7 +64,6 @@ const AddUtente = () => {
 
   const handleSubmit = async () => {
     if (!name || !selectedSexo || !date) {
-      console.log('Por favor, preencha todos os campos.');
       showToast('empty');
       return;
     }
@@ -75,10 +74,10 @@ const AddUtente = () => {
       users: selectedUser,
       birth_date: date,
     };
-    console.log(data);
+
     try {
       const addUtente = await api.post('/patients', data);
-      console.log('addUtente', addUtente);
+
       if (addUtente) {
         showToast('success');
         navigation.navigate('ListUtentes');

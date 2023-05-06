@@ -60,8 +60,6 @@ const ListUtentes = () => {
   }, []);
 
   const handleDeleteItem = async item => {
-    console.log('entrei', item);
-
     await api.delete('/patients/' + item.id);
     getPatients();
   };
@@ -70,12 +68,12 @@ const ListUtentes = () => {
     // implementar ação de edição do item
     console.log('Editar item:', item);
     // AQUI DEVO ENVIAR PARA O SCREEN PATIENT EDIT
-    //navigation.navigate('EditUtente', {item});
+    //navigation.navigate('EditUtente', {id: item.id});
 
     /*  dentro da pagian EditUtente terei de ter algo assim:
     const EditUtente() {
   const route = useRoute();
-  const user = route.params.user; */
+  const user = route.params.id; */
   };
 
   return (
