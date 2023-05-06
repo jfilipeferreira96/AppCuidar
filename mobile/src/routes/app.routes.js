@@ -5,6 +5,8 @@ import AdminHomeScreen from '../pages/AdminHomeScreen';
 import ListUsers from '../pages/ListUsers';
 import ListUtentes from '../pages/ListUtentes';
 import AddUtente from '../pages/AddUtente';
+import {View, StyleSheet, Text} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
   createDrawerNavigator,
@@ -34,11 +36,24 @@ const CustomDrawerContent = props => {
   return (
     <DrawerContentScrollView {...props}>
       {/* <DrawerItemList {...props} /> */}
+      <View style={styles.header}>
+        <Icon name="home" size={50} color="#fff" />
+        <Text style={styles.headerText}>AppCuidar</Text>
+      </View>
       <DrawerItem
         label="Home"
         onPress={() => navigation.navigate(HomeString())}
+        icon={() => <Icon name="home" size={20} color="#555" />}
+        style={styles.drawerItem}
+        labelStyle={styles.drawerLabel}
       />
-      <DrawerItem label="Logout" onPress={signOut} />
+      <DrawerItem
+        label="Logout"
+        onPress={signOut}
+        icon={() => <Icon name="sign-out" size={20} color="#555" />}
+        style={styles.drawerItem}
+        labelStyle={styles.drawerLabel}
+      />
     </DrawerContentScrollView>
   );
 };
@@ -89,5 +104,32 @@ const AppRoutes = () => {
     </Drawer.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#333',
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 30,
+    marginLeft: 10,
+  },
+  drawerItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    marginHorizontal: 0,
+    paddingVertical: 10,
+    paddingLeft: 20,
+  },
+  drawerLabel: {
+    color: '#555',
+    fontSize: 16,
+    fontWeight: '500',
+    marginLeft: -16,
+  },
+});
 
 export default AppRoutes;
