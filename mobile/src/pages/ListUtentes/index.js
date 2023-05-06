@@ -33,7 +33,7 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
   );
 };
 
-const ListUsers = () => {
+const ListUtentes = () => {
   const {user, signOut} = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -57,11 +57,11 @@ const ListUsers = () => {
     <>
       <Header />
 
-      <Text style={styles.headerTitle}>Lista de Utilizadores</Text>
+      <Text style={styles.headerTitle}>Lista de Utentes</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('AddUser')}>
+          onPress={() => navigation.navigate('AddUtente')}>
           <Icon name="plus" size={30} color="#007aff" />
           <Text style={styles.buttonText}>Adicionar Utente</Text>
         </TouchableOpacity>
@@ -154,4 +154,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListUsers;
+export default ListUtentes;

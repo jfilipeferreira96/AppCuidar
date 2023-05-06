@@ -22,7 +22,7 @@ const AdminHomeScreen = () => {
       title: 'Lista de utentes',
       image:
         'https://clinicarecanto.com.br/wp-content/uploads/2019/03/estatudo-do-idoso.png',
-      navigate: () => navigation.navigate('ListUsers'),
+      navigate: () => navigation.navigate('ListUtentes'),
     },
     {
       id: 3,

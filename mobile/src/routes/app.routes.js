@@ -3,6 +3,8 @@ import UserHomeScreen from '../pages/UserHomeScreen';
 import CareTakerHomeScreen from '../pages/CareTakerHomeScreen';
 import AdminHomeScreen from '../pages/AdminHomeScreen';
 import ListUsers from '../pages/ListUsers';
+import ListUtentes from '../pages/ListUtentes';
+import AddUtente from '../pages/AddUtente';
 
 import {
   createDrawerNavigator,
@@ -72,6 +74,16 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="ListUsers"
         component={ListUsers}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="ListUtentes"
+        component={ListUtentes}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="AddUtente"
+        component={AddUtente}
         options={{headerShown: false}}
       />
     </Drawer.Navigator>
