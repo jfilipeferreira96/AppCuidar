@@ -24,9 +24,6 @@ exports.create = (req, res) => {
     name: req.body.name,
     birth_date: req.body.birth_date,
     sex: req.body.sex,
-    contactName: req.body.contactName,
-    contactPhone: req.body.contactPhone,
-    contactMail: req.body.contactMail,
     users: req.body.users,
   }).save((error, patient) => {
     if (error) throw error;

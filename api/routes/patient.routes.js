@@ -8,11 +8,7 @@ const AuthController = require("../controllers/auth.controller");
 router
   .route("/")
   .get(AuthController.checkAuth, PatientController.get)
-  .post(
-    AuthController.checkAuth,
-    [body("name").isString(), body("birth_date").isISO8601(), body("sex").isString(), body("contactName").isString(), body("contactPhone").isString(), body("contactMail").isString(), body("users.*").isMongoId()],
-    PatientController.create
-  );
+  .post(AuthController.checkAuth, [body("name").isString(), body("birth_date").isISO8601(), body("sex").isString(), body("users.*").isMongoId()], PatientController.create);
 
 router.route("/deactivate/:id").put(AuthController.checkAuth, [param("id").isMongoId()], PatientController.deactivate);
 
