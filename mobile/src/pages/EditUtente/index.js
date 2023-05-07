@@ -117,9 +117,9 @@ const EditUtente = () => {
     };
 
     try {
-      const addUtente = await api.post('/patients', data);
+      const editUtente = await api.put('/patients/' + patient, data);
 
-      if (addUtente) {
+      if (editUtente) {
         showToast('success');
         navigation.navigate('ListUtentes');
       }
@@ -133,7 +133,7 @@ const EditUtente = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Sucesso, utente criado!',
+        text1: 'Sucesso, utente atualizado!',
       });
     }
     if (type === 'error') {
