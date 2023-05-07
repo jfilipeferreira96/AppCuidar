@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useRoute} from '@react-navigation/native';
 import {
   View,
@@ -32,6 +32,9 @@ const EditUtente = () => {
 
   const [name, setName] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
+  const dropdownRef = useRef(null);
+
+  //const [selectedUser, setSelectedUser] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const [date, setDate] = useState(new Date(1980, 0, 1));
   const [selectedSexo, setSelectedSexo] = useState(null);
@@ -55,9 +58,10 @@ const EditUtente = () => {
         );
         setDate(birthDate);
 
-        console.log(patientData.users[0]._id);
-        console.log(patientData.users[0].name);
-        setSelectedUser(patientData.users[0]._id);
+        const associatedUser = patientData.users[0]._id;
+        setSelectedUser(associatedUser);
+        const index = users.findIndex((user) => user.value === associatedUser);
+        dropdownRef.current.selectIndex(index);
       }
     } catch (error) {
       console.error(error);
@@ -230,11 +234,12 @@ const EditUtente = () => {
 
         <SelectDropdown
           data={users}
-          onSelect={(selectedItem, index) =>
-            setSelectedUser(selectedItem.value)
+          ref={dropdownRef}
+          onSelect={(selectedUser, index) =>
+            setSelectedUser(selectedUser.value)
           }
           defaultButtonText="--"
-          buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+          buttonTextAfterSelection={(selectedUser, index) => selectedUser.label}
           rowTextForSelection={(item, index) => item.label}
           buttonStyle={styles.input}
         />
