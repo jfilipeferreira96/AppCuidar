@@ -70,7 +70,7 @@ const ListUtentes = () => {
     // implementar ação de edição do item
     console.log('Editar item:', item);
     // AQUI DEVO ENVIAR PARA O SCREEN PATIENT EDIT
-    //navigation.navigate('EditUtente', {id: item.id});
+    navigation.navigate('EditUtente', {id: item.id});
 
     /*  dentro da pagian EditUtente terei de ter algo assim:
     const EditUtente() {

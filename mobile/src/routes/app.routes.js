@@ -4,6 +4,7 @@ import CareTakerHomeScreen from '../pages/CareTakerHomeScreen';
 import AdminHomeScreen from '../pages/AdminHomeScreen';
 import ListUsers from '../pages/ListUsers';
 import ListUtentes from '../pages/ListUtentes';
+import EditUtente from '../pages/EditUtente';
 import AddUtente from '../pages/AddUtente';
 import {View, StyleSheet, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -99,6 +100,11 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="AddUtente"
         component={AddUtente}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="EditUtente"
+        component={EditUtente}
         options={{headerShown: false}}
       />
     </Drawer.Navigator>
