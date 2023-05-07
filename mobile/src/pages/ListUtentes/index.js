@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import api from '../../services/api';
+import {useIsFocused} from '@react-navigation/native';
 
 const ListItem = ({item, onDeletePress, onEditPress}) => {
   return (
@@ -34,6 +35,7 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
 const ListUtentes = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
 
   async function getPatients() {
     try {
@@ -57,7 +59,7 @@ const ListUtentes = () => {
 
   useEffect(() => {
     getPatients();
-  }, []);
+  }, [isFocused]);
 
   const handleDeleteItem = async item => {
     await api.delete('/patients/' + item.id);
