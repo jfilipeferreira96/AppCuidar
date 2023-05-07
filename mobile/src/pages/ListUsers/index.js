@@ -63,7 +63,7 @@ const ListUsers = () => {
           style={styles.button}
           onPress={() => navigation.navigate('AddUser')}>
           <Icon name="plus" size={30} color="#007aff" />
-          <Text style={styles.buttonText}>Adicionar Utente</Text>
+          <Text style={styles.buttonText}>Adicionar Utilizador</Text>
         </TouchableOpacity>
       </View>
 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#fff',
     borderRadius: 8,
-    width: 180,
+    width: 195,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
