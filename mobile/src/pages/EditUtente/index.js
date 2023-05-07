@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useRoute} from '@react-navigation/native';
 import {
   View,
@@ -19,7 +19,7 @@ import RadioForm, {
 } from 'react-native-simple-radio-button';
 import Toast from 'react-native-toast-message';
 
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import api from '../../services/api';
 
 import oldman from '../../assets/oldman.png';
@@ -27,6 +27,8 @@ import Header from '../../components/Header';
 
 const EditUtente = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const patient = route.params.id;
 
   const [name, setName] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
@@ -34,35 +36,42 @@ const EditUtente = () => {
   const [date, setDate] = useState(new Date(1980, 0, 1));
   const [selectedSexo, setSelectedSexo] = useState(null);
   const [users, setUsers] = useState([]);
-  const route = useRoute();
+
+  async function getPatient(patientId) {
+    try {
+      const response = await api.get('/patients/' + patientId);
+
+      const patientData = response.data.body;
+
+      if (patientData) {
+        setName(patientData.name);
+        setSelectedSexo(patientData.sex);
+
+        const dateTime = new Date(patientData.birth_date);
+        const birthDate = new Date(
+          dateTime.getFullYear(),
+          dateTime.getMonth(),
+          dateTime.getDate(),
+        );
+        setDate(birthDate);
+
+        console.log(patientData.users[0]._id);
+        console.log(patientData.users[0].name);
+        setSelectedUser(patientData.users[0]._id);
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getPatient(patient);
+    }, [patient]),
+  );
 
   useEffect(() => {
-    async function getPatient(patientId) {
-      try {
-        const response = await api.get('/patients/' + patientId);
-        console.log(response.data.body);
-        
-        const patientData = response.data.body;
-
-        if (patientData) {
-          
-          setName(patientData.name);
-          setSelectedSexo(patientData.sex);
-          
-          const dateTime = new Date(patientData.birth_date); // current date and time
-          const birthDate = new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate()); // truncate to date
-          setDate(birthDate);
-
-          //console.log(patientData.users[0]._id);
-          //console.log(patientData.users[0].name);
-          setSelectedUser(patientData.users[0]._id);
-        }
-        
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    }
     async function getUsers() {
       try {
         const response = await api.get('/users?type=user');
@@ -83,7 +92,6 @@ const EditUtente = () => {
       }
     }
     getUsers();
-    getPatient(route.params.id);
   }, []);
 
   const sexoOptions = [
@@ -232,7 +240,7 @@ const EditUtente = () => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Criar Utente</Text>
+          <Text style={styles.buttonText}>Atualizar Utente</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
