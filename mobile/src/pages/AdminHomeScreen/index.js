@@ -28,7 +28,7 @@ const AdminHomeScreen = () => {
       id: 3,
       title: 'Registos diarios',
       image: 'https://www.sns.gov.pt/wp-content/uploads/2016/09/foto_sns_3.jpg',
-      navigate: () => navigation.navigate('ListUsers'),
+      navigate: () => navigation.navigate('ListRegistos'),
     },
   ];
 

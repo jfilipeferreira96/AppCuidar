@@ -3,6 +3,7 @@ import UserHomeScreen from '../pages/UserHomeScreen';
 import CareTakerHomeScreen from '../pages/CareTakerHomeScreen';
 import AdminHomeScreen from '../pages/AdminHomeScreen';
 import ListUsers from '../pages/ListUsers';
+import ListRegistos from '../pages/ListRegistos';
 import ListUtentes from '../pages/ListUtentes';
 import EditUtente from '../pages/EditUtente';
 import AddUtente from '../pages/AddUtente';
@@ -95,6 +96,11 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="ListUtentes"
         component={ListUtentes}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="ListRegistos"
+        component={ListRegistos}
         options={{headerShown: false}}
       />
       <AppStack.Screen
