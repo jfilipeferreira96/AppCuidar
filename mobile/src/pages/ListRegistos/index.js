@@ -41,7 +41,7 @@ const ListRegistos = () => {
     try {
       const response = await api.get('/dailyRecord');
       const records = response.data.body;
-
+      console.log(response);
       if (records) {
         const recordsObject = records.map(item => {
           return {
@@ -81,7 +81,7 @@ const ListRegistos = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('AddUtente')}>
+          onPress={() => navigation.navigate('AddRegisto')}>
           <Icon name="plus" size={30} color="#007aff" />
           <Text style={styles.buttonText}>Adicionar Registo</Text>
         </TouchableOpacity>

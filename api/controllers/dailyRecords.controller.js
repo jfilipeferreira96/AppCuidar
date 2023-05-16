@@ -5,14 +5,14 @@ const DayRecordsMessages = require("../messages/dayRecords.messages");
 exports.get = (req, res) => {
   DayRecords.find(req.query)
     .populate("comments.user", "name")
-    .exec((error, dayRegistries) => {
+    .exec((error, dayRecords) => {
       if (error) throw error;
 
       let message = DayRecordsMessages.success.s2;
 
-      if (dayRegistries.length < 0) message = DayRecordsMessages.success.s5;
+      if (dayRecords.length < 0) message = DayRecordsMessages.success.s5;
 
-      message.body = dayRegistries;
+      message.body = dayRecords;
       return res.status(message.http).send(message);
     });
 };

@@ -4,6 +4,7 @@ module.exports = {
     collections: {
       user: "users",
       patient: "patients",
+      dailyRecords: "dailyRecords",
     },
   },
   auth: {
