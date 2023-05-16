@@ -39,7 +39,7 @@ const ListRegistos = () => {
 
   async function getRecords() {
     try {
-      const response = await api.get('/dailyRecord');
+      const response = await api.get('/dayRecord');
       const records = response.data.body;
       console.log(response);
       if (records) {
@@ -62,7 +62,7 @@ const ListRegistos = () => {
   }, [isFocused]);
 
   const handleDeleteItem = async item => {
-    await api.delete('/dailyRecord/' + item.id);
+    await api.delete('/dayRecord/' + item.id);
     getRecords();
   };
 

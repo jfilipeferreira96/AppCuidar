@@ -2,18 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const CONFIG = require("../config/config");
 
-const dayRegistrySchema = new Schema({
+const dayRecordsSchema = new Schema({
   patient: String,
   registryDate: Date,
-  bath: String,
-  bloodPressure: String,
-  temperature: String,
-  dayClassification: String,
-  description: String,
-  breakfast: String,
-  lunch: String,
-  coffee: String,
-  dinner: String,
+  bath: Boolean,
+  lunch: Boolean,
+  coffee: Boolean,
+  dinner: Boolean,
+  dayClassification: Number,
+  extra: String,
 });
 
-module.exports = global.mongoConnection.model(CONFIG.mongodb.collections.dayRegistry, dayRegistrySchema);
+module.exports = global.mongoConnection.model(CONFIG.mongodb.collections.dayRecords, dayRecordsSchema);

@@ -4,8 +4,8 @@ const DayRecordsMessages = require("../messages/dayRecords.messages");
 
 exports.get = (req, res) => {
   DayRecords.find(req.query)
-    .populate("comments.user", "name")
-    .exec((error, dayRecords) => {
+    /*     .populate("comments.user", "name")
+     */ .exec((error, dayRecords) => {
       if (error) throw error;
 
       let message = DayRecordsMessages.success.s2;
@@ -23,22 +23,19 @@ exports.create = (req, res) => {
 
   new DayRecords({
     patient: req.body.patient,
-    registryDate: req.body.registryDate,
-    bath: req.body.bath,
-    bloodPressure: req.body.bloodPressure,
-    temperature: req.body.temperature,
+    registryDate: Date.now(),
+    bath: req.body.banho,
     dayClassification: req.body.dayClassification,
-    breakfast: req.body.breakfast,
-    lunch: req.body.lunch,
-    coffee: req.body.coffee,
-    dinner: req.body.dinner,
-    description: req.body.description,
+    breakfast: req.body.pequenoAlmoco,
+    lunch: req.body.almoco,
+    dinner: req.body.jantar,
+    extra: req.body.extra,
   }).save((error, dayRecords) => {
     if (error) throw error;
     let message = DayRecordsMessages.success.s0;
     message.body = dayRecords;
     return res
-      .header("location", "/dailyRecord/" + dayRecords._id)
+      .header("location", "/dayRecord/" + dayRecords._id)
       .status(message.http)
       .send(message);
   });
