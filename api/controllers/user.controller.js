@@ -32,3 +32,19 @@ exports.getOne = (req, res) => {
     }
   );
 };
+
+exports.delete = (req, res) => {
+  const errors = validationResult(req).array();
+  if (errors.length > 0) return res.status(406).send(errors);
+
+  User.deleteOne(
+    {
+      _id: req.params.id,
+    },
+    (error, result) => {
+      if (error) throw error;
+      if (result.deletedCount <= 0) return res.status(UserMessages.error.e0.http).send(UserMessages.error.e0);
+      return res.status(UserMessages.success.s3.http).send(UserMessages.success.s3);
+    }
+  );
+};
