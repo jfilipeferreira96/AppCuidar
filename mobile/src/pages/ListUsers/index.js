@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -6,11 +6,24 @@ import AuthContext from '../../contexts/auth';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
+import api from '../../services/api';
+import {useIsFocused} from '@react-navigation/native';
 
 const ListItem = ({item, onDeletePress, onEditPress}) => {
   return (
     <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{item.title}</Text>
+      <View style={styles.userTypeArea}>
+        <Icon
+        name={getUserIcon(item.type)}
+        size={20}
+        color={getUserColor(item.type)}
+        style={styles.userType}
+        /></View>
+      
+      <Text style={styles.itemText}>
+      {item.title}
+      </Text>
+      
       <View style={styles.itemActions}>
         <TouchableOpacity onPress={() => onEditPress(item)}>
           <Icon
@@ -33,15 +46,48 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
   );
 };
 
+function getUserIcon(type) {
+  if (type == "caregiver") return "stethoscope";
+  if (type == "admin") return "cog";
+  return "user-o";
+}
+
+function getUserColor(type) {
+  if (type == "caregiver") return "#708090";
+  if (type == "admin") return "black";
+  return "gray";
+}
+
 const ListUsers = () => {
   const {user, signOut} = useContext(AuthContext);
   const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
+  
+  async function getUsers() {
+    try {
+      const response = await api.get('/users');
+      const users = response.data.body;
 
-  const [data, setData] = useState([
-    {id: 1, title: 'Item 1'},
-    {id: 2, title: 'Item 2'},
-    {id: 3, title: 'Item 3'},
-  ]);
+      if (users) {
+        const usersObject = users.map(item => {
+          return {
+            title: item.name,
+            type: item.type,
+            id: item._id,
+          };
+        });
+        setData(usersObject);
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, [isFocused]);
 
   const handleDeleteItem = item => {
     const newData = data.filter(i => i.id !== item.id);
@@ -142,6 +188,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   itemText: {
+    flex: 1, // Take remaining space
+    textAlign: 'left', // Align text to the right
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333333',
@@ -152,6 +200,12 @@ const styles = StyleSheet.create({
   itemIcon: {
     marginLeft: 20,
   },
+  userType: {
+    marginRight: 10,
+  },
+  userTypeArea: {
+    flexDirection: 'row',
+  }
 });
 
 export default ListUsers;
