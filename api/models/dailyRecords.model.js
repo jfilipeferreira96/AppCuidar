@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 const CONFIG = require("../config/config");
 
 const dailyRecordsSchema = new Schema({
-  patient: String,
+  patient: {
+    type: Schema.Types.ObjectId,
+    ref: CONFIG.mongodb.collections.patient, // referência para a coleção patients
+  },
   registryDate: Date,
   bath: Boolean,
   lunch: Boolean,

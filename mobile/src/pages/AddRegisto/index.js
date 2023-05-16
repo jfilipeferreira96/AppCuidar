@@ -35,7 +35,6 @@ const AddRegisto = () => {
   const [pequenoAlmoco, setPequenoAlmoco] = useState(false);
   const [almoco, setAlmoco] = useState(false);
   const [jantar, setJantar] = useState(false);
-
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
@@ -68,15 +67,21 @@ const AddRegisto = () => {
     }
 
     const data = {
-      utente: selectedUtente,
+      patient: selectedUtente,
+      dayClassification: rating,
+      bath: banho,
+      breakfast: pequenoAlmoco,
+      lunch: almoco,
+      dinner: jantar,
+      extra: extra,
     };
 
     try {
-      const addUtente = await api.post('/patients', data);
+      const addUtente = await api.post('/dailyRecords', data);
 
       if (addUtente) {
         showToast('success');
-        navigation.navigate('ListUtentes');
+        navigation.navigate('ListRegistos');
       }
     } catch (error) {
       console.error(error);

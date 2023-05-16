@@ -13,7 +13,7 @@ router
     [
       body("patient").isString(),
       body("dayClassification").isNumeric(),
-      body("bath").isString(),
+      body("bath").isBoolean(),
       body("breakfast").isBoolean(),
       body("lunch").isBoolean(),
       body("dinner").isBoolean(),

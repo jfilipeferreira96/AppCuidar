@@ -1,18 +1,21 @@
 const DailyRecords = require("../models/dailyRecords.model");
 const { validationResult } = require("express-validator");
 const DailyRecordsMessages = require("../messages/dailyRecords.messages");
+const Patients = require("../models/patient.model");
 
 exports.get = (req, res) => {
-  DailyRecords.find().exec((error, dailyRecords) => {
-    if (error) throw error;
-    console.log("teste", dailyRecords);
-    let message = DailyRecordsMessages.success.s2;
+  DailyRecords.find()
+    .populate("patient") // preenche os detalhes do paciente
+    .exec((error, dailyRecords) => {
+      if (error) throw error;
+      console.log("teste", dailyRecords);
+      let message = DailyRecordsMessages.success.s2;
 
-    if (dailyRecords.length < 0) message = DailyRecordsMessages.success.s5;
+      if (dailyRecords.length < 0) message = DailyRecordsMessages.success.s5;
 
-    message.body = dailyRecords;
-    return res.status(message.http).send(message);
-  });
+      message.body = dailyRecords;
+      return res.status(message.http).send(message);
+    });
 };
 
 exports.create = (req, res) => {
@@ -32,10 +35,7 @@ exports.create = (req, res) => {
     if (error) throw error;
     let message = DailyRecordsMessages.success.s0;
     message.body = dailyRecords;
-    return res
-      .header("location", "/dailyRecord/" + dailyRecords._id)
-      .status(message.http)
-      .send(message);
+    return res.status(message.http).send(message);
   });
 };
 

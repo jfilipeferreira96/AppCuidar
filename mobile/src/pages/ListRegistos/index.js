@@ -9,7 +9,12 @@ import {useIsFocused} from '@react-navigation/native';
 const ListItem = ({item, onDeletePress, onEditPress}) => {
   return (
     <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{item.title}</Text>
+      <View style={styles.titles}>
+        <Text style={[styles.itemText, styles.itemDate]}>
+          {item.date.slice(0, -14)}
+        </Text>
+        <Text style={styles.itemText}>{item.title}</Text>
+      </View>
       <View style={styles.itemActions}>
         <TouchableOpacity onPress={() => onEditPress(item)}>
           <Icon
@@ -45,7 +50,8 @@ const ListRegistos = () => {
       if (records) {
         const recordsObject = records.map(item => {
           return {
-            title: item.name,
+            title: item.patient.name,
+            date: item.registryDate,
             id: item._id,
           };
         });
@@ -175,8 +181,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333333',
   },
+  itemDate: {
+    fontSize: 12,
+    textAlign: 'center',
+  },
   itemActions: {
     flexDirection: 'row',
+  },
+  titles: {
+    flexDirection: 'column',
   },
   itemIcon: {
     marginLeft: 20,
