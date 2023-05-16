@@ -8,7 +8,7 @@ const patientSchema = new Schema({
   sex: String,
   users: [
     {
-      type: String,
+      type: Schema.Types.ObjectId,
       ref: CONFIG.mongodb.collections.user,
     },
   ],
