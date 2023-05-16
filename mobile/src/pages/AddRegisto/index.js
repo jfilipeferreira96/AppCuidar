@@ -10,7 +10,6 @@ import {
   Button,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -23,16 +22,21 @@ import api from '../../services/api';
 
 import clipboard from '../../assets/clipboard.png';
 import Header from '../../components/Header';
+import StyledSwitch from '../../components/StyledSwitch';
+import StarRatingComponent from '../../components/RatingStars';
 
 const AddRegisto = () => {
   const navigation = useNavigation();
 
-  const [name, setName] = useState('');
+  const [extra, setExtra] = useState('');
   const [selectedUtente, setSelectedUtente] = useState('');
-  const [showPicker, setShowPicker] = useState(false);
-  const [date, setDate] = useState(new Date(1980, 0, 1));
-  const [selectedSexo, setSelectedSexo] = useState(null);
   const [utentes, setUtentes] = useState([]);
+  const [banho, setBanho] = useState(false);
+  const [pequenoAlmoco, setPequenoAlmoco] = useState(false);
+  const [almoco, setAlmoco] = useState(false);
+  const [jantar, setJantar] = useState(false);
+
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     async function getUtentes() {
@@ -57,22 +61,14 @@ const AddRegisto = () => {
     getUtentes();
   }, []);
 
-  const sexoOptions = [
-    {label: 'Masculino', value: 'Masculino'},
-    {label: 'Feminino', value: 'Feminino'},
-  ];
-
   const handleSubmit = async () => {
-    if (!name || !selectedSexo || !date) {
+    if (!selectedUtente) {
       showToast('empty');
       return;
     }
 
     const data = {
-      name: name,
-      sex: selectedSexo,
-      users: selectedUtente,
-      birth_date: date,
+      utente: selectedUtente,
     };
 
     try {
@@ -92,7 +88,7 @@ const AddRegisto = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Sucesso, utente criado!',
+        text1: 'Sucesso, registo criado!',
       });
     }
     if (type === 'error') {
@@ -108,68 +104,16 @@ const AddRegisto = () => {
       });
     }
   }
-  const showDateTimePicker = () => {
-    setShowPicker(true);
-  };
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowPicker(false);
-    setDate(currentDate);
-  };
 
   return (
     <ScrollView>
       <Header />
 
-      <Text style={styles.headerTitle}>Adicionar utente</Text>
+      <Text style={styles.headerTitle}>Adicionar registo</Text>
+
       <View style={styles.container}>
         <Image source={clipboard} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
-
-        <Text style={styles.label}>Nome</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setName(text)}
-          value={name}
-        />
-
-        <Text style={styles.label}>Sexo</Text>
-        <RadioForm formHorizontal={true} style={{marginBottom: 10}}>
-          {sexoOptions.map(option => (
-            <RadioButton labelHorizontal={true} key={option.value}>
-              <RadioButtonInput
-                obj={option}
-                isSelected={selectedSexo === option.value}
-                onPress={() => setSelectedSexo(option.value)}
-                borderWidth={1}
-                buttonInnerColor={'#2196f3'}
-                buttonOuterColor={
-                  selectedSexo === option.value ? '#2196f3' : '#000'
-                }
-                buttonSize={20}
-                buttonOuterSize={30}
-                buttonStyle={{}}
-                buttonWrapStyle={{marginLeft: 10}}
-              />
-              <RadioButtonLabel
-                obj={option}
-                labelHorizontal={true}
-                onPress={() => setSelectedSexo(option.value)}
-                labelStyle={{
-                  fontSize: 16,
-                  color: selectedSexo === option.value ? '#2196f3' : '#000',
-                }}
-                labelWrapStyle={{}}
-              />
-            </RadioButton>
-          ))}
-        </RadioForm>
-
-        <TouchableOpacity
-          style={styles.datePicker}
-          onPress={showDateTimePicker}>
-          <Text style={styles.labelDate}>Selecione data de nascimento</Text>
-        </TouchableOpacity>
 
         <Text style={styles.label}>Selecione o utente</Text>
 
@@ -182,6 +126,40 @@ const AddRegisto = () => {
           buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
           rowTextForSelection={(item, index) => item.label}
           buttonStyle={styles.input}
+        />
+
+        <StyledSwitch
+          label="Banho"
+          isSwitchOn={banho}
+          setIsSwitchOn={setBanho}
+        />
+
+        <StyledSwitch
+          label="Pequeno almoço"
+          isSwitchOn={pequenoAlmoco}
+          setIsSwitchOn={setPequenoAlmoco}
+        />
+
+        <StyledSwitch
+          label="Almoço"
+          isSwitchOn={almoco}
+          setIsSwitchOn={setAlmoco}
+        />
+
+        <StyledSwitch
+          label="Jantar"
+          isSwitchOn={jantar}
+          setIsSwitchOn={setJantar}
+        />
+
+        <Text style={styles.label}>Pontuação diária</Text>
+        <StarRatingComponent rating={rating} setRating={setRating} />
+
+        <Text style={styles.label}>Extra</Text>
+        <TextInput
+          style={styles.textArea}
+          onChangeText={text => setExtra(text)}
+          value={extra}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -233,13 +211,8 @@ const styles = StyleSheet.create({
   image: {
     width: '35%',
     resizeMode: 'contain',
-    marginTop: -500,
-    marginBottom: -520,
-  },
-  labelDate: {
-    color: '#484848',
-    fontSize: 16,
-    alignSelf: 'center',
+    marginTop: -150,
+    marginBottom: -150,
   },
   label: {
     color: '#484848',
@@ -256,6 +229,16 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 16,
     padding: 9,
+  },
+  textArea: {
+    width: '90%',
+    borderColor: '#666666',
+    borderWidth: 1,
+    borderRadius: 6,
+    marginBottom: 16,
+    padding: 9,
+    height: 80,
+    textAlignVertical: 'top',
   },
   button: {
     width: '90%',
