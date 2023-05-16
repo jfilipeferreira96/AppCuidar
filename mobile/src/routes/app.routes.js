@@ -7,6 +7,8 @@ import ListRegistos from '../pages/ListRegistos';
 import ListUtentes from '../pages/ListUtentes';
 import EditUtente from '../pages/EditUtente';
 import AddUtente from '../pages/AddUtente';
+import AddRegisto from '../pages/AddRegisto';
+
 import {View, StyleSheet, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -106,6 +108,11 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="AddUtente"
         component={AddUtente}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="AddRegisto"
+        component={AddRegisto}
         options={{headerShown: false}}
       />
       <AppStack.Screen
