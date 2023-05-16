@@ -88,9 +88,9 @@ const ListUsers = () => {
     getUsers();
   }, [isFocused]);
 
-  const handleDeleteItem = item => {
-    const newData = data.filter(i => i.id !== item.id);
-    setData(newData);
+  const handleDeleteItem = async item => {
+    await api.delete('/users/' + item.id);
+    getUsers();
   };
 
   const handleEditItem = item => {
