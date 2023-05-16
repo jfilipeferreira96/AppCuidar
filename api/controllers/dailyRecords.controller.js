@@ -1,27 +1,25 @@
-const DayRecords = require("../models/dayRecords.model");
+const DailyRecords = require("../models/dailyRecords.model");
 const { validationResult } = require("express-validator");
-const DayRecordsMessages = require("../messages/dayRecords.messages");
+const DailyRecordsMessages = require("../messages/dailyRecords.messages");
 
 exports.get = (req, res) => {
-  DayRecords.find(req.query)
-    /*     .populate("comments.user", "name")
-     */ .exec((error, dayRecords) => {
-      if (error) throw error;
+  DailyRecords.find().exec((error, dailyRecords) => {
+    if (error) throw error;
+    console.log("teste", dailyRecords);
+    let message = DailyRecordsMessages.success.s2;
 
-      let message = DayRecordsMessages.success.s2;
+    if (dailyRecords.length < 0) message = DailyRecordsMessages.success.s5;
 
-      if (dayRecords.length < 0) message = DayRecordsMessages.success.s5;
-
-      message.body = dayRecords;
-      return res.status(message.http).send(message);
-    });
+    message.body = dailyRecords;
+    return res.status(message.http).send(message);
+  });
 };
 
 exports.create = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  new DayRecords({
+  new DailyRecords({
     patient: req.body.patient,
     registryDate: Date.now(),
     bath: req.body.banho,
@@ -30,12 +28,12 @@ exports.create = (req, res) => {
     lunch: req.body.almoco,
     dinner: req.body.jantar,
     extra: req.body.extra,
-  }).save((error, dayRecords) => {
+  }).save((error, dailyRecords) => {
     if (error) throw error;
-    let message = DayRecordsMessages.success.s0;
-    message.body = dayRecords;
+    let message = DailyRecordsMessages.success.s0;
+    message.body = dailyRecords;
     return res
-      .header("location", "/dayRecord/" + dayRecords._id)
+      .header("location", "/dailyRecord/" + dailyRecords._id)
       .status(message.http)
       .send(message);
   });
@@ -45,7 +43,7 @@ exports.update = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  DayRecords.findOneAndUpdate(
+  DailyRecords.findOneAndUpdate(
     {
       _id: req.params.id,
     },
@@ -55,12 +53,12 @@ exports.update = (req, res) => {
     {
       new: true,
     },
-    (error, dayRecords) => {
+    (error, dailyRecords) => {
       if (error) throw error;
-      if (!dayRecords) return res.status(DayRecordsMessages.error.e0.http).send(DayRecordsMessages.error.e0);
+      if (!dailyRecords) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
 
-      let message = DayRecordsMessages.success.s1;
-      message.body = dayRecords;
+      let message = DailyRecordsMessages.success.s1;
+      message.body = dailyRecords;
       return res.status(message.http).send(message);
     }
   );
@@ -70,14 +68,14 @@ exports.delete = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  DayRecords.deleteOne(
+  DailyRecords.deleteOne(
     {
       _id: req.params.id,
     },
     (error, result) => {
       if (error) throw error;
-      if (result.deletedCount <= 0) return res.status(DayRecordsMessages.error.e0.http).send(DayRecordsMessages.error.e0);
-      return res.status(DayRecordsMessages.success.s3.http).send(DayRecordsMessages.success.s3);
+      if (result.deletedCount <= 0) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
+      return res.status(DailyRecordsMessages.success.s3.http).send(DailyRecordsMessages.success.s3);
     }
   );
 };
@@ -86,15 +84,15 @@ exports.getOne = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  DayRecords.findOne({
+  DailyRecords.findOne({
     _id: req.params.id,
   })
     .populate("comments.user", "name")
-    .exec((error, dayRecords) => {
+    .exec((error, dailyRecords) => {
       if (error) throw error;
-      if (!dayRecords) return res.status(DayRecordsMessages.error.e0.http).send(DayRecordsMessages.error.e0);
-      let message = DayRecordsMessages.success.s2;
-      message.body = dayRecords;
+      if (!dailyRecords) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
+      let message = DailyRecordsMessages.success.s2;
+      message.body = dailyRecords;
       return res.status(message.http).send(message);
     });
 };
@@ -103,7 +101,7 @@ exports.activate = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  DayRecords.updateOne(
+  DailyRecords.updateOne(
     {
       _id: req.params.id,
     },
@@ -115,8 +113,8 @@ exports.activate = (req, res) => {
     (error, result) => {
       if (error) throw error;
 
-      if (result.n <= 0) return res.status(DayRecordsMessages.error.e0.http).send(DayRecordsMessages.error.e0);
-      return res.status(DayRecordsMessages.success.s6.http).send(DayRecordsMessages.success.s6);
+      if (result.n <= 0) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
+      return res.status(DailyRecordsMessages.success.s6.http).send(DailyRecordsMessages.success.s6);
     }
   );
 };
@@ -125,7 +123,7 @@ exports.deactivate = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  DayRecords.updateOne(
+  DailyRecords.updateOne(
     {
       _id: req.params.id,
     },
@@ -137,8 +135,8 @@ exports.deactivate = (req, res) => {
     (error, result) => {
       if (error) throw error;
 
-      if (result.n <= 0) return res.status(DayRecordsMessages.error.e0.http).send(DayRecordsMessages.error.e0);
-      return res.status(DayRecordsMessages.success.s4.http).send(DayRecordsMessages.success.s4);
+      if (result.n <= 0) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
+      return res.status(DailyRecordsMessages.success.s4.http).send(DailyRecordsMessages.success.s4);
     }
   );
 };
