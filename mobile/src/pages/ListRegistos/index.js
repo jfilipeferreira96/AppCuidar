@@ -5,35 +5,56 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import {useIsFocused} from '@react-navigation/native';
+import Modal from '../../components/Modal';
 
 const ListItem = ({item, onDeletePress, onEditPress}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
   return (
-    <View style={styles.itemContainer}>
-      <View style={styles.titles}>
-        <Text style={[styles.itemText, styles.itemDate]}>
-          {item.date.slice(0, -14)}
-        </Text>
-        <Text style={styles.itemText}>{item.title}</Text>
+    <TouchableOpacity onPress={handleOpenModal}>
+      <View style={styles.itemContainer}>
+        <View style={styles.titles}>
+          <Text style={[styles.itemText, styles.itemDate]}>
+            {item.date.slice(0, -14)}
+          </Text>
+          <Text style={styles.itemText}>{item.title}</Text>
+        </View>
+
+        <View style={styles.itemActions}>
+          <TouchableOpacity onPress={() => onEditPress(item)}>
+            <Icon
+              name="pencil"
+              size={20}
+              color="#007aff"
+              style={styles.itemIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => onDeletePress(item)}>
+            <Icon
+              name="trash-o"
+              size={20}
+              color="#FF3B30"
+              style={styles.itemIcon}
+            />
+          </TouchableOpacity>
+        </View>
+        <Modal
+          visible={modalVisible}
+          onClose={handleCloseModal}
+          title={item.title}
+          date={item.date}
+          rest={item.rest}
+        />
       </View>
-      <View style={styles.itemActions}>
-        <TouchableOpacity onPress={() => onEditPress(item)}>
-          <Icon
-            name="pencil"
-            size={20}
-            color="#007aff"
-            style={styles.itemIcon}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onDeletePress(item)}>
-          <Icon
-            name="trash-o"
-            size={20}
-            color="#FF3B30"
-            style={styles.itemIcon}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -46,13 +67,14 @@ const ListRegistos = () => {
     try {
       const response = await api.get('/dailyRecords');
       const records = response.data.body;
-      console.log(records);
+
       if (records) {
         const recordsObject = records.map(item => {
           return {
+            id: item._id,
             title: item.patient.name,
             date: item.registryDate,
-            id: item._id,
+            rest: {...item},
           };
         });
         setData(recordsObject);

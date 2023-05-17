@@ -21,15 +21,15 @@ exports.get = (req, res) => {
 exports.create = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
-
+  console.log(req.body);
   new DailyRecords({
     patient: req.body.patient,
     registryDate: Date.now(),
-    bath: req.body.banho,
+    bath: req.body.bath,
     dayClassification: req.body.dayClassification,
-    breakfast: req.body.pequenoAlmoco,
-    lunch: req.body.almoco,
-    dinner: req.body.jantar,
+    breakfast: req.body.breakfast,
+    lunch: req.body.lunch,
+    dinner: req.body.dinner,
     extra: req.body.extra,
   }).save((error, dailyRecords) => {
     if (error) throw error;
