@@ -5,6 +5,7 @@ import AdminHomeScreen from '../pages/AdminHomeScreen';
 import ListUsers from '../pages/ListUsers';
 import ListRegistos from '../pages/ListRegistos';
 import ListUtentes from '../pages/ListUtentes';
+import EditUser from '../pages/EditUser';
 import EditUtente from '../pages/EditUtente';
 import AddUtente from '../pages/AddUtente';
 import AddRegisto from '../pages/AddRegisto';
@@ -118,6 +119,11 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="EditUtente"
         component={EditUtente}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="EditUser"
+        component={EditUser}
         options={{headerShown: false}}
       />
     </Drawer.Navigator>

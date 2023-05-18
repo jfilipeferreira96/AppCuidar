@@ -17,7 +17,8 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
         size={20}
         color={getUserColor(item.type)}
         style={styles.userType}
-        /></View>
+        />
+      </View>
       
       <Text style={styles.itemText}>
       {item.title}
@@ -46,13 +47,13 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
 };
 
 function getUserIcon(type) {
-  if (type == "caregiver") return "stethoscope";
+  if (type == "caretaker") return "stethoscope";
   if (type == "admin") return "cog";
   return "user-o";
 }
 
 function getUserColor(type) {
-  if (type == "caregiver") return "#708090";
+  if (type == "caretaker") return "#708090";
   if (type == "admin") return "black";
   return "gray";
 }
@@ -94,8 +95,9 @@ const ListUsers = () => {
   };
 
   const handleEditItem = item => {
-    // implementar ação de edição do item
+    // implementar ação de edição do 
     console.log('Editar item:', item);
+    navigation.navigate('EditUser', {id: item.id});
   };
 
   return (
