@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const { validationResult } = require("express-validator");
 const UserMessages = require("../messages/user.messages");
+const bcrypt = require("bcryptjs");
 
 exports.get = (req, res) => {
   User.find(req.query, (error, users) => {
@@ -32,6 +33,41 @@ exports.getOne = (req, res) => {
     }
   );
 };
+
+
+exports.update = (req, res) => {
+
+  const errors = validationResult(req).array();
+  if (errors.length > 0) return res.status(406).send(errors);
+
+  console.log("atualiza user");
+  console.log("password: " + req.body.auth.password);
+
+  if (req.body.auth.password.length >= 1) {
+    const rounds = bcrypt.getRounds(req.body.auth.password);
+    console.log("rounds: " + rounds);
+    if (isNaN(rounds)) {
+      //req.body.auth.password = bcrypt.hash(req.body.auth.password, 10);
+    }
+  }
+
+  User.findOneAndUpdate({
+      _id: req.params.id
+  }, {
+      $set: req.body
+  }, {
+      new: true
+  }, (error, user) => {
+      if (error) throw error;
+      if (!user) return res.status(UserMessages.error.e1.http).send(UserMessages.error.e1);
+
+      let message = UserMessages.success.s1;
+      message.body = user;
+      return res.status(message.http).send(message);
+
+  });
+
+}
 
 exports.delete = (req, res) => {
   const errors = validationResult(req).array();
