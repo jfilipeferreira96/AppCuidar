@@ -22,19 +22,18 @@ const UserHomeScreen = () => {
 
   async function getUsers() {
     try {
-      const response = await api.get('/users');
-      const users = response.data.body;
+      const response = await api.get('/patients/user/' + user._id);
+      const patients = response.data.body;
 
-      if (users) {
-        const usersObject = users
-          .filter(item => item._id !== user._id)
-          .map(item => ({
-            title: item.name,
-            type: item.type,
-            id: item._id,
-          }));
+      if (patients) {
+        const patientsObject = patients.map(item => ({
+          id: item._id,
+          title: item.name,
+          image:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnHKV4kAvKK1IMRJU9Xfb1K5F0temcpeIQMplf3x1tGNPtIXCTasPxhnxshmS1pTj-C0s&usqp=CAU',
+        }));
 
-        setData(usersObject);
+        setData(patientsObject);
       }
     } catch (error) {
       console.error(error);
@@ -46,16 +45,7 @@ const UserHomeScreen = () => {
     getUsers();
   }, [isFocused]);
 
-  const listOfUtentes = [
-    {
-      id: '6463f58e2f2f2d12c0a27458',
-      title: 'Maria Joana',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnHKV4kAvKK1IMRJU9Xfb1K5F0temcpeIQMplf3x1tGNPtIXCTasPxhnxshmS1pTj-C0s&usqp=CAU',
-    },
-  ];
-
-  if (listOfUtentes.length === 0) {
+  if (data.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Image
@@ -79,7 +69,7 @@ const UserHomeScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={listOfUtentes}
+        data={data}
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.cardContainer}

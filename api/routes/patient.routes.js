@@ -20,4 +20,6 @@ router
   .put(AuthController.checkAuth, [param("id").isMongoId()], PatientController.update)
   .delete(AuthController.checkAuth, [param("id").isMongoId()], PatientController.delete);
 
+router.route("/user/:userId").get(AuthController.checkAuth, [param("userId").isMongoId()], PatientController.getPatientsByUser);
+
 module.exports = router;

@@ -16,6 +16,26 @@ exports.get = (req, res) => {
     });
 };
 
+exports.getPatientsByUser = (req, res) => {
+  const { userId } = req.params;
+
+  Patient.find({ users: userId })
+    .populate("users")
+    .exec((error, patients) => {
+      if (error) throw error;
+
+      let message = PatientMessages.success.s2;
+
+      if (patients.length < 0) {
+        message = PatientMessages.success.s5;
+      } else {
+        message.body = patients;
+      }
+
+      return res.status(message.http).send(message);
+    });
+};
+
 exports.create = (req, res) => {
   const errors = validationResult(req).array();
 
