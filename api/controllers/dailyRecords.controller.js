@@ -31,7 +31,7 @@ exports.create = (req, res) => {
     lunch: req.body.lunch,
     dinner: req.body.dinner,
     extra: req.body.extra,
-    caretaker: req.body.caretaker
+    caretaker: req.body.caretaker,
   }).save((error, dailyRecords) => {
     if (error) throw error;
     let message = DailyRecordsMessages.success.s0;
@@ -81,7 +81,7 @@ exports.delete = (req, res) => {
   );
 };
 
-exports.getOne = (req, res) => {
+/* exports.getOne = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
@@ -94,6 +94,26 @@ exports.getOne = (req, res) => {
       if (!dailyRecords) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
       let message = DailyRecordsMessages.success.s2;
       message.body = dailyRecords;
+      return res.status(message.http).send(message);
+    });
+};
+ */
+exports.getOne = (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  DailyRecords.findById(id)
+    .populate("patient")
+    .exec((error, dailyRecord) => {
+      if (error) throw error;
+
+      let message = DailyRecordsMessages.success.s2;
+
+      if (!dailyRecord) {
+        message = DailyRecordsMessages.success.s5;
+      } else {
+        message.body = dailyRecord;
+      }
+      console.log(dailyRecord);
       return res.status(message.http).send(message);
     });
 };
