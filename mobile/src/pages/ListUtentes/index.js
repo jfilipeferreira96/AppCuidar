@@ -67,7 +67,6 @@ const ListUtentes = () => {
   };
 
   const handleEditItem = item => {
-    console.log('Editar item:', item);
     navigation.navigate('EditUtente', {id: item.id});
   };
 

@@ -95,10 +95,7 @@ const ListRegistos = () => {
   };
 
   const handleEditItem = item => {
-    // implementar ação de edição do item
     console.log('Editar item:', item);
-    // AQUI DEVO ENVIAR PARA O SCREEN PATIENT EDIT
-    //navigation.navigate('EditUtente', {id: item.id});
   };
 
   return (

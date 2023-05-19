@@ -8,7 +8,7 @@ exports.get = (req, res) => {
     .populate("patient") // preenche os detalhes do paciente
     .exec((error, dailyRecords) => {
       if (error) throw error;
-      console.log("teste", dailyRecords);
+
       let message = DailyRecordsMessages.success.s2;
 
       if (dailyRecords.length < 0) message = DailyRecordsMessages.success.s5;
@@ -21,7 +21,7 @@ exports.get = (req, res) => {
 exports.create = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
-  console.log(req.body);
+
   new DailyRecords({
     patient: req.body.patient,
     registryDate: Date.now(),
@@ -31,6 +31,7 @@ exports.create = (req, res) => {
     lunch: req.body.lunch,
     dinner: req.body.dinner,
     extra: req.body.extra,
+    caretaker: req.body.caretaker
   }).save((error, dailyRecords) => {
     if (error) throw error;
     let message = DailyRecordsMessages.success.s0;

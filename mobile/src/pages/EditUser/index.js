@@ -42,16 +42,14 @@ const EditUtente = () => {
 
   async function getUser(userId) {
     try {
-      console.log("getUser: " + userId);
       const response = await api.get('/users/' + userId);
       const data = response.data.body;
-      console.log(data);
 
       if (data) {
         setName(data.name);
         setEmail(data.auth.email);
         setOriginalPassword(data.auth.password);
-        setPassword("");
+        setPassword('');
         setSelectedOption(data.type);
       }
     } catch (error) {
@@ -82,8 +80,6 @@ const EditUtente = () => {
       auth: {email: email, password: passwordUpdate},
       type: options.find(option => option.value === selectedOption).value,
     };
-
-    console.log(data);
 
     try {
       const editUser = await api.put('/users/' + user, data);

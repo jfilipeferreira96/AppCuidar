@@ -13,17 +13,15 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
     <View style={styles.itemContainer}>
       <View style={styles.userTypeArea}>
         <Icon
-        name={getUserIcon(item.type)}
-        size={20}
-        color={getUserColor(item.type)}
-        style={styles.userType}
+          name={getUserIcon(item.type)}
+          size={20}
+          color={getUserColor(item.type)}
+          style={styles.userType}
         />
       </View>
-      
-      <Text style={styles.itemText}>
-      {item.title}
-      </Text>
-      
+
+      <Text style={styles.itemText}>{item.title}</Text>
+
       <View style={styles.itemActions}>
         <TouchableOpacity onPress={() => onEditPress(item)}>
           <Icon
@@ -47,15 +45,15 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
 };
 
 function getUserIcon(type) {
-  if (type == "caretaker") return "stethoscope";
-  if (type == "admin") return "cog";
-  return "user-o";
+  if (type == 'caretaker') return 'stethoscope';
+  if (type == 'admin') return 'cog';
+  return 'user-o';
 }
 
 function getUserColor(type) {
-  if (type == "caretaker") return "#708090";
-  if (type == "admin") return "black";
-  return "gray";
+  if (type == 'caretaker') return '#708090';
+  if (type == 'admin') return 'black';
+  return 'gray';
 }
 
 const ListUsers = () => {
@@ -63,7 +61,7 @@ const ListUsers = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
-  
+
   async function getUsers() {
     try {
       const response = await api.get('/users');
@@ -95,8 +93,6 @@ const ListUsers = () => {
   };
 
   const handleEditItem = item => {
-    // implementar ação de edição do 
-    console.log('Editar item:', item);
     navigation.navigate('EditUser', {id: item.id});
   };
 
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
   },
   userTypeArea: {
     flexDirection: 'row',
-  }
+  },
 });
 
 export default ListUsers;

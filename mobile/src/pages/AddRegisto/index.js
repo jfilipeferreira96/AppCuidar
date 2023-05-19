@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -24,9 +24,11 @@ import clipboard from '../../assets/clipboard.png';
 import Header from '../../components/Header';
 import StyledSwitch from '../../components/StyledSwitch';
 import StarRatingComponent from '../../components/RatingStars';
+import AuthContext from '../../contexts/auth';
 
 const AddRegisto = () => {
   const navigation = useNavigation();
+  const {user} = useContext(AuthContext);
 
   const [extra, setExtra] = useState('');
   const [selectedUtente, setSelectedUtente] = useState('');
@@ -42,7 +44,7 @@ const AddRegisto = () => {
       try {
         const response = await api.get('/patients');
         const patients = response.data.body;
-        console.log(patients);
+
         if (patients) {
           const usersOptions = patients.map(item => {
             return {
@@ -74,6 +76,7 @@ const AddRegisto = () => {
       lunch: almoco,
       dinner: jantar,
       extra: extra,
+      caretaker: user.name,
     };
 
     try {

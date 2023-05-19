@@ -14,6 +14,7 @@ const dailyRecordsSchema = new Schema({
   dinner: Boolean,
   dayClassification: Number,
   extra: String,
+  caretaker: String,
 });
 
 module.exports = global.mongoConnection.model(CONFIG.mongodb.collections.dailyRecords, dailyRecordsSchema);

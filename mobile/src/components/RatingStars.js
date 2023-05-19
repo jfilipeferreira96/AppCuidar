@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const StarRatingComponent = ({rating, setRating}) => {
+const StarRatingComponent = ({rating, setRating, disableInteraction}) => {
   const handleRating = value => {
-    setRating(value);
+    if (!disableInteraction) {
+      setRating(value);
+    }
   };
 
   const renderStars = () => {
@@ -14,7 +16,8 @@ const StarRatingComponent = ({rating, setRating}) => {
         <TouchableOpacity
           key={i}
           onPress={() => handleRating(i)}
-          style={styles.starContainer}>
+          style={styles.starContainer}
+          disabled={disableInteraction}>
           <Icon
             name={rating >= i ? 'star' : 'star-outline'}
             size={32}
@@ -32,9 +35,12 @@ const StarRatingComponent = ({rating, setRating}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   starContainer: {
     padding: 5,
+    alignItems: 'center',
   },
 });
 
