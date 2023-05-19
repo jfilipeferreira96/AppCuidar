@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {useRoute} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -8,7 +7,6 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import RadioForm, {
   RadioButton,
@@ -17,22 +15,19 @@ import RadioForm, {
 } from 'react-native-simple-radio-button';
 import Toast from 'react-native-toast-message';
 
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import api from '../../services/api';
 
 import Header from '../../components/Header';
-import userlogo from '../../assets/user.png';
+import user from '../../assets/user.png';
 
-const EditUtente = () => {
+const AddUser = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const user = route.params.id;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
   const [password, setPassword] = useState('');
-  const [originalPassword, setOriginalPassword] = useState('');
+  const [selectedOption, setSelectedOption] = useState('admin');
 
   const options = [
     {label: 'Admin', value: 'admin'},
@@ -40,60 +35,34 @@ const EditUtente = () => {
     {label: 'Cuidador', value: 'caretaker'},
   ];
 
-  async function getUser(userId) {
-    try {
-      console.log("getUser: " + userId);
-      const response = await api.get('/users/' + userId);
-      const data = response.data.body;
-      console.log(data);
-
-      if (data) {
-        setName(data.name);
-        setEmail(data.auth.email);
-        setOriginalPassword(data.auth.password);
-        setPassword("");
-        setSelectedOption(data.type);
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  }
-
-  useFocusEffect(
-    React.useCallback(() => {
-      getUser(user);
-    }, [user]),
-  );
+  useEffect(() => {
+    // Reset the form fields when the component is mounted
+    setName('');
+    setEmail('');
+    setPassword('');
+    setSelectedOption('admin');
+  }, []);
 
   const handleSubmit = async () => {
-    if (!name || !email) {
-      showToast('empty');
+    if (name === '' || email === '' || password === '') {
       return;
     }
 
-    let passwordUpdate = password;
-    if (passwordUpdate.length === 0) {
-      passwordUpdate = originalPassword;
-    }
-
     const data = {
-      name: name,
-      auth: {email: email, password: passwordUpdate},
-      type: options.find(option => option.value === selectedOption).value,
+      name,
+      email,
+      password,
+      option: options.find(option => option.value === selectedOption),
     };
 
-    console.log(data);
-
     try {
-      const editUser = await api.put('/users/' + user, data);
+      const signup = await api.post('/auth/register', data);
 
-      if (editUser) {
+      if (signup) {
         showToast('success');
         navigation.navigate('ListUsers');
       }
     } catch (error) {
-      console.error(error);
       showToast('error');
     }
   };
@@ -102,7 +71,7 @@ const EditUtente = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Sucesso, utente atualizado!',
+        text1: 'Sucesso, a sua conta foi criada!',
       });
     }
     if (type === 'error') {
@@ -111,23 +80,16 @@ const EditUtente = () => {
         text1: 'Algo correu mal, por favor tente novamente!',
       });
     }
-    if (type === 'empty') {
-      Toast.show({
-        type: 'error',
-        text1: 'Por favor, preencha todos os campos.',
-      });
-    }
   }
 
   return (
     <ScrollView>
       <Header />
 
-      <Text style={styles.headerTitle}>Editar utilizador</Text>
+      <Text style={styles.headerTitle}>Adicionar utilizador</Text>
       <View style={styles.container}>
-        <Image source={userlogo} style={styles.image} />
+        <Image source={user} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
-
         <Text style={styles.label}>Selecione uma opção:</Text>
         <RadioForm formHorizontal={true}>
           {options.map(option => (
@@ -187,7 +149,7 @@ const EditUtente = () => {
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Atualizar Utilizador</Text>
+          <Text style={styles.buttonText}>Criar utilizador</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -203,44 +165,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 15,
   },
-  disabledTextInput: {
-    backgroundColor: '#f2f2f2',
-    color: 'black',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 4,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  buttonDropdown: {
-    width: '90%',
-    height: 50,
-    borderColor: '#666666',
-    borderWidth: 1,
-    borderRadius: 6,
-    marginBottom: 16,
-    padding: 9,
-    color: '#484848',
-  },
-  datePicker: {
-    width: '90%',
-    height: 50,
-    borderColor: '#666666',
-    borderWidth: 1,
-    borderRadius: 6,
-    marginBottom: 16,
-    padding: 9,
-    color: 'black',
-  },
   image: {
     width: '60%',
     resizeMode: 'contain',
     marginBottom: -30,
-  },
-  labelDate: {
-    color: '#484848',
-    fontSize: 16,
-    alignSelf: 'center',
   },
   label: {
     color: '#484848',
@@ -273,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditUtente;
+export default AddUser;

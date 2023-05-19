@@ -8,6 +8,7 @@ import ListUtentes from '../pages/ListUtentes';
 import EditUser from '../pages/EditUser';
 import EditUtente from '../pages/EditUtente';
 import AddUtente from '../pages/AddUtente';
+import AddUser from '../pages/AddUser';
 import AddRegisto from '../pages/AddRegisto';
 
 import {View, StyleSheet, Text} from 'react-native';
@@ -114,6 +115,11 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="AddRegisto"
         component={AddRegisto}
+        options={{headerShown: false}}
+      />
+       <AppStack.Screen
+        name="AddUser"
+        component={AddUser}
         options={{headerShown: false}}
       />
       <AppStack.Screen
