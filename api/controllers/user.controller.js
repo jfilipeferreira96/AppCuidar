@@ -35,21 +35,19 @@ exports.getOne = (req, res) => {
 };
 
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
 
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
 
-  console.log("atualiza user");
-  console.log("password: " + req.body.auth.password);
-
   if (req.body.auth.password.length >= 1) {
     const rounds = bcrypt.getRounds(req.body.auth.password);
-    console.log("rounds: " + rounds);
     if (isNaN(rounds)) {
-      //req.body.auth.password = bcrypt.hash(req.body.auth.password, 10);
+      req.body.auth.password = await bcrypt.hash(req.body.auth.password, 10);
     }
   }
+  req.body.auth.public_key = Math.random().toString(36).substring(2) + req.params.id;
+  req.body.auth.private_key = Math.random().toString(36).substring(2) + req.params.id;
 
   User.findOneAndUpdate({
       _id: req.params.id

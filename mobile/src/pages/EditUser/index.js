@@ -76,14 +76,9 @@ const EditUtente = () => {
     }
 
     let passwordUpdate = password;
-    console.log("original password: " + originalPassword);
-    
     if (passwordUpdate.length === 0) {
-      console.log("password is empty");
       passwordUpdate = originalPassword;
     }
-
-    console.log("update password: " + passwordUpdate);
 
     const data = {
       name: name,
@@ -178,6 +173,7 @@ const EditUtente = () => {
           style={styles.input}
           onChangeText={text => setEmail(text)}
           value={email}
+          autoCapitalize="none"
           keyboardType={'email-address'}
           textContentType={'emailAddress'}
         />
