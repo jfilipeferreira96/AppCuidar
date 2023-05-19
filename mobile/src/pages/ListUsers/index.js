@@ -2,7 +2,6 @@ import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AuthContext from '../../contexts/auth';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import api from '../../services/api';
@@ -68,13 +67,14 @@ const ListUsers = () => {
       const users = response.data.body;
 
       if (users) {
-        const usersObject = users.map(item => {
-          return {
+        const usersObject = users
+          .filter(item => item._id !== user._id)
+          .map(item => ({
             title: item.name,
             type: item.type,
             id: item._id,
-          };
-        });
+          }));
+
         setData(usersObject);
       }
     } catch (error) {
