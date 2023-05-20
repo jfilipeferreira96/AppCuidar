@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import {useIsFocused} from '@react-navigation/native';
+import AuthContext from '../../contexts/auth';
 
 const ListItem = ({item, onDeletePress, onEditPress}) => {
   return (
@@ -36,6 +37,7 @@ const ListUtentes = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
+  const {user} = useContext(AuthContext);
 
   async function getPatients() {
     try {
@@ -75,14 +77,16 @@ const ListUtentes = () => {
       <Header />
 
       <Text style={styles.headerTitle}>Lista de Utentes</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('AddUtente')}>
-          <Icon name="plus" size={30} color="#007aff" />
-          <Text style={styles.buttonText}>Adicionar Utente</Text>
-        </TouchableOpacity>
-      </View>
+      {user.type === 'admin' && (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('AddUtente')}>
+            <Icon name="plus" size={30} color="#007aff" />
+            <Text style={styles.buttonText}>Adicionar Utente</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {data?.length === 0 && (
         <View style={{flex: 1, marginTop: 50, alignItems: 'center'}}>
