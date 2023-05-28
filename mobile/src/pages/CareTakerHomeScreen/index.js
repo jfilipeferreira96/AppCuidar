@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 50,
-    color: '#27B4FD',
+    color: '#007aff',
     alignSelf: 'flex-start',
     paddingHorizontal: '10%',
   },
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#27B4FD',
+    backgroundColor: '#007aff',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

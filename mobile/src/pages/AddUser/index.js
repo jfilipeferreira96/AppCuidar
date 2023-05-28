@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#27B4FD',
+    backgroundColor: '#007aff',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

@@ -60,7 +60,7 @@ const EditUtente = () => {
 
         const associatedUser = patientData.users[0]._id;
         setSelectedUser(associatedUser);
-        const index = users.findIndex((user) => user.value === associatedUser);
+        const index = users.findIndex(user => user.value === associatedUser);
         dropdownRef.current.selectIndex(index);
       }
     } catch (error) {
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#27B4FD',
+    backgroundColor: '#007aff',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
