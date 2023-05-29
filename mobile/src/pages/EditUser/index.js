@@ -133,9 +133,9 @@ const EditUtente = () => {
                 isSelected={selectedOption === option.value}
                 onPress={() => setSelectedOption(option.value)}
                 borderWidth={1}
-                buttonInnerColor={'#2196f3'}
+                buttonInnerColor={'#007aff'}
                 buttonOuterColor={
-                  selectedOption === option.value ? '#2196f3' : '#000'
+                  selectedOption === option.value ? '#007aff' : '#000'
                 }
                 buttonSize={20}
                 buttonOuterSize={30}
@@ -148,7 +148,7 @@ const EditUtente = () => {
                 onPress={() => setSelectedOption(option.value)}
                 labelStyle={{
                   fontSize: 16,
-                  color: selectedOption === option.value ? '#2196f3' : '#000',
+                  color: selectedOption === option.value ? '#007aff' : '#000',
                 }}
                 labelWrapStyle={{}}
               />

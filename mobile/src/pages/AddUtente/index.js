@@ -142,9 +142,9 @@ const AddUtente = () => {
                 isSelected={selectedSexo === option.value}
                 onPress={() => setSelectedSexo(option.value)}
                 borderWidth={1}
-                buttonInnerColor={'#2196f3'}
+                buttonInnerColor={'#007aff'}
                 buttonOuterColor={
-                  selectedSexo === option.value ? '#2196f3' : '#000'
+                  selectedSexo === option.value ? '#007aff' : '#000'
                 }
                 buttonSize={20}
                 buttonOuterSize={30}
@@ -157,7 +157,7 @@ const AddUtente = () => {
                 onPress={() => setSelectedSexo(option.value)}
                 labelStyle={{
                   fontSize: 16,
-                  color: selectedSexo === option.value ? '#2196f3' : '#000',
+                  color: selectedSexo === option.value ? '#007aff' : '#000',
                 }}
                 labelWrapStyle={{}}
               />

@@ -34,7 +34,6 @@ const EditUtente = () => {
   const [selectedUser, setSelectedUser] = useState('');
   const dropdownRef = useRef(null);
 
-  //const [selectedUser, setSelectedUser] = useState([]);
   const [showPicker, setShowPicker] = useState(false);
   const [date, setDate] = useState(new Date(1980, 0, 1));
   const [selectedSexo, setSelectedSexo] = useState(null);
@@ -45,7 +44,7 @@ const EditUtente = () => {
       const response = await api.get('/patients/' + patientId);
 
       const patientData = response.data.body;
-
+      console.log(patientData);
       if (patientData) {
         setName(patientData.name);
         setSelectedSexo(patientData.sex);
@@ -69,34 +68,32 @@ const EditUtente = () => {
     }
   }
 
+  async function getUsers() {
+    try {
+      const response = await api.get('/users?type=user');
+      const data = response.data.body;
+
+      if (data) {
+        const usersOptions = data.map(item => {
+          return {
+            label: item.name,
+            value: item._id,
+          };
+        });
+        setUsers(usersOptions);
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
+      getUsers();
       getPatient(patient);
     }, [patient]),
   );
-
-  useEffect(() => {
-    async function getUsers() {
-      try {
-        const response = await api.get('/users?type=user');
-        const data = response.data.body;
-
-        if (data) {
-          const usersOptions = data.map(item => {
-            return {
-              label: item.name,
-              value: item._id,
-            };
-          });
-          setUsers(usersOptions);
-        }
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    }
-    getUsers();
-  }, []);
 
   const sexoOptions = [
     {label: 'Masculino', value: 'Masculino'},
@@ -183,9 +180,9 @@ const EditUtente = () => {
                 isSelected={selectedSexo === option.value}
                 onPress={() => setSelectedSexo(option.value)}
                 borderWidth={1}
-                buttonInnerColor={'#2196f3'}
+                buttonInnerColor={'#007aff'}
                 buttonOuterColor={
-                  selectedSexo === option.value ? '#2196f3' : '#000'
+                  selectedSexo === option.value ? '#007aff' : '#000'
                 }
                 buttonSize={20}
                 buttonOuterSize={30}
@@ -198,7 +195,7 @@ const EditUtente = () => {
                 onPress={() => setSelectedSexo(option.value)}
                 labelStyle={{
                   fontSize: 16,
-                  color: selectedSexo === option.value ? '#2196f3' : '#000',
+                  color: selectedSexo === option.value ? '#007aff' : '#000',
                 }}
                 labelWrapStyle={{}}
               />

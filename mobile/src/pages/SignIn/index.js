@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 16,
     textDecorationLine: 'underline',
-    color: '#08a8f8',
+    color: '#007aff',
     marginVertical: 10,
   },
   button: {

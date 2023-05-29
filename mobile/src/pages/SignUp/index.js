@@ -14,11 +14,12 @@ import RadioForm, {
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
 import Toast from 'react-native-toast-message';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import {useNavigation} from '@react-navigation/native';
 import api from '../../services/api';
 
-import user from '../../assets/user.png';
+import signup from '../../assets/signup.png';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -75,8 +76,22 @@ const SignUp = () => {
 
   return (
     <ScrollView>
+      <View
+        style={{
+          paddingTop: 20,
+          paddingLeft: 20,
+          activeOpacity: 1,
+          backgroundColor: '#f0f5fc',
+        }}>
+        <Icon
+          name="chevron-back"
+          size={25}
+          onPress={() => navigation.goBack()}
+          color="#333"
+        />
+      </View>
       <View style={styles.container}>
-        <Image source={user} style={styles.image} />
+        <Image source={signup} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
         <Text style={styles.label}>Selecione uma opção:</Text>
         <RadioForm formHorizontal={true}>
@@ -87,9 +102,9 @@ const SignUp = () => {
                 isSelected={selectedOption === option.value}
                 onPress={() => setSelectedOption(option.value)}
                 borderWidth={1}
-                buttonInnerColor={'#2196f3'}
+                buttonInnerColor={'#007aff'}
                 buttonOuterColor={
-                  selectedOption === option.value ? '#2196f3' : '#000'
+                  selectedOption === option.value ? '#007aff' : '#000'
                 }
                 buttonSize={20}
                 buttonOuterSize={30}
@@ -102,7 +117,7 @@ const SignUp = () => {
                 onPress={() => setSelectedOption(option.value)}
                 labelStyle={{
                   fontSize: 16,
-                  color: selectedOption === option.value ? '#2196f3' : '#000',
+                  color: selectedOption === option.value ? '#007aff' : '#000',
                 }}
                 labelWrapStyle={{}}
               />
@@ -154,7 +169,8 @@ const styles = StyleSheet.create({
   image: {
     width: '60%',
     resizeMode: 'contain',
-    marginBottom: -30,
+    marginBottom: -100,
+    marginTop: -60,
   },
   label: {
     color: '#484848',
