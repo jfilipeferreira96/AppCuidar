@@ -12,7 +12,7 @@ import AddUser from '../pages/AddUser';
 import AddRegisto from '../pages/AddRegisto';
 import ListUtenteRegisto from '../pages/ListUtenteRegisto';
 
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
@@ -25,6 +25,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import AuthContext from '../contexts/auth';
 import {useNavigation} from '@react-navigation/native';
+
+import elderly from '../assets/elderly.png';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createNativeStackNavigator();
@@ -44,7 +46,7 @@ const CustomDrawerContent = props => {
     <DrawerContentScrollView {...props}>
       {/* <DrawerItemList {...props} /> */}
       <View style={styles.header}>
-        <Icon name="home" size={50} color="#fff" />
+        <Image source={elderly} style={styles.image} />
         <Text style={styles.headerText}>AppCuidar</Text>
       </View>
       <DrawerItem
@@ -144,15 +146,24 @@ const AppRoutes = () => {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#333',
-    height: 150,
+    backgroundColor: '#0A4499',
+    height: 180,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerText: {
     color: '#fff',
     fontSize: 30,
     marginLeft: 10,
+  },
+  image: {
+    width: 120,
+    height: 120,
+    resizeMode: 'contain',
   },
   drawerItem: {
     borderBottomWidth: 1,
