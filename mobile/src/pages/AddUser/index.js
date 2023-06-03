@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   ScrollView,
@@ -23,6 +23,7 @@ import signup from '../../assets/signup.png';
 
 const AddUser = () => {
   const navigation = useNavigation();
+  const scrollViewRef = useRef(null);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -74,6 +75,7 @@ const AddUser = () => {
   };
 
   function showToast(type) {
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
     if (type === 'success') {
       Toast.show({
         type: 'success',
@@ -89,7 +91,8 @@ const AddUser = () => {
   }
 
   return (
-    <ScrollView>
+    <View style={{ flex: 1 }}>
+    <ScrollView ref={scrollViewRef}>
       <Header />
 
       <Text style={styles.headerTitle}>Adicionar utilizador</Text>
@@ -159,6 +162,7 @@ const AddUser = () => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </View>
   );
 };
 
