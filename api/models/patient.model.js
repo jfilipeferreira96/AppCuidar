@@ -10,6 +10,7 @@ const patientSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: CONFIG.mongodb.collections.user,
+      default: [],
     },
   ],
 });

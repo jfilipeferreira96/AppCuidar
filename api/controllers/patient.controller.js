@@ -1,6 +1,7 @@
 const Patient = require("../models/patient.model");
 const { validationResult } = require("express-validator");
 const PatientMessages = require("../messages/patient.messages");
+const DailyRecords = require("../models/dailyRecords.model");
 
 exports.get = (req, res) => {
   Patient.find(req.query)
@@ -45,7 +46,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     birth_date: req.body.birth_date,
     sex: req.body.sex,
-    users: req.body.users,
+    users: req.body.users || [],
   }).save((error, patient) => {
     if (error) throw error;
     patient.populate("users", (error) => {
@@ -98,7 +99,12 @@ exports.delete = (req, res) => {
     (error, result) => {
       if (error) throw error;
       if (result.deletedCount <= 0) return res.status(PatientMessages.error.e0.http).send(PatientMessages.error.e0);
-      return res.status(PatientMessages.success.s3.http).send(PatientMessages.success.s3);
+
+      // Delete associated records from dailyRecords collection
+      DailyRecords.deleteMany({ patient: req.params.id }, (error) => {
+        if (error) throw error;
+        return res.status(PatientMessages.success.s3.http).send(PatientMessages.success.s3);
+      });
     }
   );
 };

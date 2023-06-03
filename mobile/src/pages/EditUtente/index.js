@@ -58,7 +58,7 @@ const EditUtente = () => {
         );
         setDate(birthDate);
 
-        const associatedUser = patientData.users[0]._id;
+        const associatedUser = patientData.users[0]?._id;
         setSelectedUser(associatedUser);
         const index = users.findIndex(user => user.value === associatedUser);
         dropdownRef.current.selectIndex(index);
