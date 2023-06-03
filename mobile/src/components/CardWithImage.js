@@ -17,7 +17,7 @@ function CardWithImage({id, title, image}) {
 const styles = StyleSheet.create({
   container: {
     width: 350,
-    height: 180,
+    height: 220,
     borderRadius: 15,
     backgroundColor: '#FFFFFF',
     overflow: 'hidden',
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '70%',
+    height: '75%',
   },
   textContainer: {
     flex: 1,
