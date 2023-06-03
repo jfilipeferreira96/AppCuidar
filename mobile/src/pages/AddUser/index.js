@@ -60,6 +60,10 @@ const AddUser = () => {
 
       if (signup) {
         showToast('success');
+        setName('');
+        setEmail('');
+        setPassword('');
+        setSelectedOption('admin');
         navigation.navigate('ListUsers');
       }
     } catch (error) {
