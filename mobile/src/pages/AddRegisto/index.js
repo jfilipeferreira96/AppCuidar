@@ -84,6 +84,12 @@ const AddRegisto = () => {
 
       if (addUtente) {
         showToast('success');
+        setAlmoco(false);
+        setJantar(false);
+        setBanho(false);
+        setRating(0);
+        setExtra("");
+        setPequenoAlmoco(false);
         navigation.navigate('ListRegistos');
       }
     } catch (error) {
