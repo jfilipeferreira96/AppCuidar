@@ -64,7 +64,9 @@ const AddUser = () => {
         setEmail('');
         setPassword('');
         setSelectedOption('admin');
-        navigation.navigate('ListUsers');
+        setTimeout(() => {
+          navigation.navigate('ListUsers');
+        }, 3000);
       }
     } catch (error) {
       showToast('error');

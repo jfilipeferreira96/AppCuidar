@@ -83,7 +83,9 @@ const AddUtente = () => {
         setName('');
         setSelectedSexo(null);
         setDate(new Date(1980, 0, 1));
-        navigation.navigate('ListUtentes');
+        setTimeout(() => {
+          navigation.navigate('ListUtentes');
+        }, 3000);
       }
     } catch (error) {
       console.error(error);
