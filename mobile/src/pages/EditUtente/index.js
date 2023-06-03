@@ -121,7 +121,7 @@ const EditUtente = () => {
         showToast('success');
         setTimeout(() => {
           navigation.navigate('ListUtentes');
-        }, 3000);
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -130,7 +130,7 @@ const EditUtente = () => {
   };
 
   function showToast(type) {
-    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    scrollViewRef.current.scrollTo({y: 0, animated: true});
     if (type === 'success') {
       Toast.show({
         type: 'success',

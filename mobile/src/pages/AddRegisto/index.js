@@ -85,15 +85,15 @@ const AddRegisto = () => {
 
       if (addUtente) {
         showToast('success');
+        setTimeout(() => {
+          navigation.navigate('ListRegistos');
+        }, 1000);
         setAlmoco(false);
         setJantar(false);
         setBanho(false);
         setRating(0);
         setExtra('');
         setPequenoAlmoco(false);
-        setTimeout(() => {
-          navigation.navigate('ListRegistos');
-        }, 3000);
       }
     } catch (error) {
       console.error(error);
@@ -102,7 +102,7 @@ const AddRegisto = () => {
   };
 
   function showToast(type) {
-    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    scrollViewRef.current.scrollTo({y: 0, animated: true});
     if (type === 'success') {
       Toast.show({
         type: 'success',

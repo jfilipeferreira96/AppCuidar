@@ -89,7 +89,7 @@ const EditUtente = () => {
         showToast('success');
         setTimeout(() => {
           navigation.navigate('ListUsers');
-        }, 3000);
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -116,82 +116,82 @@ const EditUtente = () => {
         text1: 'Por favor, preencha todos os campos.',
       });
     }
-    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    scrollViewRef.current.scrollTo({y: 0, animated: true});
   }
 
   return (
-    <View style={{ flex: 1 }}>
-    <ScrollView ref={scrollViewRef}>
-      <Header />
+    <View style={{flex: 1}}>
+      <ScrollView ref={scrollViewRef}>
+        <Header />
 
-      <Text style={styles.headerTitle}>Editar utilizador</Text>
-      <View style={styles.container}>
-        <Image source={userlogo} style={styles.image} />
-        <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
+        <Text style={styles.headerTitle}>Editar utilizador</Text>
+        <View style={styles.container}>
+          <Image source={userlogo} style={styles.image} />
+          <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
 
-        <Text style={styles.label}>Selecione uma opção:</Text>
-        <RadioForm formHorizontal={true}>
-          {options.map(option => (
-            <RadioButton labelHorizontal={true} key={option.value}>
-              <RadioButtonInput
-                obj={option}
-                isSelected={selectedOption === option.value}
-                onPress={() => setSelectedOption(option.value)}
-                borderWidth={1}
-                buttonInnerColor={'#007aff'}
-                buttonOuterColor={
-                  selectedOption === option.value ? '#007aff' : '#000'
-                }
-                buttonSize={20}
-                buttonOuterSize={30}
-                buttonStyle={{}}
-                buttonWrapStyle={{marginLeft: 10}}
-              />
-              <RadioButtonLabel
-                obj={option}
-                labelHorizontal={true}
-                onPress={() => setSelectedOption(option.value)}
-                labelStyle={{
-                  fontSize: 16,
-                  color: selectedOption === option.value ? '#007aff' : '#000',
-                }}
-                labelWrapStyle={{}}
-              />
-            </RadioButton>
-          ))}
-        </RadioForm>
+          <Text style={styles.label}>Selecione uma opção:</Text>
+          <RadioForm formHorizontal={true}>
+            {options.map(option => (
+              <RadioButton labelHorizontal={true} key={option.value}>
+                <RadioButtonInput
+                  obj={option}
+                  isSelected={selectedOption === option.value}
+                  onPress={() => setSelectedOption(option.value)}
+                  borderWidth={1}
+                  buttonInnerColor={'#007aff'}
+                  buttonOuterColor={
+                    selectedOption === option.value ? '#007aff' : '#000'
+                  }
+                  buttonSize={20}
+                  buttonOuterSize={30}
+                  buttonStyle={{}}
+                  buttonWrapStyle={{marginLeft: 10}}
+                />
+                <RadioButtonLabel
+                  obj={option}
+                  labelHorizontal={true}
+                  onPress={() => setSelectedOption(option.value)}
+                  labelStyle={{
+                    fontSize: 16,
+                    color: selectedOption === option.value ? '#007aff' : '#000',
+                  }}
+                  labelWrapStyle={{}}
+                />
+              </RadioButton>
+            ))}
+          </RadioForm>
 
-        <Text style={styles.label}>Nome</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setName(text)}
-          value={name}
-        />
+          <Text style={styles.label}>Nome</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setName(text)}
+            value={name}
+          />
 
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setEmail(text)}
-          value={email}
-          autoCapitalize="none"
-          keyboardType={'email-address'}
-          textContentType={'emailAddress'}
-        />
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setEmail(text)}
+            value={email}
+            autoCapitalize="none"
+            keyboardType={'email-address'}
+            textContentType={'emailAddress'}
+          />
 
-        <Text style={styles.label}>Password</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setPassword(text)}
-          value={password}
-          textContentType={'password'}
-          secureTextEntry={true}
-        />
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setPassword(text)}
+            value={password}
+            textContentType={'password'}
+            secureTextEntry={true}
+          />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Atualizar Utilizador</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Atualizar Utilizador</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };

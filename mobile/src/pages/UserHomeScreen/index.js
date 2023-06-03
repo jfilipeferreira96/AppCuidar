@@ -20,6 +20,7 @@ const UserHomeScreen = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   async function getUsers() {
     try {
@@ -35,6 +36,7 @@ const UserHomeScreen = () => {
         }));
 
         setData(patientsObject);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -45,6 +47,10 @@ const UserHomeScreen = () => {
   useEffect(() => {
     getUsers();
   }, [isFocused]);
+
+  if (loading) {
+    return <></>;
+  }
 
   if (data.length === 0) {
     return (
