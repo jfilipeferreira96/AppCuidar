@@ -17,7 +17,7 @@ function CardWithImage({id, title, image}) {
 const styles = StyleSheet.create({
   container: {
     width: 350,
-    height: 250,
+    height: 180,
     borderRadius: 15,
     backgroundColor: '#FFFFFF',
     overflow: 'hidden',
