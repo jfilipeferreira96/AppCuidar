@@ -86,7 +86,7 @@ const AddUtente = () => {
         setDate(new Date(1980, 0, 1));
         setTimeout(() => {
           navigation.navigate('ListUtentes');
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       console.error(error);

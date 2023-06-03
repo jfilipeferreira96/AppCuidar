@@ -93,7 +93,7 @@ const AddRegisto = () => {
         setPequenoAlmoco(false);
         setTimeout(() => {
           navigation.navigate('ListRegistos');
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       console.error(error);

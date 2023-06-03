@@ -67,7 +67,7 @@ const AddUser = () => {
         setSelectedOption('admin');
         setTimeout(() => {
           navigation.navigate('ListUsers');
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       showToast('error');

@@ -121,7 +121,7 @@ const EditUtente = () => {
         showToast('success');
         setTimeout(() => {
           navigation.navigate('ListUtentes');
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
