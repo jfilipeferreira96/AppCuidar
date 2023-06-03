@@ -71,22 +71,26 @@ const UserHomeScreen = () => {
     <>
       <SimpleHeader />
 
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={styles.cardContainer}
-            onPress={() => handleUtentePress(item.id)}>
-            <CardWithImage id={item.id} title={item.title} image={item.image} />
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id.toString()}
-      />
-      <TouchableOpacity style={styles.button} onPress={signOut}>
-        <Text style={styles.buttonText}>Terminar sessão</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.container}>
+        <FlatList
+          data={data}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => handleUtentePress(item.id)}>
+              <CardWithImage
+                id={item.id}
+                title={item.title}
+                image={item.image}
+              />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
+        <TouchableOpacity style={styles.button} onPress={signOut}>
+          <Text style={styles.buttonText}>Terminar sessão</Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: '#27B4FD',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
