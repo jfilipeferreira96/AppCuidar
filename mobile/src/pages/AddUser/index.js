@@ -79,7 +79,7 @@ const AddUser = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Sucesso, a sua conta foi criada!',
+        text1: 'Sucesso, utilizador criado!',
       });
     }
     if (type === 'error') {
