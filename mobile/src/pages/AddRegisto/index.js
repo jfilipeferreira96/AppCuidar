@@ -88,7 +88,7 @@ const AddRegisto = () => {
         setJantar(false);
         setBanho(false);
         setRating(0);
-        setExtra("");
+        setExtra('');
         setPequenoAlmoco(false);
         navigation.navigate('ListRegistos');
       }

@@ -59,6 +59,10 @@ const UserHomeScreen = () => {
         <Text style={styles.emptyText}>
           Oops! Não há utentes associados a esta conta.
         </Text>
+
+        <TouchableOpacity style={styles.button} onPress={signOut}>
+          <Text style={styles.buttonText}>Terminar sessão</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -133,6 +137,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 35,
     textAlign: 'center',
+    marginBottom: 250,
   },
 });
 
