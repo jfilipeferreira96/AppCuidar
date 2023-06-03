@@ -18,6 +18,23 @@ exports.get = (req, res) => {
     });
 };
 
+exports.getDailyRecordsByPatient = (req, res) => {
+  const { patientId } = req.params;
+
+  DailyRecords.find({ patient: patientId })
+  .populate("patient") // preenche os detalhes do paciente
+    .exec((error, dailyRecords) => {
+      if (error) throw error;
+
+      let message = DailyRecordsMessages.success.s2;
+
+      if (dailyRecords.length < 0) message = DailyRecordsMessages.success.s5;
+
+      message.body = dailyRecords;
+      return res.status(message.http).send(message);
+    });
+};
+
 exports.create = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
@@ -81,26 +98,8 @@ exports.delete = (req, res) => {
   );
 };
 
-/* exports.getOne = (req, res) => {
-  const errors = validationResult(req).array();
-  if (errors.length > 0) return res.status(406).send(errors);
-
-  DailyRecords.findOne({
-    _id: req.params.id,
-  })
-    .populate("comments.user", "name")
-    .exec((error, dailyRecords) => {
-      if (error) throw error;
-      if (!dailyRecords) return res.status(DailyRecordsMessages.error.e0.http).send(DailyRecordsMessages.error.e0);
-      let message = DailyRecordsMessages.success.s2;
-      message.body = dailyRecords;
-      return res.status(message.http).send(message);
-    });
-};
- */
 exports.getOne = (req, res) => {
   const { id } = req.params;
-  console.log(id);
   DailyRecords.findById(id)
     .populate("patient")
     .exec((error, dailyRecord) => {
@@ -113,7 +112,6 @@ exports.getOne = (req, res) => {
       } else {
         message.body = dailyRecord;
       }
-      console.log(dailyRecord);
       return res.status(message.http).send(message);
     });
 };

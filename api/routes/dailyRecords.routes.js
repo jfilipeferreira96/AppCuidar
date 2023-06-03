@@ -29,4 +29,6 @@ router
   .put(AuthController.checkAuth, [param("id").isMongoId()], DayRecordsController.update)
   .delete(AuthController.checkAuth, [param("id").isMongoId()], DayRecordsController.delete);
 
+  router.route("/patient/:patientId").get(AuthController.checkAuth, [param("patientId").isMongoId()], DayRecordsController.getDailyRecordsByPatient);  
+
 module.exports = router;
