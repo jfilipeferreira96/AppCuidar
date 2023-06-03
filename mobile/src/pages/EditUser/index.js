@@ -27,6 +27,7 @@ const EditUtente = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const user = route.params.id;
+  const scrollViewRef = useRef(null);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -86,7 +87,9 @@ const EditUtente = () => {
 
       if (editUser) {
         showToast('success');
-        navigation.navigate('ListUsers');
+        setTimeout(() => {
+          navigation.navigate('ListUsers');
+        }, 3000);
       }
     } catch (error) {
       console.error(error);
@@ -98,7 +101,7 @@ const EditUtente = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Sucesso, utente atualizado!',
+        text1: 'Sucesso, utilziador atualizado!',
       });
     }
     if (type === 'error') {
@@ -113,10 +116,12 @@ const EditUtente = () => {
         text1: 'Por favor, preencha todos os campos.',
       });
     }
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
   }
 
   return (
-    <ScrollView>
+    <View style={{ flex: 1 }}>
+    <ScrollView ref={scrollViewRef}>
       <Header />
 
       <Text style={styles.headerTitle}>Editar utilizador</Text>
@@ -187,6 +192,7 @@ const EditUtente = () => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </View>
   );
 };
 

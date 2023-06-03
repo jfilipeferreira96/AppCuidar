@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   ScrollView,
@@ -26,6 +26,7 @@ import Header from '../../components/Header';
 
 const AddUtente = () => {
   const navigation = useNavigation();
+  const scrollViewRef = useRef(null);
 
   const [name, setName] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
@@ -83,7 +84,9 @@ const AddUtente = () => {
         setName('');
         setSelectedSexo(null);
         setDate(new Date(1980, 0, 1));
-        navigation.navigate('ListUtentes');
+        setTimeout(() => {
+          navigation.navigate('ListUtentes');
+        }, 3000);
       }
     } catch (error) {
       console.error(error);
@@ -92,6 +95,7 @@ const AddUtente = () => {
   };
 
   function showToast(type) {
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
     if (type === 'success') {
       Toast.show({
         type: 'success',
@@ -121,7 +125,7 @@ const AddUtente = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView ref={scrollViewRef}>
       <Header />
 
       <Text style={styles.headerTitle}>Adicionar utente</Text>

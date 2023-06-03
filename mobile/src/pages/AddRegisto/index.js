@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import {
   View,
   ScrollView,
@@ -29,6 +29,7 @@ import AuthContext from '../../contexts/auth';
 const AddRegisto = () => {
   const navigation = useNavigation();
   const {user} = useContext(AuthContext);
+  const scrollViewRef = useRef(null);
 
   const [extra, setExtra] = useState('');
   const [selectedUtente, setSelectedUtente] = useState('');
@@ -90,7 +91,9 @@ const AddRegisto = () => {
         setRating(0);
         setExtra('');
         setPequenoAlmoco(false);
-        navigation.navigate('ListRegistos');
+        setTimeout(() => {
+          navigation.navigate('ListRegistos');
+        }, 3000);
       }
     } catch (error) {
       console.error(error);
@@ -99,6 +102,7 @@ const AddRegisto = () => {
   };
 
   function showToast(type) {
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
     if (type === 'success') {
       Toast.show({
         type: 'success',
@@ -120,7 +124,7 @@ const AddRegisto = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView ref={scrollViewRef}>
       <Header />
 
       <Text style={styles.headerTitle}>Adicionar registo</Text>
