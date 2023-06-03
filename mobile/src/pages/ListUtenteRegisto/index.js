@@ -45,11 +45,9 @@ const ListUtenteRegisto = () => {
   const isFocused = useIsFocused();
   const route = useRoute();
   const utente = route.params.id;
-  console.log('utente id', utente);
   async function getRecords() {
     try {
-      const response = await api.get('/dailyRecords/' + utente);
-      console.log(response);
+      const response = await api.get('/dailyRecords/patient/' + utente);
       const records = response.data.body;
 
       if (records) {

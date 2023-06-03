@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
+import SimpleHeader from '../../components/SimpleHeader';
 import {
   View,
   Text,
@@ -30,7 +31,7 @@ const UserHomeScreen = () => {
           id: item._id,
           title: item.name,
           image:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnHKV4kAvKK1IMRJU9Xfb1K5F0temcpeIQMplf3x1tGNPtIXCTasPxhnxshmS1pTj-C0s&usqp=CAU',
+            'https://media.consumeraffairs.com/files/news/Seniors_walking_in_the_park_pressmaster_Fotolia.jpg',
         }));
 
         setData(patientsObject);
@@ -67,6 +68,9 @@ const UserHomeScreen = () => {
   };
 
   return (
+    <>
+      <SimpleHeader />
+
     <View style={styles.container}>
       <FlatList
         data={data}
@@ -83,6 +87,7 @@ const UserHomeScreen = () => {
         <Text style={styles.buttonText}>Terminar sessão</Text>
       </TouchableOpacity>
     </View>
+    </>
   );
 };
 
@@ -92,9 +97,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardContainer: {
-    width: '100%',
-    paddingHorizontal: 20,
+    width: '90%',
+    paddingHorizontal: 0,
     marginBottom: 10,
+    marginTop: 10,
   },
   button: {
     width: '90%',

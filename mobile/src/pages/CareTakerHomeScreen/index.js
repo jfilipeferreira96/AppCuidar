@@ -4,6 +4,7 @@ import AuthContext from '../../contexts/auth';
 import CardWithImage from '../../components/CardWithImage';
 import {FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import SimpleHeader from '../../components/SimpleHeader';
 
 const CareTakerHomeScreen = () => {
   const {user, signOut} = useContext(AuthContext);
@@ -26,6 +27,9 @@ const CareTakerHomeScreen = () => {
   ];
 
   return (
+    <>
+    <SimpleHeader />
+
     <View style={styles.container}>
       <FlatList
         data={cards}
@@ -41,6 +45,7 @@ const CareTakerHomeScreen = () => {
         <Text style={styles.buttonText}>Terminar sessão</Text>
       </TouchableOpacity> */}
     </View>
+    </>
   );
 };
 
