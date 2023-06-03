@@ -80,6 +80,9 @@ const AddUtente = () => {
 
       if (addUtente) {
         showToast('success');
+        setName('');
+        setSelectedSexo(null);
+        setDate(new Date(1980, 0, 1));
         navigation.navigate('ListUtentes');
       }
     } catch (error) {
