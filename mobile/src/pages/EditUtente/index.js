@@ -33,6 +33,7 @@ const EditUtente = () => {
   const [name, setName] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
   const dropdownRef = useRef(null);
+  const scrollViewRef = useRef(null);
 
   const [showPicker, setShowPicker] = useState(false);
   const [date, setDate] = useState(new Date(1980, 0, 1));
@@ -118,7 +119,9 @@ const EditUtente = () => {
 
       if (editUtente) {
         showToast('success');
-        navigation.navigate('ListUtentes');
+        setTimeout(() => {
+          navigation.navigate('ListUtentes');
+        }, 3000);
       }
     } catch (error) {
       console.error(error);
@@ -127,6 +130,7 @@ const EditUtente = () => {
   };
 
   function showToast(type) {
+    scrollViewRef.current.scrollTo({ y: 0, animated: true });
     if (type === 'success') {
       Toast.show({
         type: 'success',
@@ -156,7 +160,7 @@ const EditUtente = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView ref={scrollViewRef}>
       <Header />
 
       <Text style={styles.headerTitle}>Editar utente</Text>
