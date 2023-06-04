@@ -52,7 +52,10 @@ const SignUp = () => {
 
       if (signup) {
         showToast('success');
-        navigation.navigate('SignIn');
+
+        setTimeout(() => {
+          navigation.navigate('SignIn');
+        }, 3000);
       }
     } catch (error) {
       showToast('error');

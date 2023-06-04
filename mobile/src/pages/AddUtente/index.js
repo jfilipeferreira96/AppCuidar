@@ -81,12 +81,12 @@ const AddUtente = () => {
 
       if (addUtente) {
         showToast('success');
+        setTimeout(() => {
+          navigation.navigate('ListUtentes');
+        }, 1000);
         setName('');
         setSelectedSexo(null);
         setDate(new Date(1980, 0, 1));
-        setTimeout(() => {
-          navigation.navigate('ListUtentes');
-        }, 2000);
       }
     } catch (error) {
       console.error(error);
@@ -95,7 +95,7 @@ const AddUtente = () => {
   };
 
   function showToast(type) {
-    scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    scrollViewRef.current.scrollTo({y: 0, animated: true});
     if (type === 'success') {
       Toast.show({
         type: 'success',

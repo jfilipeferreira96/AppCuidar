@@ -57,7 +57,7 @@ export const AuthProvider = ({children}) => {
         message = 'Dados do utilizador já existentes!';
         break;
       default:
-        message = 'Mensagem desconhecida';
+        message = 'Dados das credenciais errados!';
         break;
     }
     return message;

@@ -11,39 +11,42 @@ exports.getInfo = (req, res) => {
   return res.status(message.http).send(message);
 };
 
-exports.login = (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
+exports.login = async (req, res) => {
+  try {
+    let email = req.body.email;
+    let password = req.body.password;
 
-  User.findOne(
-    {
+    const user = await User.findOne({
       "auth.email": email,
-    },
-    async (error, user) => {
-      if (error) throw error;
+    });
 
-      const isPasswordValid = await bcrypt.compare(password.toString(), user.auth.password.toString());
-
-      if (!user || !isPasswordValid) {
-        return res.header("Authorization", null).status(AuthMessages.error.e0.http).send(AuthMessages.error.e0);
-      }
-
-      let payload = {
-        pk: user.auth.public_key,
-      };
-
-      let options = {
-        expiresIn: CONFIG.auth.expiration_time,
-        issuer: CONFIG.auth.issuer,
-      };
-
-      let token = JWT.sign(payload, user.auth.private_key, options);
-
-      let message = AuthMessages.success.s0;
-      message.body = user;
-      return res.header("Authorization", token).status(message.http).send(message);
+    if (!user) {
+      return res.header("Authorization", null).status(AuthMessages.error.e0.http).send(AuthMessages.error.e0);
     }
-  );
+
+    const isPasswordValid = await bcrypt.compare(password.toString(), user.auth.password.toString());
+
+    if (!isPasswordValid) {
+      return res.header("Authorization", null).status(AuthMessages.error.e0.http).send(AuthMessages.error.e0);
+    }
+
+    let payload = {
+      pk: user.auth.public_key,
+    };
+
+    let options = {
+      expiresIn: CONFIG.auth.expiration_time,
+      issuer: CONFIG.auth.issuer,
+    };
+
+    let token = JWT.sign(payload, user.auth.private_key, options);
+
+    let message = AuthMessages.success.s0;
+    message.body = user;
+    return res.header("Authorization", token).status(message.http).send(message);
+  } catch (error) {
+    return res.header("Authorization", null).status(AuthMessages.error.e0.http).send(AuthMessages.error.e0);
+  }
 };
 
 module.exports.register = async (req, res, next) => {
