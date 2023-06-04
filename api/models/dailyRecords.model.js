@@ -11,6 +11,7 @@ const dailyRecordsSchema = new Schema({
   bath: Boolean,
   lunch: Boolean,
   coffee: Boolean,
+  breakfast: Boolean,
   dinner: Boolean,
   dayClassification: Number,
   extra: String,

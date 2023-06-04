@@ -101,7 +101,7 @@ const EditUtente = () => {
     if (type === 'success') {
       Toast.show({
         type: 'success',
-        text1: 'Sucesso, utilziador atualizado!',
+        text1: 'Sucesso, utilizador atualizado!',
       });
     }
     if (type === 'error') {
