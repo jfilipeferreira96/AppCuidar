@@ -38,10 +38,6 @@ exports.getDailyRecordsByPatient = (req, res) => {
 exports.create = (req, res) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(406).send(errors);
-
-  console.log(req.body);
-  console.log(req.body.breakfast);
-
   new DailyRecords({
     patient: req.body.patient,
     registryDate: Date.now(),
