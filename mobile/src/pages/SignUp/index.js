@@ -81,7 +81,7 @@ const SignUp = () => {
     <ScrollView>
       <View
         style={{
-          paddingTop: 20,
+          paddingTop: 40,
           paddingLeft: 20,
           activeOpacity: 1,
           backgroundColor: '#f0f5fc',
