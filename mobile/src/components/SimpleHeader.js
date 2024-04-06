@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 const Header = ({title}) => {
   const navigation = useNavigation();
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{flexDirection: 'row', marginTop: 30, alignItems: 'center'}}>
       <Text style={{fontSize: 20, padding: 10, fontWeight: 'bold'}}>{title}</Text>
       <TouchableOpacity
         onPress={() => navigation.openDrawer()}
