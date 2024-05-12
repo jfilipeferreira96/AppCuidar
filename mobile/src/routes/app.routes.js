@@ -11,6 +11,7 @@ import AddUtente from '../pages/AddUtente';
 import AddUser from '../pages/AddUser';
 import AddRegisto from '../pages/AddRegisto';
 import ListUtenteRegisto from '../pages/ListUtenteRegisto';
+import ViewRegisto from '../pages/ViewRegisto';
 
 import {View, StyleSheet, Text, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -108,6 +109,11 @@ const AppRoutes = () => {
       <AppStack.Screen
         name="ListRegistos"
         component={ListRegistos}
+        options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="ViewRegisto"
+        component={ViewRegisto}
         options={{headerShown: false}}
       />
       <AppStack.Screen
