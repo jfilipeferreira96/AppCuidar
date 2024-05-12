@@ -29,14 +29,14 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
         </View>
 
         <View style={styles.itemActions}>
-          {/* <TouchableOpacity onPress={() => onEditPress(item)}>
+          { <TouchableOpacity onPress={() => onEditPress(item)}>
             <Icon
               name="pencil"
               size={20}
               color="#007aff"
               style={styles.itemIcon}
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity> }
           <TouchableOpacity onPress={() => onDeletePress(item)}>
             <Icon
               name="trash-o"
@@ -96,6 +96,7 @@ const ListRegistos = () => {
 
   const handleEditItem = item => {
     console.log('Editar item:', item);
+    navigation.navigate('ViewRegisto', {id: item.id});
   };
 
   return (
