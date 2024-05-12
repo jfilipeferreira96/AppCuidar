@@ -26,6 +26,8 @@ import StyledSwitch from '../../components/StyledSwitch';
 import StarRatingComponent from '../../components/RatingStars';
 import AuthContext from '../../contexts/auth';
 
+import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
+
 const AddRegisto = () => {
   const navigation = useNavigation();
   const {user} = useContext(AuthContext);
@@ -146,34 +148,91 @@ const AddRegisto = () => {
           buttonStyle={styles.input}
         />
 
-        <StyledSwitch
-          label="Banho"
-          isSwitchOn={banho}
-          setIsSwitchOn={setBanho}
-        />
+        <Collapse style={styles.groupMain}>
+            <CollapseHeader style={styles.groupHeader}>
+                <Text >Indicadores Vitais</Text>
+            </CollapseHeader>
+            <CollapseBody style={styles.group}>
+            <Text style={styles.label}>Peso</Text>
+            <TextInput
+              style={styles.input}            
+            />
+            <Text style={styles.label}>Pressão Arterial</Text>
+            <TextInput
+              style={styles.input}            
+            />
+            <Text style={styles.label}>Frequência cardíaca</Text>
+            <TextInput
+              style={styles.input}            
+            />
+            <Text style={styles.label}>Frequência respiratória</Text>
+            <TextInput
+              style={styles.input}            
+            />
+            <Text style={styles.label}>Glucose</Text>
+            <TextInput
+              style={styles.input}            
+            />
+            </CollapseBody>
+        </Collapse>
 
-        <StyledSwitch
-          label="Pequeno almoço"
-          isSwitchOn={pequenoAlmoco}
-          setIsSwitchOn={setPequenoAlmoco}
-        />
+        <Collapse style={styles.groupMain}>
+            <CollapseHeader style={styles.groupHeader}>
+                <Text >Medicação</Text>
+            </CollapseHeader>
+            <CollapseBody style={styles.group}>
+              <Text style={styles.label}>Peso</Text>
+              <TextInput
+                style={styles.input}            
+              />
+              <Text style={styles.label}>Frequência cardíaca</Text>
+              <TextInput
+                style={styles.input}            
+              />
+              <Text style={styles.label}>Frequência respiratória</Text>
+              <TextInput
+                style={styles.input}            
+              />
+              
+            </CollapseBody>
+        </Collapse>
 
-        <StyledSwitch
-          label="Almoço"
-          isSwitchOn={almoco}
-          setIsSwitchOn={setAlmoco}
-        />
+        <Collapse style={styles.groupMain}>
+            <CollapseHeader style={styles.groupHeader}>
+                <Text >Atividades Diárias</Text>
+            </CollapseHeader>
+            <CollapseBody style={styles.group}>
+              <StyledSwitch
+              label="Banho"
+              isSwitchOn={banho}
+              setIsSwitchOn={setBanho}
+              />
 
-        <StyledSwitch
-          label="Jantar"
-          isSwitchOn={jantar}
-          setIsSwitchOn={setJantar}
-        />
+              <StyledSwitch
+              label="Pequeno almoço"
+              isSwitchOn={pequenoAlmoco}
+              setIsSwitchOn={setPequenoAlmoco}
+              />
 
-        <Text style={styles.label}>Pontuação diária</Text>
-        <StarRatingComponent rating={rating} setRating={setRating} />
+              <StyledSwitch
+              label="Almoço"
+              isSwitchOn={almoco}
+              setIsSwitchOn={setAlmoco}
+              />
 
-        <Text style={styles.label}>Extra</Text>
+              <StyledSwitch
+              label="Jantar"
+              isSwitchOn={jantar}
+              setIsSwitchOn={setJantar}
+              />
+            </CollapseBody>
+
+            <Text style={styles.label}>Pontuação diária</Text>
+            <StarRatingComponent rating={rating} setRating={setRating} />
+
+        </Collapse>
+       
+        <Text style={styles.label}>Anotações gerais</Text>
         <TextInput
           style={styles.textArea}
           onChangeText={text => setExtra(text)}
@@ -257,6 +316,30 @@ const styles = StyleSheet.create({
     padding: 9,
     height: 80,
     textAlignVertical: 'top',
+  },
+  group: {
+    borderColor: '#666666',
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderStyle: 'dotted',
+    padding: 20,
+    
+  },
+  groupHeader: {
+    borderColor: '#666666',
+    width: '100%',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderStyle: 'dotted',
+    padding: 20,
+    backgroundColor: '#D3D3D3',
+    
+  },
+  groupMain: {
+    borderColor: '#666666',
+    width: '90%',
+    marginBottom: 20,
   },
   button: {
     width: '90%',
