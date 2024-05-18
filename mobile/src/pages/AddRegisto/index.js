@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
+
 import {
   View,
   ScrollView,
@@ -40,12 +41,46 @@ const AddRegisto = () => {
   const [heartRate, setHeartRate] = useState('');
   const [respiratoryRate, setRespiratoryRate] = useState('');
   const [selectedUtente, setSelectedUtente] = useState('');
+  const [selectedPA, setSelectedPA] = useState('');
+  const [selectedBanho, setSelectedBanho] = useState('');
+  const [selectedAlmoco, setSelectedAlmoco] = useState('');
+  const [selectedJantar, setSelectedJantar] = useState('');
+  const [selectedToilet, setSelectedToilet] = useState('');
+  const [selectedAtvFisica, setSelectedAtvFisica] = useState('');
   const [utentes, setUtentes] = useState([]);
   const [banho, setBanho] = useState(false);
   const [pequenoAlmoco, setPequenoAlmoco] = useState(false);
   const [almoco, setAlmoco] = useState(false);
   const [jantar, setJantar] = useState(false);
   const [rating, setRating] = useState(0);
+
+  const listPA = [
+    {value:'Todo/Autónomodo', label:'Todo - Autónomo  [🍲/💪🏼]'},
+    {value:'Todo/Com Auxilio', label:'Todo - Com Auxilio [🍲/🫱🏼‍🫲🏾]'},
+    {value:'Parte/Autónomo', label:'Parte - Autónomo [🥣/💪🏼]'},
+    {value:'Parte/Com Auxilio', label:'Parte - Com Auxilio [🥣/🫱🏼‍🫲🏾]'},
+    {value:'Recusou', label:'Recusou [👎]'},
+  ]
+
+  const listBanho = [
+    {value:'Sim/Autónomodo', label:'Sim - Autónomo  [👍/💪🏼]'},
+    {value:'Sim/Com Auxilio', label:'Sim - Com Auxilio [👍/🫱🏼‍🫲🏾]'},
+    {value:'Recusou', label:'Recusou [👎]'},
+  ]
+
+  const listCasaDeBanho = [
+    {value:'Regular', label:'Regular [👍]'},
+    {value:'Incontinência (Sono)', label:'Incontinência (Sono) [👎]'},
+    {value:'Incontinência (Acordado)', label:'Incontinência (Acordado) [👎]'},
+  ]
+
+  const listAtvFisica = [
+    {value:'15 a 30 minutos', label:'15 a 30 minutos'},
+    {value:'30 a 45 minutos', label:'30 a 45 minutos'},
+    {value:'45 a 60 minutos', label:'45 a 60 minutos'},
+    {value:'Mais do que 60 minutos', label:'Mais do que 60 minutos'},
+    {value:'Recusou', label:'Recusou [👎]'},
+  ]
 
   useEffect(() => {
     async function getUtentes() {
@@ -81,6 +116,12 @@ const AddRegisto = () => {
       dayClassification: rating,
       bath: banho,
       breakfast: pequenoAlmoco,
+      mealLunch: selectedAlmoco,
+      mealDinner: selectedJantar,
+      mealBreakfast: selectedPA,
+      bathStatus: selectedBanho,
+      toilet: selectedToilet,
+      physicalActivity: selectedAtvFisica,
       lunch: almoco,
       dinner: jantar,
       weight: weight,
@@ -111,6 +152,12 @@ const AddRegisto = () => {
         setWeight('');
         setGlucose('');
         setPequenoAlmoco(false);
+        setSelectedBanho('');
+        setSelectedAlmoco('');
+        setSelectedJantar('');
+        setSelectedPA('');
+        setSelectedAtvFisica('');
+        setSelectedToilet('');
       }
     } catch (error) {
       console.error(error);
@@ -211,18 +258,10 @@ const AddRegisto = () => {
                 <Text >Medicação</Text>
             </CollapseHeader>
             <CollapseBody style={styles.group}>
+
+
               <Text style={styles.label}>Peso</Text>
-              <TextInput
-                style={styles.input}            
-              />
-              <Text style={styles.label}>Frequência cardíaca</Text>
-              <TextInput
-                style={styles.input}            
-              />
-              <Text style={styles.label}>Frequência respiratória</Text>
-              <TextInput
-                style={styles.input}            
-              />
+             
               
             </CollapseBody>
         </Collapse>
@@ -232,29 +271,79 @@ const AddRegisto = () => {
                 <Text >Atividades Diárias</Text>
             </CollapseHeader>
             <CollapseBody style={styles.group}>
-              <StyledSwitch
-              label="Banho"
-              isSwitchOn={banho}
-              setIsSwitchOn={setBanho}
-              />
 
-              <StyledSwitch
-              label="Pequeno almoço"
-              isSwitchOn={pequenoAlmoco}
-              setIsSwitchOn={setPequenoAlmoco}
-              />
+              <Text style={styles.label}>Banho</Text>
+              <SelectDropdown
+              data={listBanho}
+              onSelect={(selectedItem, index) =>
+                setSelectedBanho(selectedItem.value)
+              }
+              defaultButtonText="--"
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              rowTextForSelection={(item, index) => item.label}
+              buttonStyle={styles.input}
+            />
 
-              <StyledSwitch
-              label="Almoço"
-              isSwitchOn={almoco}
-              setIsSwitchOn={setAlmoco}
-              />
+              <Text style={styles.label}>Necessidades Fisiológicas</Text>
+              <SelectDropdown
+              data={listCasaDeBanho}
+              onSelect={(selectedItem, index) =>
+                setSelectedToilet(selectedItem.value)
+              }
+              defaultButtonText="--"
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              rowTextForSelection={(item, index) => item.label}
+              buttonStyle={styles.input}
+            />
 
-              <StyledSwitch
-              label="Jantar"
-              isSwitchOn={jantar}
-              setIsSwitchOn={setJantar}
-              />
+            <Text style={styles.label}>Pequeno almoço</Text>
+              <SelectDropdown
+              data={listPA}
+              onSelect={(selectedItem, index) =>
+                setSelectedPA(selectedItem.value)
+              }
+              defaultButtonText="--"
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              rowTextForSelection={(item, index) => item.label}
+              buttonStyle={styles.input}
+            />
+
+            <Text style={styles.label}>Almoço</Text>
+              <SelectDropdown
+              data={listPA}
+              onSelect={(selectedItem, index) =>
+                setSelectedAlmoco(selectedItem.value)
+              }
+              defaultButtonText="--"
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              rowTextForSelection={(item, index) => item.label}
+              buttonStyle={styles.input}
+            />
+
+            <Text style={styles.label}>Jantar</Text>
+              <SelectDropdown
+              data={listPA}
+              onSelect={(selectedItem, index) =>
+                setSelectedJantar(selectedItem.value)
+              }
+              defaultButtonText="--"
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              rowTextForSelection={(item, index) => item.label}
+              buttonStyle={styles.input}
+            />
+
+            <Text style={styles.label}>Atividade Física</Text>
+              <SelectDropdown
+              data={listAtvFisica}
+              onSelect={(selectedItem, index) =>
+                setSelectedAtvFisica(selectedItem.value)
+              }
+              defaultButtonText="--"
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              rowTextForSelection={(item, index) => item.label}
+              buttonStyle={styles.input}
+            />
+
             </CollapseBody>
 
             <Text style={styles.label}>Pontuação diária</Text>
