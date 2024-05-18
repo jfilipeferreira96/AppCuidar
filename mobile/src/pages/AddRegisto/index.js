@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
-
 import {
   View,
   ScrollView,
@@ -11,23 +10,15 @@ import {
   Button,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button';
 import Toast from 'react-native-toast-message';
-
 import {useNavigation} from '@react-navigation/native';
 import api from '../../services/api';
-
 import clipboard from '../../assets/clipboard.png';
 import Header from '../../components/Header';
 import StyledSwitch from '../../components/StyledSwitch';
 import StarRatingComponent from '../../components/RatingStars';
 import AuthContext from '../../contexts/auth';
-
-import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
+import {Collapse, CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
 
 const AddRegisto = () => {
   const navigation = useNavigation();
@@ -54,33 +45,35 @@ const AddRegisto = () => {
   const [jantar, setJantar] = useState(false);
   const [rating, setRating] = useState(0);
 
+  const [names, setNames] = useState([{firstName: '', lastName: ''}]);
+
   const listPA = [
-    {value:'Todo/Autónomodo', label:'Todo - Autónomo  [🍲/💪🏼]'},
-    {value:'Todo/Com Auxilio', label:'Todo - Com Auxilio [🍲/🫱🏼‍🫲🏾]'},
-    {value:'Parte/Autónomo', label:'Parte - Autónomo [🥣/💪🏼]'},
-    {value:'Parte/Com Auxilio', label:'Parte - Com Auxilio [🥣/🫱🏼‍🫲🏾]'},
-    {value:'Recusou', label:'Recusou [👎]'},
-  ]
+    {value: 'Todo/Autónomodo', label: 'Todo - Autónomo  [🍲/💪🏼]'},
+    {value: 'Todo/Com Auxilio', label: 'Todo - Com Auxilio [🍲/🫱🏼‍🫲🏾]'},
+    {value: 'Parte/Autónomo', label: 'Parte - Autónomo [🥣/💪🏼]'},
+    {value: 'Parte/Com Auxilio', label: 'Parte - Com Auxilio [🥣/🫱🏼‍🫲🏾]'},
+    {value: 'Recusou', label: 'Recusou [👎]'},
+  ];
 
   const listBanho = [
-    {value:'Sim/Autónomodo', label:'Sim - Autónomo  [👍/💪🏼]'},
-    {value:'Sim/Com Auxilio', label:'Sim - Com Auxilio [👍/🫱🏼‍🫲🏾]'},
-    {value:'Recusou', label:'Recusou [👎]'},
-  ]
+    {value: 'Sim/Autónomodo', label: 'Sim - Autónomo  [👍/💪🏼]'},
+    {value: 'Sim/Com Auxilio', label: 'Sim - Com Auxilio [👍/🫱🏼‍🫲🏾]'},
+    {value: 'Recusou', label: 'Recusou [👎]'},
+  ];
 
   const listCasaDeBanho = [
-    {value:'Regular', label:'Regular [👍]'},
-    {value:'Incontinência (Sono)', label:'Incontinência (Sono) [👎]'},
-    {value:'Incontinência (Acordado)', label:'Incontinência (Acordado) [👎]'},
-  ]
+    {value: 'Regular', label: 'Regular [👍]'},
+    {value: 'Incontinência (Sono)', label: 'Incontinência (Sono) [👎]'},
+    {value: 'Incontinência (Acordado)', label: 'Incontinência (Acordado) [👎]'},
+  ];
 
   const listAtvFisica = [
-    {value:'15 a 30 minutos', label:'15 a 30 minutos'},
-    {value:'30 a 45 minutos', label:'30 a 45 minutos'},
-    {value:'45 a 60 minutos', label:'45 a 60 minutos'},
-    {value:'Mais do que 60 minutos', label:'Mais do que 60 minutos'},
-    {value:'Recusou', label:'Recusou [👎]'},
-  ]
+    {value: '15 a 30 minutos', label: '15 a 30 minutos'},
+    {value: '30 a 45 minutos', label: '30 a 45 minutos'},
+    {value: '45 a 60 minutos', label: '45 a 60 minutos'},
+    {value: 'Mais do que 60 minutos', label: 'Mais do que 60 minutos'},
+    {value: 'Recusou', label: 'Recusou [👎]'},
+  ];
 
   useEffect(() => {
     async function getUtentes() {
@@ -131,6 +124,7 @@ const AddRegisto = () => {
       heartRate: heartRate,
       extra: extra,
       caretaker: user.name,
+      names: names,
     };
 
     try {
@@ -158,6 +152,7 @@ const AddRegisto = () => {
         setSelectedPA('');
         setSelectedAtvFisica('');
         setSelectedToilet('');
+        setNames([{firstName: '', lastName: ''}]);
       }
     } catch (error) {
       console.error(error);
@@ -165,7 +160,7 @@ const AddRegisto = () => {
     }
   };
 
-  function showToast(type) {
+  const showToast = (type) => {
     scrollViewRef.current.scrollTo({y: 0, animated: true});
     if (type === 'success') {
       Toast.show({
@@ -185,7 +180,22 @@ const AddRegisto = () => {
         text1: 'Por favor, preencha todos os campos.',
       });
     }
-  }
+  };
+
+  const handleNameChange = (index, field, value) => {
+    const newNames = [...names];
+    newNames[index][field] = value;
+    setNames(newNames);
+  };
+
+  const addNameField = () => {
+    setNames([...names, {firstName: '', lastName: ''}]);
+  };
+
+  const removeNameField = (index) => {
+    const newNames = names.filter((_, idx) => idx !== index);
+    setNames(newNames);
+  };
 
   return (
     <ScrollView ref={scrollViewRef}>
@@ -211,146 +221,178 @@ const AddRegisto = () => {
         />
 
         <Collapse style={styles.groupMain}>
-            <CollapseHeader style={styles.groupHeader}>
-                <Text >Indicadores Vitais</Text>
-            </CollapseHeader>
-            <CollapseBody style={styles.group}>
-            
+          <CollapseHeader style={styles.groupHeader}>
+            <Text>Indicadores Vitais</Text>
+          </CollapseHeader>
+          <CollapseBody style={styles.group}>
             <Text style={styles.label}>Peso</Text>
             <TextInput
-              style={styles.input}            
+              style={styles.input}
               onChangeText={text => setWeight(text)}
               value={weight}
             />
 
             <Text style={styles.label}>Pressão Arterial</Text>
             <TextInput
-              style={styles.input}    
+              style={styles.input}
               onChangeText={text => setBloodPreassure(text)}
               value={bloodPreassure}
             />
 
             <Text style={styles.label}>Frequência cardíaca</Text>
             <TextInput
-              style={styles.input}  
+              style={styles.input}
               onChangeText={text => setHeartRate(text)}
-              value={heartRate}          
+              value={heartRate}
             />
 
             <Text style={styles.label}>Frequência respiratória</Text>
             <TextInput
-              style={styles.input}    
+              style={styles.input}
               onChangeText={text => setRespiratoryRate(text)}
-              value={respiratoryRate}          
+              value={respiratoryRate}
             />
 
             <Text style={styles.label}>Glucose</Text>
             <TextInput
-              style={styles.input}  
+              style={styles.input}
               onChangeText={text => setGlucose(text)}
-              value={glucose}            
+              value={glucose}
             />
-            </CollapseBody>
+          </CollapseBody>
         </Collapse>
 
         <Collapse style={styles.groupMain}>
-            <CollapseHeader style={styles.groupHeader}>
-                <Text >Medicação</Text>
-            </CollapseHeader>
-            <CollapseBody style={styles.group}>
-
-
-              <Text style={styles.label}>Peso</Text>
-             
-              
-            </CollapseBody>
+          <CollapseHeader style={styles.groupHeader}>
+            <Text>Medicação</Text>
+          </CollapseHeader>
+          <CollapseBody style={styles.group}>
+            {names.map((name, index) => (
+              <View key={index} style={styles.nameFieldContainer}>
+                <TextInput
+                  style={styles.inputMed}
+                  placeholder="Medicamento"
+                  value={name.firstName}
+                  onChangeText={(text) =>
+                    handleNameChange(index, 'firstName', text)
+                  }
+                />
+                <TextInput
+                  style={styles.inputMin}
+                  placeholder="Horário"
+                  value={name.lastName}
+                  onChangeText={(text) =>
+                    handleNameChange(index, 'lastName', text)
+                  }
+                />
+                {index !== 0 && (
+                  <TouchableOpacity
+                    style={styles.removeButton}
+                    onPress={() => removeNameField(index)}
+                  >
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            ))}
+            <Button title="Adicionar Medicamento" onPress={addNameField} />
+          </CollapseBody>
         </Collapse>
 
         <Collapse style={styles.groupMain}>
-            <CollapseHeader style={styles.groupHeader}>
-                <Text >Atividades Diárias</Text>
-            </CollapseHeader>
-            <CollapseBody style={styles.group}>
-
-              <Text style={styles.label}>Banho</Text>
-              <SelectDropdown
+          <CollapseHeader style={styles.groupHeader}>
+            <Text>Atividades Diárias</Text>
+          </CollapseHeader>
+          <CollapseBody style={styles.group}>
+            <Text style={styles.label}>Banho</Text>
+            <SelectDropdown
               data={listBanho}
               onSelect={(selectedItem, index) =>
                 setSelectedBanho(selectedItem.value)
               }
               defaultButtonText="--"
-              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              buttonTextAfterSelection={(selectedItem, index) =>
+                selectedItem.label
+              }
               rowTextForSelection={(item, index) => item.label}
               buttonStyle={styles.input}
             />
 
-              <Text style={styles.label}>Necessidades Fisiológicas</Text>
-              <SelectDropdown
+            <Text style={styles.label}>Necessidades Fisiológicas</Text>
+            <SelectDropdown
               data={listCasaDeBanho}
               onSelect={(selectedItem, index) =>
                 setSelectedToilet(selectedItem.value)
               }
               defaultButtonText="--"
-              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              buttonTextAfterSelection={(selectedItem, index) =>
+                selectedItem.label
+              }
               rowTextForSelection={(item, index) => item.label}
               buttonStyle={styles.input}
             />
 
             <Text style={styles.label}>Pequeno almoço</Text>
-              <SelectDropdown
+            <SelectDropdown
               data={listPA}
               onSelect={(selectedItem, index) =>
                 setSelectedPA(selectedItem.value)
               }
               defaultButtonText="--"
-              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              buttonTextAfterSelection={(selectedItem, index) =>
+                selectedItem.label
+              }
               rowTextForSelection={(item, index) => item.label}
               buttonStyle={styles.input}
             />
 
             <Text style={styles.label}>Almoço</Text>
-              <SelectDropdown
+            <SelectDropdown
               data={listPA}
               onSelect={(selectedItem, index) =>
                 setSelectedAlmoco(selectedItem.value)
               }
               defaultButtonText="--"
-              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              buttonTextAfterSelection={(selectedItem, index) =>
+                selectedItem.label
+              }
               rowTextForSelection={(item, index) => item.label}
               buttonStyle={styles.input}
             />
 
             <Text style={styles.label}>Jantar</Text>
-              <SelectDropdown
+            <SelectDropdown
               data={listPA}
               onSelect={(selectedItem, index) =>
                 setSelectedJantar(selectedItem.value)
               }
               defaultButtonText="--"
-              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              buttonTextAfterSelection={(selectedItem, index) =>
+                selectedItem.label
+              }
               rowTextForSelection={(item, index) => item.label}
               buttonStyle={styles.input}
             />
 
             <Text style={styles.label}>Atividade Física</Text>
-              <SelectDropdown
+            <SelectDropdown
               data={listAtvFisica}
               onSelect={(selectedItem, index) =>
                 setSelectedAtvFisica(selectedItem.value)
               }
               defaultButtonText="--"
-              buttonTextAfterSelection={(selectedItem, index) => selectedItem.label}
+              buttonTextAfterSelection={(selectedItem, index) =>
+                selectedItem.label
+              }
               rowTextForSelection={(item, index) => item.label}
               buttonStyle={styles.input}
             />
+          </CollapseBody>
 
-            </CollapseBody>
-
-            <Text style={styles.label}>Pontuação diária</Text>
-            <StarRatingComponent rating={rating} setRating={setRating} />
-
+          <Text style={styles.label}>Pontuação diária</Text>
+          <StarRatingComponent rating={rating} setRating={setRating} />
         </Collapse>
-       
+
         <Text style={styles.label}>Anotações gerais</Text>
         <TextInput
           style={styles.textArea}
@@ -426,6 +468,25 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 9,
   },
+  inputMin: {
+    width: '30%',
+    height: 50,
+    borderColor: '#666666',
+    borderWidth: 1,
+    borderRadius: 6,
+    marginBottom: 16,
+    marginLeft: 4,
+    padding: 9,
+  },
+  inputMed: {
+    width: '60%',
+    height: 50,
+    borderColor: '#666666',
+    borderWidth: 1,
+    borderRadius: 6,
+    marginBottom: 16,
+    padding: 9,
+  },
   textArea: {
     width: '90%',
     borderColor: '#666666',
@@ -443,7 +504,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderStyle: 'dotted',
     padding: 20,
-    
   },
   groupHeader: {
     borderColor: '#666666',
@@ -453,7 +513,6 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
     padding: 20,
     backgroundColor: '#D3D3D3',
-    
   },
   groupMain: {
     borderColor: '#666666',
@@ -472,6 +531,16 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     color: '#FFF',
+  },
+  nameFieldContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  removeButton: {
+    backgroundColor: '#ff6347',
+    padding: 5,
+    borderRadius: 6,
+    marginLeft: 10,
   },
 });
 
