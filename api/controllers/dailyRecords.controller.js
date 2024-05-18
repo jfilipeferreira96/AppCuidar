@@ -46,6 +46,11 @@ exports.create = (req, res) => {
     breakfast: req.body.breakfast,
     lunch: req.body.lunch,
     dinner: req.body.dinner,
+    bloodPreassure: req.body.bloodPreassure,
+    heartRate: req.body.heartRate,
+    respiratoryRate: req.body.respiratoryRate,
+    weight: req.body.weight,
+    glucose: req.body.glucose,
     extra: req.body.extra,
     caretaker: req.body.caretaker,
   }).save((error, dailyRecords) => {
