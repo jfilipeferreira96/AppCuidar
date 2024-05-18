@@ -34,6 +34,11 @@ const AddRegisto = () => {
   const scrollViewRef = useRef(null);
 
   const [extra, setExtra] = useState('');
+  const [bloodPreassure, setBloodPreassure] = useState('');
+  const [weight, setWeight] = useState('');
+  const [glucose, setGlucose] = useState('');
+  const [heartRate, setHeartRate] = useState('');
+  const [respiratoryRate, setRespiratoryRate] = useState('');
   const [selectedUtente, setSelectedUtente] = useState('');
   const [utentes, setUtentes] = useState([]);
   const [banho, setBanho] = useState(false);
@@ -78,6 +83,11 @@ const AddRegisto = () => {
       breakfast: pequenoAlmoco,
       lunch: almoco,
       dinner: jantar,
+      weight: weight,
+      glucose: glucose,
+      bloodPreassure: bloodPreassure,
+      respiratoryRate: respiratoryRate,
+      heartRate: heartRate,
       extra: extra,
       caretaker: user.name,
     };
@@ -95,6 +105,11 @@ const AddRegisto = () => {
         setBanho(false);
         setRating(0);
         setExtra('');
+        setBloodPreassure('');
+        setRespiratoryRate('');
+        setHeartRate('');
+        setWeight('');
+        setGlucose('');
         setPequenoAlmoco(false);
       }
     } catch (error) {
@@ -153,25 +168,40 @@ const AddRegisto = () => {
                 <Text >Indicadores Vitais</Text>
             </CollapseHeader>
             <CollapseBody style={styles.group}>
+            
             <Text style={styles.label}>Peso</Text>
             <TextInput
               style={styles.input}            
+              onChangeText={text => setWeight(text)}
+              value={weight}
             />
+
             <Text style={styles.label}>Pressão Arterial</Text>
             <TextInput
-              style={styles.input}            
+              style={styles.input}    
+              onChangeText={text => setBloodPreassure(text)}
+              value={bloodPreassure}
             />
+
             <Text style={styles.label}>Frequência cardíaca</Text>
             <TextInput
-              style={styles.input}            
+              style={styles.input}  
+              onChangeText={text => setHeartRate(text)}
+              value={heartRate}          
             />
+
             <Text style={styles.label}>Frequência respiratória</Text>
             <TextInput
-              style={styles.input}            
+              style={styles.input}    
+              onChangeText={text => setRespiratoryRate(text)}
+              value={respiratoryRate}          
             />
+
             <Text style={styles.label}>Glucose</Text>
             <TextInput
-              style={styles.input}            
+              style={styles.input}  
+              onChangeText={text => setGlucose(text)}
+              value={glucose}            
             />
             </CollapseBody>
         </Collapse>
