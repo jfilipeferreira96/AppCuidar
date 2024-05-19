@@ -14,7 +14,11 @@ const App = () => {
   console.log('Utente param:', patient);
   console.log('View param:', viewToGo);
 
-  const [widthArr] = useState([150, 80, 80, 80, 80, 80, 80]);
+  const [tableHeadObs] = useState(['Observação', 'Data']);
+  const [widthArrObs] = useState([240, 60]);
+
+
+  const [widthArr] = useState([150, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80]);
 
   const [patientData, setPatientData] = useState([])
   const [recordsData, setRecordData] = useState([[]])
@@ -22,6 +26,7 @@ const App = () => {
   const [tableHead, setTableHead] = useState([])
   const [dataAtividades, setDataAtv] = useState([[]])
   const [dataMedicamentos, setDataMedicamentos] = useState([[]])
+  const [dataExtra, setDataExtra] = useState([[]])
   
 
   const extractField = (field, data, fieldName) => {
@@ -97,7 +102,7 @@ const App = () => {
       const dataFinal = [weightArray, respiratoryRateArray, heartRateArray, bloodPreassure, glucose];
       setDataVital(dataFinal);
 
-      const dateArray = extractFieldDate('registryDate', recordsData, "Item/Data");
+      const dateArray = extractFieldDate('registryDate', recordsData, "Dias");
       setTableHead(dateArray);
 
       const mealBreakfast = extractField('mealBreakfast', recordsData, 'Pequeno Almoço');
@@ -107,11 +112,21 @@ const App = () => {
       const toilet = extractField('toilet', recordsData, 'Necessidades Fisiologicas');
       const bathStatus = extractField('bathStatus', recordsData, 'Banho');
       const atvFinal = [mealBreakfast, mealDinner, mealLunch, physicalActivity, toilet, bathStatus];
+      console.log(atvFinal);
       setDataAtv(atvFinal);
 
       const transformedData = transformData(recordsData);
       console.log(transformedData);
       setDataMedicamentos(transformedData);
+
+      const extra = recordsData
+      .filter(item => item.extra !== "")
+      .map(item => [
+        item.extra ? item.extra : "-",
+        formatDate(item.registryDate)
+      ]);
+      console.log(extra);
+      setDataExtra(extra);
 
     } catch (error) {
       console.error(error);
@@ -199,6 +214,30 @@ const App = () => {
                         key={index}
                         data={dataRow}
                         widthArr={widthArr}
+                        style={[index % 2 ? styles.row : styles.row2]}
+                        textStyle={styles.text}
+                      />
+                    ))
+                  }
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView>
+
+          <Text style={styles.labelTitle}>Observações</Text>
+          <ScrollView horizontal={true}>
+            <View>
+              <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                <Row data={tableHeadObs} widthArr={widthArrObs} style={styles.head} textStyle={styles.text} />
+              </Table>
+              <ScrollView style={styles.dataWrapper}>
+                <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                  {
+                    dataExtra.map((dataRow, index) => (
+                      <Row
+                        key={index}
+                        data={dataRow}
+                        widthArr={widthArrObs}
                         style={[index % 2 ? styles.row : styles.row2]}
                         textStyle={styles.text}
                       />
