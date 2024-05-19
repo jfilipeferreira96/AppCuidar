@@ -7,29 +7,31 @@ import api from '../../services/api';
 import {useIsFocused} from '@react-navigation/native';
 import AuthContext from '../../contexts/auth';
 
-const ListItem = ({item, onDeletePress, onEditPress}) => {
+const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
   return (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{item.title}</Text>
-      <View style={styles.itemActions}>
-        <TouchableOpacity onPress={() => onEditPress(item)}>
-          <Icon
-            name="pencil"
-            size={20}
-            color="#007aff"
-            style={styles.itemIcon}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onDeletePress(item)}>
-          <Icon
-            name="trash-o"
-            size={20}
-            color="#FF3B30"
-            style={styles.itemIcon}
-          />
-        </TouchableOpacity>
+    <TouchableOpacity onPress={() => onViewPress(item)}>
+      <View style={styles.itemContainer}>
+        <Text style={styles.itemText}>{item.title}</Text>
+        <View style={styles.itemActions}>
+          <TouchableOpacity onPress={() => onEditPress(item)}>
+            <Icon
+              name="pencil"
+              size={20}
+              color="#007aff"
+              style={styles.itemIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => onDeletePress(item)}>
+            <Icon
+              name="trash-o"
+              size={20}
+              color="#FF3B30"
+              style={styles.itemIcon}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -72,11 +74,15 @@ const ListUtentes = () => {
     navigation.navigate('EditUtente', {id: item.id});
   };
 
+  const handleViewItem = item => {
+    console.log('View item:', item);
+    navigation.navigate('ViewRegisto', {id: item.id, viewToGo: "ListUtentes"});
+  };
+
   return (
     <>
-      <Header />
+      <Header title="Lista de Utentes"/>
 
-      <Text style={styles.headerTitle}>Lista de Utentes</Text>
       {user.type === 'admin' && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -103,6 +109,7 @@ const ListUtentes = () => {
               item={item}
               onDeletePress={handleDeleteItem}
               onEditPress={handleEditItem}
+              onViewPress={handleViewItem}
             />
           )}
           keyExtractor={item => item.id.toString()}

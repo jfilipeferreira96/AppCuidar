@@ -215,9 +215,7 @@ const AddRegisto = () => {
 
   return (
     <ScrollView ref={scrollViewRef}>
-      <Header />
-
-      <Text style={styles.headerTitle}>Adicionar registo</Text>
+      <Header title="Adicionar registo" view="ListRegistos"/>
 
       <View style={styles.container}>
         <Image source={clipboard} style={styles.image} />

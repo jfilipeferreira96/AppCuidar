@@ -18,13 +18,21 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
     setModalVisible(false);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0'); // Ensure 2 digits
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = String(date.getUTCFullYear() + 1).padStart(2, '0');
+    return `${day}/${month}/${year}`;
+  };
+
   
   return (
     <TouchableOpacity onPress={() => onViewPress(item)}>
       <View style={styles.itemContainer}>
         <View style={styles.titles}>
           <Text style={[styles.itemText, styles.itemDate]}>
-            {item.date.slice(0, -14)}
+            {formatDate(item.date)}
           </Text>
           <Text style={styles.itemText}>{item.title}</Text>
         </View>
@@ -211,7 +219,7 @@ const styles = StyleSheet.create({
   },
   itemDate: {
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   itemActions: {
     flexDirection: 'row',

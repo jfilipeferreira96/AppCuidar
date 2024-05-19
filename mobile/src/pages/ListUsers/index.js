@@ -98,9 +98,8 @@ const ListUsers = () => {
 
   return (
     <>
-      <Header />
+      <Header title="Lista de Utilizadores"/>
 
-      <Text style={styles.headerTitle}>Lista de Utilizadores</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}

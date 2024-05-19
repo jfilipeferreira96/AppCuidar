@@ -10,7 +10,9 @@ import api from '../../services/api';
 const App = () => {
   const route = useRoute();
   const patient = route.params.id;
+  const viewToGo = route.params.viewToGo;
   console.log('Utente param:', patient);
+  console.log('View param:', viewToGo);
 
   const [widthArr] = useState([150, 80, 80, 80, 80, 80, 80]);
 
@@ -127,7 +129,7 @@ const App = () => {
 
   return (
     <>
-      <Header title="Relatório Diário do Utente" view="ListRegistos"/>
+      <Header title="Relatório Diário do Utente" view={viewToGo ? viewToGo : "ListRegistos" }/>
 
       <ScrollView>
         <View style={styles.container}>
