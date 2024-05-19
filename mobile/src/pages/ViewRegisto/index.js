@@ -20,6 +20,8 @@ const App = () => {
   const [dataVital, setDataVital] = useState([[]])
   const [tableHead, setTableHead] = useState([])
   const [dataAtividades, setDataAtv] = useState([[]])
+  const [dataMedicamentos, setDataMedicamentos] = useState([[]])
+  
 
   const extractField = (field, data, fieldName) => {
     return [fieldName, ...data.map(item => item[field] || '')];
@@ -48,6 +50,37 @@ const App = () => {
     }
   };
 
+  const transformData = (data) => {
+    const medicineMap = {};
+  
+    data.forEach(entry => {
+      entry.medicines.forEach(medicine => {
+        const { medicamento, horario } = medicine;
+  
+        if (!medicineMap[medicamento]) {
+          medicineMap[medicamento] = [[], []];
+        }
+  
+        if (data.indexOf(entry) === 0) {
+          medicineMap[medicamento][0].push(horario);
+        } else {
+          medicineMap[medicamento][1].push(horario);
+        }
+      });
+    });
+  
+    const result = Object.entries(medicineMap).map(([medicamento, horarios]) => {
+      const firstDay = horarios[0].join(' - ');
+      const secondDay = horarios[1].join(' - ');
+  
+      return [medicamento, firstDay, secondDay];
+    });
+  
+    return result;
+  }
+  
+  
+
   const getDailyRecordsByPatient = async (patientId) => {
     try {
       const responseRecords = await api.get('/dailyRecords/patient/' + patientId);
@@ -74,6 +107,10 @@ const App = () => {
       const bathStatus = extractField('bathStatus', recordsData, 'Banho');
       const atvFinal = [mealBreakfast, mealDinner, mealLunch, physicalActivity, toilet, bathStatus];
       setDataAtv(atvFinal);
+
+      const transformedData = transformData(recordsData);
+      console.log(transformedData);
+      setDataMedicamentos(transformedData);
 
     } catch (error) {
       console.error(error);
@@ -134,6 +171,30 @@ const App = () => {
                 <Table borderStyle={{ borderColor: '#C1C0B9' }}>
                   {
                     dataAtividades.map((dataRow, index) => (
+                      <Row
+                        key={index}
+                        data={dataRow}
+                        widthArr={widthArr}
+                        style={[index % 2 ? styles.row : styles.row2]}
+                        textStyle={styles.text}
+                      />
+                    ))
+                  }
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView>
+
+          <Text style={styles.labelTitle}>Medicamentos</Text>
+          <ScrollView horizontal={true}>
+            <View>
+              <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                <Row data={tableHead} widthArr={widthArr} style={styles.head} textStyle={styles.text} />
+              </Table>
+              <ScrollView style={styles.dataWrapper}>
+                <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                  {
+                    dataMedicamentos.map((dataRow, index) => (
                       <Row
                         key={index}
                         data={dataRow}
