@@ -264,7 +264,7 @@ const AddRegisto = () => {
 
         <Collapse style={styles.groupMain}>
           <CollapseHeader style={styles.groupHeader}>
-            <Text>Indicadores Vitais</Text>
+            <Text>↕ Indicadores Vitais</Text>
           </CollapseHeader>
           <CollapseBody style={styles.group}>
             <Text style={styles.label}>Peso</Text>
@@ -306,7 +306,7 @@ const AddRegisto = () => {
 
         <Collapse style={styles.groupMain}>
           <CollapseHeader style={styles.groupHeader}>
-            <Text>Medicação</Text>
+            <Text>↕ Medicação</Text>
           </CollapseHeader>
           <CollapseBody style={styles.group}>
             {names.map((name, index) => (
@@ -345,7 +345,7 @@ const AddRegisto = () => {
 
         <Collapse style={styles.groupMain}>
           <CollapseHeader style={styles.groupHeader}>
-            <Text>Atividades Diárias</Text>
+            <Text>↕ Atividades Diárias</Text>
           </CollapseHeader>
           <CollapseBody style={styles.group}>
             <Text style={styles.label}>Banho</Text>
