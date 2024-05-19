@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingLeft: 10,
     paddingRight: 10,
-    marginTop: 20,
+    marginTop: 12,
   },
   dateGroup: {
     width: '90%',

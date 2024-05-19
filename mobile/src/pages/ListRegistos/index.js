@@ -28,16 +28,14 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
 
   
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => onViewPress(item)}>
       <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => onViewPress(item)}>
         <View style={styles.titles}>
           <Text style={[styles.itemText, styles.itemDate]}>
             {formatDate(item.date)}
           </Text>
           <Text style={styles.itemText}>{item.title}</Text>
         </View>
-        </TouchableOpacity>
 
         <View style={styles.itemActions}>
           
