@@ -161,9 +161,8 @@ const EditUtente = () => {
 
   return (
     <ScrollView ref={scrollViewRef}>
-      <Header />
+      <Header title="Editar Utente" view="ListUtentes"/>
 
-      <Text style={styles.headerTitle}>Editar utente</Text>
       <View style={styles.container}>
         <Image source={oldman} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />

@@ -126,9 +126,8 @@ const AddUtente = () => {
 
   return (
     <ScrollView ref={scrollViewRef}>
-      <Header />
+      <Header title="Adicionar utente" view="ListUtentes"/>
 
-      <Text style={styles.headerTitle}>Adicionar utente</Text>
       <View style={styles.container}>
         <Image source={oldman} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
