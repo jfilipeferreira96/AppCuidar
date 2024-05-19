@@ -20,11 +20,15 @@ import StarRatingComponent from '../../components/RatingStars';
 import AuthContext from '../../contexts/auth';
 import {Collapse, CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
 import MaskInput from 'react-native-mask-input';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const AddRegisto = () => {
   const navigation = useNavigation();
   const {user} = useContext(AuthContext);
   const scrollViewRef = useRef(null);
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   const [extra, setExtra] = useState('');
   const [bloodPreassure, setBloodPreassure] = useState('');
@@ -76,6 +80,15 @@ const AddRegisto = () => {
     {value: 'Recusou', label: 'Recusou [👎]'},
   ];
 
+  const showDateTimePicker = () => {
+    setShowPicker(true);
+  };
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowPicker(false);
+    setDate(currentDate);
+  };
+
   useEffect(() => {
     async function getUtentes() {
       try {
@@ -117,6 +130,7 @@ const AddRegisto = () => {
       toilet: selectedToilet,
       physicalActivity: selectedAtvFisica,
       lunch: almoco,
+      registryDate: date,
       dinner: jantar,
       weight: weight,
       glucose: glucose,
@@ -153,6 +167,7 @@ const AddRegisto = () => {
         setSelectedPA('');
         setSelectedAtvFisica('');
         setSelectedToilet('');
+        setDate(new Date());
         setNames([{medicamento: '', horario: ''}]);
       }
     } catch (error) {
@@ -207,7 +222,6 @@ const AddRegisto = () => {
       <View style={styles.container}>
         <Image source={clipboard} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
-
         <Text style={styles.label}>Selecione o utente</Text>
 
         <SelectDropdown
@@ -220,6 +234,33 @@ const AddRegisto = () => {
           rowTextForSelection={(item, index) => item.label}
           buttonStyle={styles.input}
         />
+
+        <Text style={styles.label}>Data do Registo</Text>
+        <TouchableOpacity style={styles.dateGroup}>
+          <TouchableOpacity
+            style={styles.nameFieldContainer}
+            onPress={showDateTimePicker}>
+            
+            <TextInput
+            style={styles.disabledTextInput}
+            value={date.toLocaleDateString()}
+            editable={false}
+            />
+            {showPicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={'date'}
+              is24Hour={true}
+              maximumDate={new Date()}
+              display="default"
+              onChange={handleDateChange}
+              themeVariant="light"
+            />
+          )}
+          <Text style={styles.labelDate}>🗓</Text>
+          </TouchableOpacity>
+        </TouchableOpacity>
 
         <Collapse style={styles.groupMain}>
           <CollapseHeader style={styles.groupHeader}>
@@ -420,15 +461,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 15,
   },
-  disabledTextInput: {
-    backgroundColor: '#f2f2f2',
-    color: 'black',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 4,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   buttonDropdown: {
     width: '90%',
     height: 50,
@@ -439,7 +471,18 @@ const styles = StyleSheet.create({
     padding: 9,
     color: '#484848',
   },
-  datePicker: {
+  disabledTextInput: {
+    backgroundColor: '#f2f2f2',
+    color: 'gray',
+    borderRadius: 4,
+    height: 30,
+    borderColor: '#666666',
+    borderWidth: 0,
+    borderRadius: 6,
+    fontSize: 18,
+    padding: 9,
+  },
+  dateGroup: {
     width: '90%',
     height: 50,
     borderColor: '#666666',
@@ -447,7 +490,24 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 16,
     padding: 9,
+  },
+  datePicker: {
+    width: '50%',
+    height: 30,
+    borderColor: '#666666',
+    borderWidth: 1,
+    borderRadius: 6,
+    marginBottom: 16,
+    padding: 9,
     color: 'black',
+  },
+  labelDate: {
+    backgroundColor: 'gray',
+    height: 30,
+    borderColor: '#666666',
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 4,
   },
   image: {
     width: '35%',
