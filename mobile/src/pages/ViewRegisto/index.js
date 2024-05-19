@@ -12,7 +12,6 @@ const App = () => {
   const patient = route.params.id;
   console.log('Utente param:', patient);
 
-  //const [tableHead] = useState(['Item', '23/04', '25/04', '28/04', '03/05', '04/05', '17/05']);
   const [widthArr] = useState([150, 80, 80, 80, 80, 80, 80]);
 
   const [patientData, setPatientData] = useState([])
