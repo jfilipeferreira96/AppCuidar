@@ -19,6 +19,7 @@ import StyledSwitch from '../../components/StyledSwitch';
 import StarRatingComponent from '../../components/RatingStars';
 import AuthContext from '../../contexts/auth';
 import {Collapse, CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
+import MaskInput from 'react-native-mask-input';
 
 const AddRegisto = () => {
   const navigation = useNavigation();
@@ -45,7 +46,7 @@ const AddRegisto = () => {
   const [jantar, setJantar] = useState(false);
   const [rating, setRating] = useState(0);
 
-  const [names, setNames] = useState([{firstName: '', lastName: ''}]);
+  const [names, setNames] = useState([{medicamento: '', horario: ''}]);
 
   const listPA = [
     {value: 'Todo/Autónomodo', label: 'Todo - Autónomo  [🍲/💪🏼]'},
@@ -124,7 +125,7 @@ const AddRegisto = () => {
       heartRate: heartRate,
       extra: extra,
       caretaker: user.name,
-      names: names,
+      medicines: names,
     };
 
     try {
@@ -152,7 +153,7 @@ const AddRegisto = () => {
         setSelectedPA('');
         setSelectedAtvFisica('');
         setSelectedToilet('');
-        setNames([{firstName: '', lastName: ''}]);
+        setNames([{medicamento: '', horario: ''}]);
       }
     } catch (error) {
       console.error(error);
@@ -189,7 +190,7 @@ const AddRegisto = () => {
   };
 
   const addNameField = () => {
-    setNames([...names, {firstName: '', lastName: ''}]);
+    setNames([...names, {medicamento: '', horario: ''}]);
   };
 
   const removeNameField = (index) => {
@@ -272,19 +273,21 @@ const AddRegisto = () => {
                 <TextInput
                   style={styles.inputMed}
                   placeholder="Medicamento"
-                  value={name.firstName}
+                  value={name.medicamento}
                   onChangeText={(text) =>
-                    handleNameChange(index, 'firstName', text)
+                    handleNameChange(index, 'medicamento', text)
                   }
                 />
-                <TextInput
-                  style={styles.inputMin}
-                  placeholder="Horário"
-                  value={name.lastName}
-                  onChangeText={(text) =>
-                    handleNameChange(index, 'lastName', text)
-                  }
-                />
+                <MaskInput
+                      style={styles.inputMin}
+                      value={name.horario}
+                      placeholder="00:00"
+                      onChangeText={(masked, unmasked) => {
+                        handleNameChange(index, 'horario', masked); 
+                      }}
+                      mask={[/\d/, /\d/, ':', /\d/, /\d/]}
+                    />
+
                 {index !== 0 && (
                   <TouchableOpacity
                     style={styles.removeButton}
