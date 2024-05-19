@@ -1,102 +1,166 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useRoute} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import { StyleSheet, TextInput, Text, View, ScrollView } from 'react-native';
 import { Table, TableWrapper, Row } from 'react-native-table-component';
 
 import Header from '../../components/Header';
+import api from '../../services/api';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tableHead: ['Item', '23/04', '25/04', '28/04', '03/05', '04/05', '17/05'],
-      widthArr: [150, 80, 80, 80, 80, 80, 80]
+const App = () => {
+  const route = useRoute();
+  const patient = route.params.id;
+  console.log('Utente param:', patient);
+
+  //const [tableHead] = useState(['Item', '23/04', '25/04', '28/04', '03/05', '04/05', '17/05']);
+  const [widthArr] = useState([150, 80, 80, 80, 80, 80, 80]);
+
+  const [patientData, setPatientData] = useState([])
+  const [recordsData, setRecordData] = useState([[]])
+  const [dataVital, setDataVital] = useState([[]])
+  const [tableHead, setTableHead] = useState([])
+  const [dataAtividades, setDataAtv] = useState([[]])
+
+  const extractField = (field, data, fieldName) => {
+    return [fieldName, ...data.map(item => item[field] || '')];
+  };
+
+  const extractFieldDate = (field, data, fieldLabel) => {
+    return [fieldLabel, ...data.map(item => formatDate(item[field]) || '')];
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0'); // Ensure 2 digits
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    return `${day}/${month}`;
+  };
+
+  const getPatient = async (patientId) => {
+    try {
+      const response = await api.get('/patients/' + patientId);
+      const patientData = response.data.body;
+      console.log('Utente dados:', patientData);
+      setPatientData(patientData);
+
+    } catch (error) {
+      console.error(error);
     }
-  }
-  render() {
-    const state = this.state;
-    const dataVital = [
-      ['Peso','63kg', '63kg', '62kg', '62kg', '62kg', '63kg'],
-      ['Pressão Arterial','14/9','14/9','14/8','14/7','14/9','14/9'],
-      ['Frequência cardíaca',85,86,93,87,84,88],
-      ['Frequência respiratória','12/20','-', '-','-','-','12/20'],
-      ['Glucose',100, '-', '-','-','-', 105],
-    ];
+  };
 
-    const dataAtividades = [
-      ['Pequeno Almoço', 'Todo', 'Parte', 'Parte', 'Recusou', '-', 'Todo'],
-      ['Almoço', 'Todo', 'Parte', 'Parte', 'Recusou', '-', 'Todo'],
-      ['Jantar', 'Todo', 'Parte', 'Parte', 'Recusou', '-', 'Todo'],
-      ['Banho','Sim/Sozinho(a)','-', 'Recusou','Sim/Com auxilio','-','-'],
-      ['Caminhada/Passeio','-', 'Recusou', '-','Sim/30 minutos','-', 'Sim/30 minutos'],
-    ];
-   
-    return (
+  const getDailyRecordsByPatient = async (patientId) => {
+    try {
+      const responseRecords = await api.get('/dailyRecords/patient/' + patientId);
+      const recordsData = responseRecords.data.body;
+      console.log('Records dados:', recordsData);
+      setRecordData(recordsData);
+      
+      const weightArray = extractField('weight', recordsData, 'Peso');
+      const respiratoryRateArray = extractField('respiratoryRate', recordsData, 'Frequencia Repiratória');
+      const heartRateArray = extractField('heartRate', recordsData, 'Frequencia Cardiaca');
+      const bloodPreassure = extractField('bloodPreassure', recordsData, 'Pressão Sanguenea');
+      const glucose = extractField('glucose', recordsData, 'Glucose');
+      const dataFinal = [weightArray, respiratoryRateArray, heartRateArray, bloodPreassure, glucose];
+      setDataVital(dataFinal);
+
+      const dateArray = extractFieldDate('registryDate', recordsData, "Item/Data");
+      setTableHead(dateArray);
+
+      const mealBreakfast = extractField('mealBreakfast', recordsData, 'Pequeno Almoço');
+      const mealDinner = extractField('mealDinner', recordsData, 'Jantar');
+      const mealLunch = extractField('mealLunch', recordsData, 'Almoço');
+      const physicalActivity = extractField('physicalActivity', recordsData, 'Atividade Física');
+      const toilet = extractField('toilet', recordsData, 'Necessidades Fisiologicas');
+      const bathStatus = extractField('bathStatus', recordsData, 'Banho');
+      const atvFinal = [mealBreakfast, mealDinner, mealLunch, physicalActivity, toilet, bathStatus];
+      setDataAtv(atvFinal);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('CARREGAAAA!!!');
+      getPatient(patient);
+      getDailyRecordsByPatient(patient);
+    }, [patient]),
+  );
+
+  return (
     <>
       <Header />
 
-      <Text style={styles.headerTitle}>Relatório Diário do Utente </Text>
-      <ScrollView >
-      <View style={styles.container}>
-        
-        <Text style={styles.labelTitle}>Utente</Text>
-        <Text style={styles.label}>Nome: Anastasio Simão da Silva</Text>
-        <Text style={styles.label}>Sexo: Masculino</Text>
-        <Text style={styles.label}>Idade: 85 anos</Text>
+      <Text style={styles.headerTitle}>Relatório Diário do Utente</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.labelSubTitle}>Nome: {patientData?.name?? '-'}</Text>
+          <Text style={styles.labelSubTitle}>Sexo: {patientData?.sex ?? '-'}</Text>
+          <Text style={styles.labelSubTitle}>Idade: {patientData ? calculateAge(patientData.birth_date) : '-'}</Text>
 
-        <Text style={styles.labelTitle}>Indicadores Vitais</Text>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{borderColor: '#C1C0B9'}}>
-              <Row data={state.tableHead} widthArr={state.widthArr} style={styles.head} textStyle={styles.text}/>
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{borderColor: '#C1C0B9'}}>
-                {
-                  dataVital.map((dataRow, index) => (
-                    <Row
-                      key={index}
-                      data={dataRow}
-                      widthArr={state.widthArr}
-                      style={[index%2 ? styles.row : styles.row2 ]}
-                      textStyle={styles.text}
-                    />
-                  ))
-                }
+          <Text style={styles.labelTitle}>Indicadores Vitais</Text>
+          <ScrollView horizontal={true}>
+            <View>
+              <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                <Row data={tableHead} widthArr={widthArr} style={styles.head} textStyle={styles.text} />
               </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
+              <ScrollView style={styles.dataWrapper}>
+                <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                  {
+                    dataVital.map((dataRow, index) => (
+                      <Row
+                        key={index}
+                        data={dataRow}
+                        widthArr={widthArr}
+                        style={[index % 2 ? styles.row : styles.row2]}
+                        textStyle={styles.text}
+                      />
+                    ))
+                  }
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView>
 
-        <Text style={styles.labelTitle}>Atividades Diárias</Text>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{borderColor: '#C1C0B9'}}>
-              <Row data={state.tableHead} widthArr={state.widthArr} style={styles.head} textStyle={styles.text}/>
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{borderColor: '#C1C0B9'}}>
-                {
-                  dataAtividades.map((dataRow, index) => (
-                    <Row
-                      key={index}
-                      data={dataRow}
-                      widthArr={state.widthArr}
-                      style={[index%2 ? styles.row : styles.row2 ]}
-                      textStyle={styles.text}
-                    />
-                  ))
-                }
+          <Text style={styles.labelTitle}>Atividades Diárias</Text>
+          <ScrollView horizontal={true}>
+            <View>
+              <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                <Row data={tableHead} widthArr={widthArr} style={styles.head} textStyle={styles.text} />
               </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
+              <ScrollView style={styles.dataWrapper}>
+                <Table borderStyle={{ borderColor: '#C1C0B9' }}>
+                  {
+                    dataAtividades.map((dataRow, index) => (
+                      <Row
+                        key={index}
+                        data={dataRow}
+                        widthArr={widthArr}
+                        style={[index % 2 ? styles.row : styles.row2]}
+                        textStyle={styles.text}
+                      />
+                    ))
+                  }
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView>
 
-      </View>
+        </View>
       </ScrollView>
     </>
-    )
-  }
-}
+  );
+};
+
+const calculateAge = (birthDate) => {
+  const birth = new Date(birthDate);
+  const ageDifMs = Date.now() - birth.getTime();
+  const ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
+
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
@@ -142,6 +206,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 10,
   },
+  labelSubTitle: {
+    color: '#484848',
+    fontSize: 14,
+    marginBottom: 5,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+  },
   input: {
     width: '90%',
     height: 50,
@@ -160,3 +231,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F8FA' 
   }
 });
+
+export default App;

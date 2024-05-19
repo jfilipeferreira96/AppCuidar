@@ -74,6 +74,7 @@ const ListRegistos = () => {
             id: item._id,
             title: item.patient.name,
             date: item.registryDate,
+            patient: item.patient._id,
             rest: {...item},
           };
         });
@@ -96,7 +97,7 @@ const ListRegistos = () => {
 
   const handleEditItem = item => {
     console.log('Editar item:', item);
-    navigation.navigate('ViewRegisto', {id: item.id});
+    navigation.navigate('ViewRegisto', {id: item.patient});
   };
 
   return (
