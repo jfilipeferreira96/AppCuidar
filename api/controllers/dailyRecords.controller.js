@@ -50,6 +50,7 @@ exports.create = (req, res) => {
     mealLunch: req.body.mealLunch,
     mealBreakfast: req.body.mealBreakfast,
     toilet: req.body.toilet,
+    medicines: req.body.medicines,
     bathStatus: req.body.bathStatus,
     physicalActivity: req.body.physicalActivity,
     bloodPreassure: req.body.bloodPreassure,
