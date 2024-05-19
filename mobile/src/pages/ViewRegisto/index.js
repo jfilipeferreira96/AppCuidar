@@ -127,9 +127,8 @@ const App = () => {
 
   return (
     <>
-      <Header />
+      <Header title="Relatório Diário do Utente" view="ListRegistos"/>
 
-      <Text style={styles.headerTitle}>Relatório Diário do Utente</Text>
       <ScrollView>
         <View style={styles.container}>
           <Text style={styles.labelSubTitle}>Nome: {patientData?.name?? '-'}</Text>

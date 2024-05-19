@@ -7,7 +7,7 @@ import api from '../../services/api';
 import {useIsFocused} from '@react-navigation/native';
 import Modal from '../../components/Modal';
 
-const ListItem = ({item, onDeletePress, onEditPress}) => {
+const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleOpenModal = () => {
@@ -18,8 +18,9 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
     setModalVisible(false);
   };
 
+  
   return (
-    <TouchableOpacity onPress={handleOpenModal}>
+    <TouchableOpacity onPress={() => onViewPress(item)}>
       <View style={styles.itemContainer}>
         <View style={styles.titles}>
           <Text style={[styles.itemText, styles.itemDate]}>
@@ -29,14 +30,15 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
         </View>
 
         <View style={styles.itemActions}>
-          { <TouchableOpacity onPress={() => onEditPress(item)}>
+          
+          <TouchableOpacity onPress={() => onEditPress(item)}>
             <Icon
               name="pencil"
               size={20}
               color="#007aff"
               style={styles.itemIcon}
             />
-          </TouchableOpacity> }
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => onDeletePress(item)}>
             <Icon
               name="trash-o"
@@ -97,14 +99,18 @@ const ListRegistos = () => {
 
   const handleEditItem = item => {
     console.log('Editar item:', item);
+    navigation.navigate('EditRegisto', {id: item.id});
+  };
+
+  const handleViewItem = item => {
+    console.log('View item:', item);
     navigation.navigate('ViewRegisto', {id: item.patient});
   };
 
   return (
     <>
-      <Header />
+      <Header title="Lista de Registos"/>
 
-      <Text style={styles.headerTitle}>Lista de Registos</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
@@ -129,6 +135,7 @@ const ListRegistos = () => {
               item={item}
               onDeletePress={handleDeleteItem}
               onEditPress={handleEditItem}
+              onViewPress={handleViewItem}
             />
           )}
           keyExtractor={item => item.id.toString()}
