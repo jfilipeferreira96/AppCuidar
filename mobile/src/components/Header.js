@@ -3,12 +3,12 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-const Header = ({title}) => {
+const Header = ({ title, view }) => {
   const navigation = useNavigation();
   return (
     <View style={{flexDirection: 'row',  marginTop: 30, alignItems: 'center'}}>
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => view ? navigation.navigate(''+view) : navigation.goBack()}
         style={{padding: 10}}>
         <Icon name="chevron-back" size={25} color="#333" />
       </TouchableOpacity>
