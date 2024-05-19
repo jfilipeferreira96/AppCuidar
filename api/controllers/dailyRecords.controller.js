@@ -40,7 +40,7 @@ exports.create = (req, res) => {
   if (errors.length > 0) return res.status(406).send(errors);
   new DailyRecords({
     patient: req.body.patient,
-    registryDate: Date.now(),
+    registryDate: req.body.registryDate ? req.body.registryDate : Date.now(),
     bath: req.body.bath,
     dayClassification: req.body.dayClassification,
     breakfast: req.body.breakfast,
