@@ -19,12 +19,8 @@ const dailyRecordsSchema = new Schema({
   mealBreakfast: String,
   toilet: String,
   medicines: [{
-    medicamento: {
-      type: String,
-    },
-    horario: {
-      type: String,
-    },
+    medicamento: {type: String},
+    horario: {type: String},
   }],
   physicalActivity: String,
   weight: String,
