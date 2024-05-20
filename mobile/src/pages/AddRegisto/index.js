@@ -441,6 +441,7 @@ const AddRegisto = () => {
         <TextInput
           style={styles.textArea}
           onChangeText={text => setExtra(text)}
+          multiline={true}
           value={extra}
         />
 

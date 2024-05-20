@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import Toast from 'react-native-toast-message';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation, useFocusEffect, useRoute} from '@react-navigation/native';
 import api from '../../services/api';
 import clipboard from '../../assets/clipboard.png';
 import Header from '../../components/Header';
@@ -101,7 +101,7 @@ const EditRegisto = () => {
     setDate(currentDate);
   };
 
-  useEffect(() => {
+  
     async function getUtentes() {
       try {
         const response = await api.get('/patients');
@@ -155,25 +155,32 @@ const EditRegisto = () => {
             setExtra(record.extra);
             setNames(record.medicines);
 
+            console.log("marca utente");
             const patient = record.patient._id;
             setSelectedUtente(patient);
             selectDropBox(patient, utentes, dropdownRef);
 
+            console.log("marca banho");
             setSelectedBanho(record.bathStatus);
             selectDropBox(record.bathStatus, listBanho, dropdownRefBath);
 
+            console.log("marca toilet");
             setSelectedToilet(record.toilet);
             selectDropBox(record.toilet, listCasaDeBanho, dropdownRefToilet);
 
+            console.log("marca almoco");
             setSelectedAlmoco(record.mealLunch);
             selectDropBox(record.mealLunch, listPA, dropdownRefLunch);
 
+            console.log("marca pa");
             setSelectedPA(record.mealBreakfast);
             selectDropBox(record.mealBreakfast, listPA, dropdownRefPA);
 
+            console.log("marca ajntar");
             setSelectedJantar(record.mealDinner);
             selectDropBox(record.mealDinner, listPA, dropdownRefDinner);
 
+            console.log("marca atv");
             setSelectedAtvFisica(record.physicalActivity);
             selectDropBox(record.physicalActivity, listAtvFisica, dropdownRefAtv);
         }
@@ -183,11 +190,14 @@ const EditRegisto = () => {
       }
     }
 
-    getUtentes();
-    getRegisto(recordId);
-  }, [recordId]);
+ 
 
-
+  useFocusEffect(
+    React.useCallback(() => {
+        getUtentes();
+        getRegisto(recordId);
+    }, [recordId]),
+  );
 
   const selectDropBox = (key, data, dropdownRefField)  => {
     console.log("Key: " + key);
@@ -522,6 +532,7 @@ const EditRegisto = () => {
         <TextInput
           style={styles.textArea}
           onChangeText={text => setExtra(text)}
+          multiline={true}
           value={extra}
         />
 

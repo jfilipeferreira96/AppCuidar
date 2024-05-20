@@ -67,7 +67,7 @@ const App = () => {
     }
   };
 
-  const transformData = (data) => {
+  const mapMedicamentos = (data) => {
     const medicineMap = {};
   
     data.forEach(entry => {
@@ -100,7 +100,7 @@ const App = () => {
     const filledStars = '★'.repeat(number);
     const emptyStars = '☆'.repeat(Math.max(0, 5 - number));
   
-    console.log('avail: ' + filledStars+''+emptyStars + ' e ' + number);
+    //console.log('avail: ' + filledStars+''+emptyStars + ' e ' + number);
     return filledStars+''+emptyStars;
   };
 
@@ -111,7 +111,7 @@ const App = () => {
       const recordsData = recordsDataOriginal.flat()
       .sort((a, b) => new Date(a.registryDate) - new Date(b.registryDate));
       //console.log('Records dados:', recordsData);
-      
+
       setRecordData(recordsData);
       
       const weightArray = extractField('weight', recordsData, 'Peso');
@@ -138,7 +138,8 @@ const App = () => {
       //console.log(atvFinal);
       setDataAtv(atvFinal);
 
-      const transformedData = transformData(recordsData);
+      const medicamentosData = mapMedicamentos(recordsData);
+      const transformedData = medicamentosData.filter(item => item[0] !== "");
       console.log(transformedData);
       setDataMedicamentos(transformedData);
 
@@ -156,7 +157,6 @@ const App = () => {
       console.error(error);
     }
   };
-
 
   useFocusEffect(
     React.useCallback(() => {
