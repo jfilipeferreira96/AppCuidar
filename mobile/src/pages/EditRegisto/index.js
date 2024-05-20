@@ -55,6 +55,12 @@ const EditRegisto = () => {
   const [rating, setRating] = useState(0);
 
   const dropdownRef = useRef(null);
+  const dropdownRefBath = useRef(null);
+  const dropdownRefLunch = useRef(null);
+  const dropdownRefDinner = useRef(null);
+  const dropdownRefPA = useRef(null);
+  const dropdownRefToilet = useRef(null);
+  const dropdownRefAtv = useRef(null);
 
   const [names, setNames] = useState([{medicamento: '', horario: ''}]);
 
@@ -123,21 +129,23 @@ const EditRegisto = () => {
 
         if (record) {
 
-            //console.log('TUDO: ');
-            //console.log(record);
+            console.log('CARREGA: ');
+            console.log(record);
 
-            setDate(new Date(record.registryDate));
-            setSelectedUtente(record.patient.name);
+            const dateTime = new Date(record.registryDate);
+            const registryDate = new Date(
+              dateTime.getUTCFullYear(),
+              dateTime.getUTCMonth(),
+              dateTime.getUTCDate(),
+            );
+            console.log(' data : ' + registryDate);
+
+            setDate(registryDate);
             setRating(record.dayClassification);
             setBanho(record.bath);
             setPequenoAlmoco(record.breakfast);
-            setSelectedAlmoco(record.mealLunch);
-            setSelectedJantar(record.mealDinner);
-            setSelectedPA(record.mealBreakfast);
-            setSelectedBanho(record.bathStatus);
-            setSelectedToilet(record.toilet);
-            setSelectedAtvFisica(record.physicalActivity);
             setAlmoco(record.lunch);
+            
             setJantar(record.dinner);
             setWeight(record.weight);
             setGlucose(record.glucose);
@@ -147,10 +155,27 @@ const EditRegisto = () => {
             setExtra(record.extra);
             setNames(record.medicines);
 
-            const associatedUser = record.patient._id;
-            setSelectedUtente(associatedUser);
-            const index = utentes.findIndex(patient => patient.value === associatedUser);
-            dropdownRef.current.selectIndex(index);
+            const patient = record.patient._id;
+            setSelectedUtente(patient);
+            selectDropBox(patient, utentes, dropdownRef);
+
+            setSelectedBanho(record.bathStatus);
+            selectDropBox(record.bathStatus, listBanho, dropdownRefBath);
+
+            setSelectedToilet(record.toilet);
+            selectDropBox(record.toilet, listCasaDeBanho, dropdownRefToilet);
+
+            setSelectedAlmoco(record.mealLunch);
+            selectDropBox(record.mealLunch, listPA, dropdownRefLunch);
+
+            setSelectedPA(record.mealBreakfast);
+            selectDropBox(record.mealBreakfast, listPA, dropdownRefPA);
+
+            setSelectedJantar(record.mealDinner);
+            selectDropBox(record.mealDinner, listPA, dropdownRefDinner);
+
+            setSelectedAtvFisica(record.physicalActivity);
+            selectDropBox(record.physicalActivity, listAtvFisica, dropdownRefAtv);
         }
       } catch (error) {
         console.error(error);
@@ -161,6 +186,15 @@ const EditRegisto = () => {
     getUtentes();
     getRegisto(recordId);
   }, [recordId]);
+
+
+
+  const selectDropBox = (key, data, dropdownRefField)  => {
+    console.log("Key: " + key);
+    const index = data.findIndex(item => item.value === key);
+    console.log("index: " + index);
+    dropdownRefField.current.selectIndex(index);
+  };
 
   const handleSubmit = async () => {
     if (!selectedUtente) {
@@ -245,8 +279,13 @@ const EditRegisto = () => {
   };
 
   return (
+    <>
+    <Header title="Edit Registo" view="ListRegistos"/>
+
+  
+
     <ScrollView ref={scrollViewRef}>
-      <Header title="Edit Registo" view="ListRegistos"/>
+      
 
       <View style={styles.container}>
         <Image source={clipboard} style={styles.image} />
@@ -381,6 +420,7 @@ const EditRegisto = () => {
             <Text style={styles.label}>Banho</Text>
             <SelectDropdown
               data={listBanho}
+              ref={dropdownRefBath}
               onSelect={(selectedItem, index) =>
                 setSelectedBanho(selectedItem.value)
               }
@@ -396,6 +436,7 @@ const EditRegisto = () => {
             <Text style={styles.label}>Necessidades Fisiológicas</Text>
             <SelectDropdown
               data={listCasaDeBanho}
+              ref={dropdownRefToilet}
               onSelect={(selectedItem, index) =>
                 setSelectedToilet(selectedItem.value)
               }
@@ -411,6 +452,7 @@ const EditRegisto = () => {
             <Text style={styles.label}>Pequeno almoço</Text>
             <SelectDropdown
               data={listPA}
+              ref={dropdownRefPA}
               onSelect={(selectedItem, index) =>
                 setSelectedPA(selectedItem.value)
               }
@@ -426,6 +468,7 @@ const EditRegisto = () => {
             <Text style={styles.label}>Almoço</Text>
             <SelectDropdown
               data={listPA}
+              ref={dropdownRefLunch}
               onSelect={(selectedItem, index) =>
                 setSelectedAlmoco(selectedItem.value)
               }
@@ -441,6 +484,7 @@ const EditRegisto = () => {
             <Text style={styles.label}>Jantar</Text>
             <SelectDropdown
               data={listPA}
+              ref={dropdownRefDinner}
               onSelect={(selectedItem, index) =>
                 setSelectedJantar(selectedItem.value)
               }
@@ -456,6 +500,7 @@ const EditRegisto = () => {
             <Text style={styles.label}>Atividade Física</Text>
             <SelectDropdown
               data={listAtvFisica}
+              ref={dropdownRefAtv}
               onSelect={(selectedItem, index) =>
                 setSelectedAtvFisica(selectedItem.value)
               }
@@ -468,10 +513,10 @@ const EditRegisto = () => {
               defaultValue={selectedAtvFisica}
             />
           </CollapseBody>
-
-          <Text style={styles.label}>Pontuação diária</Text>
-          <StarRatingComponent rating={rating} setRating={setRating} />
         </Collapse>
+
+        <Text style={styles.label}>Avaliação do dia</Text>
+        <StarRatingComponent rating={rating} setRating={setRating} />
 
         <Text style={styles.label}>Anotações gerais</Text>
         <TextInput
@@ -485,6 +530,8 @@ const EditRegisto = () => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
+
   );
 };
 
@@ -514,7 +561,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingLeft: 10,
     paddingRight: 10,
-    marginTop: 12,
+    marginTop: 10,
   },
   dateGroup: {
     width: '90%',

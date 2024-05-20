@@ -76,9 +76,13 @@ const ListRegistos = () => {
   async function getRecords() {
     try {
       const response = await api.get('/dailyRecords');
-      const records = response.data.body;
+      const recordsDataOriginal = response.data.body;
 
-      if (records) {
+      if (recordsDataOriginal) {
+
+        const records = recordsDataOriginal.flat()
+        .sort((a, b) => new Date(a.registryDate) - new Date(b.registryDate));
+
         const recordsObject = records.map(item => {
           return {
             id: item._id,

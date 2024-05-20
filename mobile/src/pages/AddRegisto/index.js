@@ -431,9 +431,11 @@ const AddRegisto = () => {
             />
           </CollapseBody>
 
-          <Text style={styles.label}>Pontuação diária</Text>
-          <StarRatingComponent rating={rating} setRating={setRating} />
+          
         </Collapse>
+
+        <Text style={styles.label}>Avaliação do dia</Text>
+        <StarRatingComponent rating={rating} setRating={setRating} />
 
         <Text style={styles.label}>Anotações gerais</Text>
         <TextInput
@@ -476,7 +478,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingLeft: 10,
     paddingRight: 10,
-    marginTop: 12,
+    marginTop: 10,
   },
   dateGroup: {
     width: '90%',

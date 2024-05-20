@@ -14,11 +14,11 @@ const App = () => {
   console.log('Utente param:', patient);
   console.log('View param:', viewToGo);
 
-  const [tableHeadObs] = useState(['Observação', 'Data']);
-  const [widthArrObs] = useState([240, 60]);
+  const [tableHeadObs] = useState(['Data', 'Observação', 'Avaliação']);
+  const [widthArrObs] = useState([60, 200, 90]);
 
 
-  const [widthArr] = useState([150, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80]);
+  const [widthArr, setWidthArr] = useState([150, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80]);
 
   const [patientData, setPatientData] = useState([])
   const [recordsData, setRecordData] = useState([[]])
@@ -35,6 +35,17 @@ const App = () => {
 
   const extractFieldDate = (field, data, fieldLabel) => {
     return [fieldLabel, ...data.map(item => formatDate(item[field]) || '')];
+  };
+
+  const generateArray = (inputArray) => {
+    const length = inputArray.length;
+    
+    const resultArray = new Array(length);
+    resultArray[0] = 150;
+    for (let i = 1; i < length; i++) {
+      resultArray[i] = 95;
+    }
+    return resultArray;
   };
 
   const formatDate = (dateString) => {
@@ -84,14 +95,23 @@ const App = () => {
   
     return result;
   }
+
+  const DayClassification = (number) => {
+    const filledStars = '★'.repeat(number);
+    const emptyStars = '☆'.repeat(Math.max(0, 5 - number));
   
-  
+    console.log('avail: ' + filledStars+''+emptyStars + ' e ' + number);
+    return filledStars+''+emptyStars;
+  };
 
   const getDailyRecordsByPatient = async (patientId) => {
     try {
       const responseRecords = await api.get('/dailyRecords/patient/' + patientId);
-      const recordsData = responseRecords.data.body;
-      console.log('Records dados:', recordsData);
+      const recordsDataOriginal = responseRecords.data.body;
+      const recordsData = recordsDataOriginal.flat()
+      .sort((a, b) => new Date(a.registryDate) - new Date(b.registryDate));
+      //console.log('Records dados:', recordsData);
+      
       setRecordData(recordsData);
       
       const weightArray = extractField('weight', recordsData, 'Peso');
@@ -103,6 +123,9 @@ const App = () => {
       setDataVital(dataFinal);
 
       const dateArray = extractFieldDate('registryDate', recordsData, "Dias");
+      //console.log('Records dados:', dateArray);
+      const widthArrayUpdate = generateArray(dateArray);
+      setWidthArr(widthArrayUpdate);
       setTableHead(dateArray);
 
       const mealBreakfast = extractField('mealBreakfast', recordsData, 'Pequeno Almoço');
@@ -112,7 +135,7 @@ const App = () => {
       const toilet = extractField('toilet', recordsData, 'Necessidades Fisiologicas');
       const bathStatus = extractField('bathStatus', recordsData, 'Banho');
       const atvFinal = [mealBreakfast, mealDinner, mealLunch, physicalActivity, toilet, bathStatus];
-      console.log(atvFinal);
+      //console.log(atvFinal);
       setDataAtv(atvFinal);
 
       const transformedData = transformData(recordsData);
@@ -120,10 +143,11 @@ const App = () => {
       setDataMedicamentos(transformedData);
 
       const extra = recordsData
-      .filter(item => item.extra !== "")
+      .filter(item => item.extra !== "" || item.dayClassification !== "")
       .map(item => [
+        formatDate(item.registryDate),
         item.extra ? item.extra : "-",
-        formatDate(item.registryDate)
+        item.dayClassification ? DayClassification(item.dayClassification) : "-"
       ]);
       console.log(extra);
       setDataExtra(extra);
@@ -224,7 +248,7 @@ const App = () => {
             </View>
           </ScrollView>
 
-          <Text style={styles.labelTitle}>Observações</Text>
+          <Text style={styles.labelTitle}>Observações/Avaliação</Text>
           <ScrollView horizontal={true}>
             <View>
               <Table borderStyle={{ borderColor: '#C1C0B9' }}>
@@ -238,7 +262,7 @@ const App = () => {
                         key={index}
                         data={dataRow}
                         widthArr={widthArrObs}
-                        style={[index % 2 ? styles.row : styles.row2]}
+                        style={[index % 2 ? styles.rowFlex : styles.rowFlex2]}
                         textStyle={styles.text}
                       />
                     ))
@@ -268,7 +292,7 @@ const styles = StyleSheet.create({
     paddingTop: 30, 
   },
   head: { 
-    height: 50, 
+    height: 35, 
     backgroundColor: '#6F7BD9' 
   },
   text: { 
@@ -328,6 +352,14 @@ const styles = StyleSheet.create({
   },
   row: { 
     height: 40, 
+    backgroundColor: '#F7F8FA' 
+  },
+  rowFlex2: { 
+    height: 'auto', 
+    backgroundColor: '#ffffff' 
+  },
+  rowFlex: { 
+    height: 'auto', 
     backgroundColor: '#F7F8FA' 
   }
 });
