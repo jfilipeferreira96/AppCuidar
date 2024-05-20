@@ -214,9 +214,9 @@ const AddRegisto = () => {
   };
 
   return (
-    <ScrollView ref={scrollViewRef}>
+    <>  
       <Header title="Adicionar registo" view="ListRegistos"/>
-
+      <ScrollView ref={scrollViewRef}>
       <View style={styles.container}>
         <Image source={clipboard} style={styles.image} />
         <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
@@ -450,6 +450,7 @@ const AddRegisto = () => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </>
   );
 };
 

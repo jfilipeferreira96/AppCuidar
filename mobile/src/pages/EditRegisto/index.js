@@ -16,8 +16,8 @@ import api from '../../services/api';
 import clipboard from '../../assets/clipboard.png';
 import Header from '../../components/Header';
 import StyledSwitch from '../../components/StyledSwitch';
-import StarRatingComponent from '../../components/RatingStars';
 import AuthContext from '../../contexts/auth';
+import StarRatingComponent from '../../components/RatingStars';
 import {Collapse, CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
 import MaskInput from 'react-native-mask-input';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -25,10 +25,16 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 const EditRegisto = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const recordId = route.params.id;
-  console.log('Utente param:', recordId);
-
   const {user} = useContext(AuthContext);
+
+  const dropdownRef = useRef(null);
+  const dropdownRefBath = useRef(null);
+  const dropdownRefLunch = useRef(null);
+  const dropdownRefDinner = useRef(null);
+  const dropdownRefPA = useRef(null);
+  const dropdownRefToilet = useRef(null);
+  const dropdownRefAtv = useRef(null);
+
   const scrollViewRef = useRef(null);
 
   const [showPicker, setShowPicker] = useState(false);
@@ -54,13 +60,8 @@ const EditRegisto = () => {
   const [jantar, setJantar] = useState(false);
   const [rating, setRating] = useState(0);
 
-  const dropdownRef = useRef(null);
-  const dropdownRefBath = useRef(null);
-  const dropdownRefLunch = useRef(null);
-  const dropdownRefDinner = useRef(null);
-  const dropdownRefPA = useRef(null);
-  const dropdownRefToilet = useRef(null);
-  const dropdownRefAtv = useRef(null);
+  const recordId = route.params.id;
+  console.log('Edit Registo:', recordId);
 
   const [names, setNames] = useState([{medicamento: '', horario: ''}]);
 
@@ -123,74 +124,75 @@ const EditRegisto = () => {
     }
 
     async function getRegisto(recordId) {
-      try {
-        const response = await api.get('/dailyRecords/' + recordId);
-        const record = response.data.body;
+    try {
+    const response = await api.get('/dailyRecords/' + recordId);
+    const record = response.data.body;
 
-        if (record) {
+    if (record) {
 
-            console.log('CARREGA: ');
-            console.log(record);
+        console.log('CARREGA: ');
+        console.log(record);
 
-            const dateTime = new Date(record.registryDate);
-            const registryDate = new Date(
-              dateTime.getUTCFullYear(),
-              dateTime.getUTCMonth(),
-              dateTime.getUTCDate(),
-            );
-            console.log(' data : ' + registryDate);
+        const dateTime = new Date(record.registryDate);
+        const registryDate = new Date(
+            dateTime.getUTCFullYear(),
+            dateTime.getUTCMonth(),
+            dateTime.getUTCDate(),
+        );
+        console.log(' data : ' + registryDate);
 
-            setDate(registryDate);
-            setRating(record.dayClassification);
-            setBanho(record.bath);
-            setPequenoAlmoco(record.breakfast);
-            setAlmoco(record.lunch);
-            
-            setJantar(record.dinner);
-            setWeight(record.weight);
-            setGlucose(record.glucose);
-            setBloodPreassure(record.bloodPreassure);
-            setRespiratoryRate(record.respiratoryRate);
-            setHeartRate(record.heartRate);
-            setExtra(record.extra);
-            setNames(record.medicines);
+        
 
-            console.log("marca utente");
-            const patient = record.patient._id;
-            setSelectedUtente(patient);
-            selectDropBox(patient, utentes, dropdownRef);
+        setDate(registryDate);
+        setRating(record.dayClassification);
+        setBanho(record.bath);
+        setPequenoAlmoco(record.breakfast);
+        setAlmoco(record.lunch);
+        
+        setJantar(record.dinner);
+        setWeight(record.weight);
+        setGlucose(record.glucose);
+        setBloodPreassure(record.bloodPreassure);
+        setRespiratoryRate(record.respiratoryRate);
+        setHeartRate(record.heartRate);
+        setExtra(record.extra);
+        setNames(record.medicines);
 
-            console.log("marca banho");
-            setSelectedBanho(record.bathStatus);
-            selectDropBox(record.bathStatus, listBanho, dropdownRefBath);
+        console.log("marca utente");
+        const patient = record.patient._id;
+        setSelectedUtente(patient);
+        selectDropBox(patient, utentes, dropdownRef);
 
-            console.log("marca toilet");
-            setSelectedToilet(record.toilet);
-            selectDropBox(record.toilet, listCasaDeBanho, dropdownRefToilet);
+        console.log("marca banho");
+        setSelectedBanho(record.bathStatus);
+        selectDropBox(record.bathStatus, listBanho, dropdownRefBath);
 
-            console.log("marca almoco");
-            setSelectedAlmoco(record.mealLunch);
-            selectDropBox(record.mealLunch, listPA, dropdownRefLunch);
+        console.log("marca toilet");
+        setSelectedToilet(record.toilet);
+        selectDropBox(record.toilet, listCasaDeBanho, dropdownRefToilet);
 
-            console.log("marca pa");
-            setSelectedPA(record.mealBreakfast);
-            selectDropBox(record.mealBreakfast, listPA, dropdownRefPA);
+        console.log("marca almoco");
+        setSelectedAlmoco(record.mealLunch);
+        selectDropBox(record.mealLunch, listPA, dropdownRefLunch);
 
-            console.log("marca ajntar");
-            setSelectedJantar(record.mealDinner);
-            selectDropBox(record.mealDinner, listPA, dropdownRefDinner);
+        console.log("marca pa");
+        setSelectedPA(record.mealBreakfast);
+        selectDropBox(record.mealBreakfast, listPA, dropdownRefPA);
 
-            console.log("marca atv");
-            setSelectedAtvFisica(record.physicalActivity);
-            selectDropBox(record.physicalActivity, listAtvFisica, dropdownRefAtv);
-        }
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
+        console.log("marca ajntar");
+        setSelectedJantar(record.mealDinner);
+        selectDropBox(selectedJantar, listPA, dropdownRefDinner);
+
+        console.log("marca atv");
+        setSelectedAtvFisica(record.physicalActivity);
+        selectDropBox(record.physicalActivity, listAtvFisica, dropdownRefAtv);
+
     }
-
- 
+    } catch (error) {
+    console.error(error);
+    return null;
+    }
+}
 
   useFocusEffect(
     React.useCallback(() => {
@@ -203,7 +205,9 @@ const EditRegisto = () => {
     console.log("Key: " + key);
     const index = data.findIndex(item => item.value === key);
     console.log("index: " + index);
-    dropdownRefField.current.selectIndex(index);
+    console.log(dropdownRefField);
+    if (dropdownRefField.current) dropdownRefField.current.selectIndex(index); 
+    //dropdownRefField.current.selectIndex(index);
   };
 
   const handleSubmit = async () => {
@@ -292,10 +296,7 @@ const EditRegisto = () => {
     <>
     <Header title="Edit Registo" view="ListRegistos"/>
 
-  
-
     <ScrollView ref={scrollViewRef}>
-      
 
       <View style={styles.container}>
         <Image source={clipboard} style={styles.image} />
@@ -341,11 +342,10 @@ const EditRegisto = () => {
           </TouchableOpacity>
         </TouchableOpacity>
 
-        <Collapse style={styles.groupMain}>
-          <CollapseHeader style={styles.groupHeader}>
-            <Text>↕ Indicadores Vitais</Text>
-          </CollapseHeader>
-          <CollapseBody style={styles.group}>
+          <TouchableOpacity style={styles.groupHeaderFixed}>
+            <Text>Indicadores Vitais</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.groupFixed}>
             <Text style={styles.label}>Peso</Text>
             <TextInput
               style={styles.input}
@@ -380,14 +380,12 @@ const EditRegisto = () => {
               onChangeText={text => setGlucose(text)}
               value={glucose}
             />
-          </CollapseBody>
-        </Collapse>
+          </TouchableOpacity>
 
-        <Collapse style={styles.groupMain}>
-          <CollapseHeader style={styles.groupHeader}>
-            <Text>↕ Medicação</Text>
-          </CollapseHeader>
-          <CollapseBody style={styles.group}>
+          <TouchableOpacity style={styles.groupHeaderFixed}>
+            <Text>Medicação</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.groupFixed}>
             {names.map((name, index) => (
               <View key={index} style={styles.nameFieldContainer}>
                 <TextInput
@@ -419,14 +417,12 @@ const EditRegisto = () => {
               </View>
             ))}
             <Button title="Adicionar Medicamento" onPress={addNameField} />
-          </CollapseBody>
-        </Collapse>
+          </TouchableOpacity>
 
-        <Collapse style={styles.groupMain}>
-          <CollapseHeader style={styles.groupHeader}>
-            <Text>↕ Atividades Diárias</Text>
-          </CollapseHeader>
-          <CollapseBody style={styles.group}>
+          <TouchableOpacity style={styles.groupHeaderFixed}>
+            <Text>Atividades Diárias</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.groupFixed}>
             <Text style={styles.label}>Banho</Text>
             <SelectDropdown
               data={listBanho}
@@ -522,8 +518,7 @@ const EditRegisto = () => {
               buttonStyle={styles.input}
               defaultValue={selectedAtvFisica}
             />
-          </CollapseBody>
-        </Collapse>
+          </TouchableOpacity>
 
         <Text style={styles.label}>Avaliação do dia</Text>
         <StarRatingComponent rating={rating} setRating={setRating} />
@@ -663,6 +658,23 @@ const styles = StyleSheet.create({
   groupHeader: {
     borderColor: '#666666',
     width: '100%',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderStyle: 'dotted',
+    padding: 20,
+    backgroundColor: '#D3D3D3',
+  },
+  groupFixed: {
+    borderColor: '#666666',
+    width: '90%',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderStyle: 'dotted',
+    padding: 20,
+  },
+  groupHeaderFixed: {
+    borderColor: '#666666',
+    width: '90%',
     borderWidth: 1,
     borderRadius: 6,
     borderStyle: 'dotted',

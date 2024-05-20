@@ -26,6 +26,13 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
     return `${day}/${month}/${year}`;
   };
 
+  const DayClassification = (number) => {
+    const filledStars = '★'.repeat(number);
+    const emptyStars = '☆'.repeat(Math.max(0, 5 - number));
+  
+    //console.log('avail: ' + filledStars+''+emptyStars + ' e ' + number);
+    return filledStars+''+emptyStars;
+  };
   
   return (
     <TouchableOpacity onPress={() => onViewPress(item)}>
@@ -35,6 +42,9 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
             {formatDate(item.date)}
           </Text>
           <Text style={styles.itemText}>{item.title}</Text>
+          <Text style={[styles.itemText, styles.itemDate]}>
+            Avaliação do dia: {DayClassification(item.dayClassification)}
+          </Text>
         </View>
 
         <View style={styles.itemActions}>
@@ -88,6 +98,7 @@ const ListRegistos = () => {
             id: item._id,
             title: item.patient.name,
             date: item.registryDate,
+            dayClassification: item.dayClassification,
             patient: item.patient._id,
             rest: {...item},
           };
