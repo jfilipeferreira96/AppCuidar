@@ -23,189 +23,191 @@ import MaskInput from 'react-native-mask-input';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const EditRegisto = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const {user} = useContext(AuthContext);
+    const navigation = useNavigation();
+    const route = useRoute();
+    const {user} = useContext(AuthContext);
 
-  const dropdownRef = useRef(null);
-  const dropdownRefBath = useRef(null);
-  const dropdownRefLunch = useRef(null);
-  const dropdownRefDinner = useRef(null);
-  const dropdownRefPA = useRef(null);
-  const dropdownRefToilet = useRef(null);
-  const dropdownRefAtv = useRef(null);
+    const dropdownRef = useRef(null);
+    const dropdownRefBath = useRef(null);
+    const dropdownRefLunch = useRef(null);
+    const dropdownRefDinner = useRef(null);
+    const dropdownRefPA = useRef(null);
+    const dropdownRefToilet = useRef(null);
+    const dropdownRefAtv = useRef(null);
 
-  const scrollViewRef = useRef(null);
+    const scrollViewRef = useRef(null);
 
-  const [showPicker, setShowPicker] = useState(false);
-  const [date, setDate] = useState(new Date());
+    const [showPicker, setShowPicker] = useState(false);
+    const [date, setDate] = useState(new Date());
 
-  const [extra, setExtra] = useState('');
-  const [bloodPreassure, setBloodPreassure] = useState('');
-  const [weight, setWeight] = useState('');
-  const [glucose, setGlucose] = useState('');
-  const [heartRate, setHeartRate] = useState('');
-  const [respiratoryRate, setRespiratoryRate] = useState('');
-  const [selectedUtente, setSelectedUtente] = useState('');
-  const [selectedPA, setSelectedPA] = useState('');
-  const [selectedBanho, setSelectedBanho] = useState('');
-  const [selectedAlmoco, setSelectedAlmoco] = useState('');
-  const [selectedJantar, setSelectedJantar] = useState('');
-  const [selectedToilet, setSelectedToilet] = useState('');
-  const [selectedAtvFisica, setSelectedAtvFisica] = useState('');
-  const [utentes, setUtentes] = useState([]);
-  const [banho, setBanho] = useState(false);
-  const [pequenoAlmoco, setPequenoAlmoco] = useState(false);
-  const [almoco, setAlmoco] = useState(false);
-  const [jantar, setJantar] = useState(false);
-  const [rating, setRating] = useState(0);
+    const [extra, setExtra] = useState('');
+    const [bloodPreassure, setBloodPreassure] = useState('');
+    const [weight, setWeight] = useState('');
+    const [glucose, setGlucose] = useState('');
+    const [heartRate, setHeartRate] = useState('');
+    const [respiratoryRate, setRespiratoryRate] = useState('');
+    const [selectedUtente, setSelectedUtente] = useState('');
+    const [selectedPA, setSelectedPA] = useState('');
+    const [selectedBanho, setSelectedBanho] = useState('');
+    const [selectedAlmoco, setSelectedAlmoco] = useState('');
+    const [selectedJantar, setSelectedJantar] = useState('');
+    const [selectedToilet, setSelectedToilet] = useState('');
+    const [selectedAtvFisica, setSelectedAtvFisica] = useState('');
+    const [utentes, setUtentes] = useState([]);
+    const [utenteID, setUtenteID] = useState('');
+    const [banho, setBanho] = useState(false);
+    const [pequenoAlmoco, setPequenoAlmoco] = useState(false);
+    const [almoco, setAlmoco] = useState(false);
+    const [jantar, setJantar] = useState(false);
+    const [rating, setRating] = useState(0);
 
-  const recordId = route.params.id;
-  console.log('Edit Registo:', recordId);
+    const recordId = route.params.id;
+    console.log('Edit Registo:', recordId);
 
-  const [names, setNames] = useState([{medicamento: '', horario: ''}]);
+    const [names, setNames] = useState([{medicamento: '', horario: ''}]);
 
-  const listPA = [
-    {value: 'Todo/Autónomodo', label: 'Todo - Autónomo  [🍲/💪🏼]'},
-    {value: 'Todo/Com Auxilio', label: 'Todo - Com Auxilio [🍲/🫱🏼‍🫲🏾]'},
-    {value: 'Parte/Autónomo', label: 'Parte - Autónomo [🥣/💪🏼]'},
-    {value: 'Parte/Com Auxilio', label: 'Parte - Com Auxilio [🥣/🫱🏼‍🫲🏾]'},
-    {value: 'Recusou', label: 'Recusou [👎]'},
-  ];
+    const listPA = [
+        {value: 'Todo/Autónomodo', label: 'Todo - Autónomo  [🍲/💪🏼]'},
+        {value: 'Todo/Com Auxilio', label: 'Todo - Com Auxilio [🍲/🫱🏼‍🫲🏾]'},
+        {value: 'Parte/Autónomo', label: 'Parte - Autónomo [🥣/💪🏼]'},
+        {value: 'Parte/Com Auxilio', label: 'Parte - Com Auxilio [🥣/🫱🏼‍🫲🏾]'},
+        {value: 'Recusou', label: 'Recusou [👎]'},
+    ];
 
-  const listBanho = [
-    {value: 'Sim/Autónomodo', label: 'Sim - Autónomo  [👍/💪🏼]'},
-    {value: 'Sim/Com Auxilio', label: 'Sim - Com Auxilio [👍/🫱🏼‍🫲🏾]'},
-    {value: 'Recusou', label: 'Recusou [👎]'},
-  ];
+    const listBanho = [
+        {value: 'Sim/Autónomodo', label: 'Sim - Autónomo  [👍/💪🏼]'},
+        {value: 'Sim/Com Auxilio', label: 'Sim - Com Auxilio [👍/🫱🏼‍🫲🏾]'},
+        {value: 'Recusou', label: 'Recusou [👎]'},
+    ];
 
-  const listCasaDeBanho = [
-    {value: 'Regular', label: 'Regular [👍]'},
-    {value: 'Incontinência (Sono)', label: 'Incontinência (Sono) [👎]'},
-    {value: 'Incontinência (Acordado)', label: 'Incontinência (Acordado) [👎]'},
-  ];
+    const listCasaDeBanho = [
+        {value: 'Regular', label: 'Regular [👍]'},
+        {value: 'Incontinência (Sono)', label: 'Incontinência (Sono) [👎]'},
+        {value: 'Incontinência (Acordado)', label: 'Incontinência (Acordado) [👎]'},
+    ];
 
-  const listAtvFisica = [
-    {value: '15 a 30 minutos', label: '15 a 30 minutos'},
-    {value: '30 a 45 minutos', label: '30 a 45 minutos'},
-    {value: '45 a 60 minutos', label: '45 a 60 minutos'},
-    {value: 'Mais do que 60 minutos', label: 'Mais do que 60 minutos'},
-    {value: 'Recusou', label: 'Recusou [👎]'},
-  ];
+    const listAtvFisica = [
+        {value: '15 a 30 minutos', label: '15 a 30 minutos'},
+        {value: '30 a 45 minutos', label: '30 a 45 minutos'},
+        {value: '45 a 60 minutos', label: '45 a 60 minutos'},
+        {value: 'Mais do que 60 minutos', label: 'Mais do que 60 minutos'},
+        {value: 'Recusou', label: 'Recusou [👎]'},
+    ];
 
-  const showDateTimePicker = () => {
-    setShowPicker(true);
-  };
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowPicker(false);
-    setDate(currentDate);
-  };
+    const showDateTimePicker = () => {
+        setShowPicker(true);
+    };
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShowPicker(false);
+        setDate(currentDate);
+    };
 
-  
-    async function getUtentes() {
-      try {
+    async function getUtentes(utenteID) {
+        try {
         const response = await api.get('/patients');
         const patients = response.data.body;
 
+        console.log("UTENTES BUSCADSOSS");
+        console.log(patients);
+
         if (patients) {
-          const usersOptions = patients.map(item => {
+            const usersOptions = patients.map(item => {
             return {
-              label: item.name,
-              value: item._id,
+                label: item.name,
+                value: item._id,
             };
-          });
-          setUtentes(usersOptions);
+            });
+            setUtentes(usersOptions);
+            console.log("BUSQUEI E MARCO AGORA: " + utenteID);
+            selectDropBox(utenteID, utentes, dropdownRef);
         }
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
     }
 
     async function getRegisto(recordId) {
     try {
-    const response = await api.get('/dailyRecords/' + recordId);
-    const record = response.data.body;
+        const response = await api.get('/dailyRecords/' + recordId);
+        const record = response.data.body;
 
-    if (record) {
+        if (record) {
 
-        console.log('CARREGA: ');
-        console.log(record);
+            console.log('CARREGA----------------- ');
+            console.log(record);
 
-        const dateTime = new Date(record.registryDate);
-        const registryDate = new Date(
-            dateTime.getUTCFullYear(),
-            dateTime.getUTCMonth(),
-            dateTime.getUTCDate(),
-        );
-        console.log(' data : ' + registryDate);
+            const dateTime = new Date(record.registryDate);
+            const registryDate = new Date(
+                dateTime.getUTCFullYear(),
+                dateTime.getUTCMonth(),
+                dateTime.getUTCDate(),
+            );
+            console.log(' data : ' + registryDate);
 
-        
+            setDate(registryDate);
+            setRating(record.dayClassification);
+            setBanho(record.bath);
+            setPequenoAlmoco(record.breakfast);
+            setAlmoco(record.lunch);
+            
+            setJantar(record.dinner);
+            setWeight(record.weight);
+            setGlucose(record.glucose);
+            setBloodPreassure(record.bloodPreassure);
+            setRespiratoryRate(record.respiratoryRate);
+            setHeartRate(record.heartRate);
+            setExtra(record.extra);
+            setNames(record.medicines);
 
-        setDate(registryDate);
-        setRating(record.dayClassification);
-        setBanho(record.bath);
-        setPequenoAlmoco(record.breakfast);
-        setAlmoco(record.lunch);
-        
-        setJantar(record.dinner);
-        setWeight(record.weight);
-        setGlucose(record.glucose);
-        setBloodPreassure(record.bloodPreassure);
-        setRespiratoryRate(record.respiratoryRate);
-        setHeartRate(record.heartRate);
-        setExtra(record.extra);
-        setNames(record.medicines);
+            console.log("marca UTENTES: " + record.patient._id);
+            setSelectedUtente(record.patient._id);
+            getUtentes(record.patient._id);
+            
 
-        console.log("marca utente");
-        const patient = record.patient._id;
-        setSelectedUtente(patient);
-        selectDropBox(patient, utentes, dropdownRef);
+            console.log("marca banho");
+            setSelectedBanho(record.bathStatus);
+            selectDropBox(record.bathStatus, listBanho, dropdownRefBath);
 
-        console.log("marca banho");
-        setSelectedBanho(record.bathStatus);
-        selectDropBox(record.bathStatus, listBanho, dropdownRefBath);
+            console.log("marca toilet");
+            setSelectedToilet(record.toilet);
+            selectDropBox(record.toilet, listCasaDeBanho, dropdownRefToilet);
 
-        console.log("marca toilet");
-        setSelectedToilet(record.toilet);
-        selectDropBox(record.toilet, listCasaDeBanho, dropdownRefToilet);
+            console.log("marca almoco");
+            setSelectedAlmoco(record.mealLunch);
+            selectDropBox(record.mealLunch, listPA, dropdownRefLunch);
 
-        console.log("marca almoco");
-        setSelectedAlmoco(record.mealLunch);
-        selectDropBox(record.mealLunch, listPA, dropdownRefLunch);
+            console.log("marca pa");
+            setSelectedPA(record.mealBreakfast);
+            selectDropBox(record.mealBreakfast, listPA, dropdownRefPA);
 
-        console.log("marca pa");
-        setSelectedPA(record.mealBreakfast);
-        selectDropBox(record.mealBreakfast, listPA, dropdownRefPA);
+            console.log("marca ajntar");
+            setSelectedJantar(record.mealDinner);
+            selectDropBox(selectedJantar, listPA, dropdownRefDinner);
 
-        console.log("marca ajntar");
-        setSelectedJantar(record.mealDinner);
-        selectDropBox(selectedJantar, listPA, dropdownRefDinner);
+            console.log("marca atv");
+            setSelectedAtvFisica(record.physicalActivity);
+            selectDropBox(record.physicalActivity, listAtvFisica, dropdownRefAtv);
 
-        console.log("marca atv");
-        setSelectedAtvFisica(record.physicalActivity);
-        selectDropBox(record.physicalActivity, listAtvFisica, dropdownRefAtv);
-
-    }
+        }
     } catch (error) {
-    console.error(error);
-    return null;
+        console.error(error);
+        return null;
     }
 }
 
   useFocusEffect(
     React.useCallback(() => {
-        getUtentes();
         getRegisto(recordId);
     }, [recordId]),
   );
 
   const selectDropBox = (key, data, dropdownRefField)  => {
-    console.log("Key: " + key);
+    //console.log("Key: " + key);
     const index = data.findIndex(item => item.value === key);
-    console.log("index: " + index);
-    console.log(dropdownRefField);
+    //console.log("index: " + index);
+    //console.log(dropdownRefField);
     if (dropdownRefField.current) dropdownRefField.current.selectIndex(index); 
     //dropdownRefField.current.selectIndex(index);
   };
