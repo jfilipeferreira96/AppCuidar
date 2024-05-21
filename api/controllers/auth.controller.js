@@ -84,6 +84,9 @@ exports.checkAuth = (req, res, callback) => {
       if (error) throw error;
       if (!user) return res.status(AuthMessages.error.e1.http).send(AuthMessages.error.e1);
 
+      //only admin can delete things
+      if (req.method == "DELETE" && user.type != "admin") return res.status(AuthMessages.error.e1.http).send(AuthMessages.error.e1);
+      
       JWT.verify(token, user.auth.private_key, (error) => {
         if (error) return res.status(AuthMessages.error.e1.http).send(AuthMessages.error.e1);
 
