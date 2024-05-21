@@ -93,9 +93,20 @@ const AddRegisto = () => {
     async function getUtentes() {
       try {
         const response = await api.get('/patients');
-        const patients = response.data.body;
+        //const response = await api.get('/patients/user/' + user._id);
+        const patientsOriginal = response.data.body;
 
-        if (patients) {
+        if (patientsOriginal) {
+
+          if (user.type == 'admin') {
+            filtered = patientsOriginal;
+          } else {
+              filtered = patientsOriginal
+              .filter(item => 
+                  item.users.some(item => item._id === user._id || user.type == 'admin'));
+          }
+          const patients = filtered;
+
           const usersOptions = patients.map(item => {
             return {
               label: item.name,

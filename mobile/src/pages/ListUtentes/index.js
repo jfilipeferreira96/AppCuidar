@@ -7,12 +7,26 @@ import api from '../../services/api';
 import {useIsFocused} from '@react-navigation/native';
 import AuthContext from '../../contexts/auth';
 
+
 const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
+
+  const {user} = useContext(AuthContext);
+
   return (
     <TouchableOpacity onPress={() => onViewPress(item)}>
       <View style={styles.itemContainer}>
         <Text style={styles.itemText}>{item.title}</Text>
         <View style={styles.itemActions}>
+          {user.type !== 'admin' && (
+          <TouchableOpacity onPress={() => onViewPress(item)}>
+            <Icon
+              name="list"
+              size={20}
+              color="#007aff"
+              style={styles.itemIcon}
+            />
+          </TouchableOpacity>
+          )}
           <TouchableOpacity onPress={() => onEditPress(item)}>
             <Icon
               name="pencil"
@@ -21,6 +35,7 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
               style={styles.itemIcon}
             />
           </TouchableOpacity>
+          {user.type === 'admin' && (
           <TouchableOpacity onPress={() => onDeletePress(item)}>
             <Icon
               name="trash-o"
@@ -29,6 +44,8 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
               style={styles.itemIcon}
             />
           </TouchableOpacity>
+          )}
+          
         </View>
       </View>
     </TouchableOpacity>
@@ -44,10 +61,24 @@ const ListUtentes = () => {
   async function getPatients() {
     try {
       const response = await api.get('/patients');
-      const patients = response.data.body;
+      const patientsOriginal = response.data.body;
 
-      if (patients) {
-        const patientsObject = patients.map(item => {
+      if (patientsOriginal) {
+
+          //console.log("--------- PATIENTS -------- ");
+          //console.log(patientsOriginal);
+
+          if (user.type == 'admin') {
+              filtered = patientsOriginal;
+          } else {
+              filtered = patientsOriginal
+              .filter(item => 
+                  item.users.some(item => item._id === user._id || user.type == 'admin'));
+          }
+
+          const patients = filtered;
+
+          const patientsObject = patients.map(item => {
           return {
             title: item.name,
             id: item._id,

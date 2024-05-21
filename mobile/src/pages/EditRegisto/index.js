@@ -106,12 +106,25 @@ const EditRegisto = () => {
     async function getUtentes(utenteID) {
         try {
         const response = await api.get('/patients');
-        const patients = response.data.body;
+        const patientsOriginal = response.data.body;
 
-        console.log("UTENTES BUSCADSOSS");
-        console.log(patients);
+        if (patientsOriginal) {
 
-        if (patients) {
+            console.log("--------- PATIENTS -------- ");
+            console.log(patientsOriginal);
+
+            if (user.type == 'admin') {
+                filtered = patientsOriginal;
+            } else {
+                filtered = patientsOriginal
+                .filter(item => 
+                    item.users.some(item => item._id === user._id || user.type == 'admin'));
+            }
+
+            const patients = filtered;
+            console.log("Pos filtro: ");
+            console.log(patients);
+
             const usersOptions = patients.map(item => {
             return {
                 label: item.name,
@@ -120,7 +133,7 @@ const EditRegisto = () => {
             });
             setUtentes(usersOptions);
             console.log("BUSQUEI E MARCO AGORA: " + utenteID);
-            selectDropBox(utenteID, utentes, dropdownRef);
+            selectDropBox(utenteID, usersOptions, dropdownRef);
         }
         } catch (error) {
             console.error(error);
@@ -204,9 +217,10 @@ const EditRegisto = () => {
   );
 
   const selectDropBox = (key, data, dropdownRefField)  => {
-    //console.log("Key: " + key);
+    console.log("Key: " + key);
+    console.log(data);
     const index = data.findIndex(item => item.value === key);
-    //console.log("index: " + index);
+    console.log("index: " + index);
     //console.log(dropdownRefField);
     if (dropdownRefField.current) dropdownRefField.current.selectIndex(index); 
     //dropdownRefField.current.selectIndex(index);

@@ -6,9 +6,13 @@ import Header from '../../components/Header';
 import api from '../../services/api';
 import {useIsFocused} from '@react-navigation/native';
 import Modal from '../../components/Modal';
+import AuthContext from '../../contexts/auth';
 
 const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const {user} = useContext(AuthContext);
+  const userType = user?.type;
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -57,6 +61,8 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
               style={styles.itemIcon}
             />
           </TouchableOpacity>
+          
+          {userType === 'admin' && (
           <TouchableOpacity onPress={() => onDeletePress(item)}>
             <Icon
               name="trash-o"
@@ -65,6 +71,7 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
               style={styles.itemIcon}
             />
           </TouchableOpacity>
+          )}
         </View>
         <Modal
           visible={modalVisible}
@@ -82,15 +89,21 @@ const ListRegistos = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
+  const {user} = useContext(AuthContext);
 
   async function getRecords() {
     try {
       const response = await api.get('/dailyRecords');
       const recordsDataOriginal = response.data.body;
 
+      console.log("---------------------------")
+      console.log(JSON.stringify(recordsDataOriginal));
+
       if (recordsDataOriginal) {
 
-        const records = recordsDataOriginal.flat()
+        const records = recordsDataOriginal
+        .filter(item => item.patient.users.includes(user._id) || user.type == 'admin')
+        .flat()
         .sort((a, b) => new Date(a.registryDate) - new Date(b.registryDate));
 
         const recordsObject = records.map(item => {

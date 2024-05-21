@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import {useRoute} from '@react-navigation/native';
 import {
   View,
@@ -18,6 +18,7 @@ import RadioForm, {
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
 import Toast from 'react-native-toast-message';
+import AuthContext from '../../contexts/auth';
 
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import api from '../../services/api';
@@ -30,6 +31,9 @@ const EditUtente = () => {
   const route = useRoute();
   const patient = route.params.id;
 
+  const {user} = useContext(AuthContext);
+  console.log(user.type);
+
   const [name, setName] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
   const dropdownRef = useRef(null);
@@ -39,6 +43,10 @@ const EditUtente = () => {
   const [date, setDate] = useState(new Date(1980, 0, 1));
   const [selectedSexo, setSelectedSexo] = useState(null);
   const [users, setUsers] = useState([]);
+
+  const [cuidadores, setCuidadores] = useState([]);
+  const [selectedCuidador, setSelectedCuidador] = useState('');
+  const dropdownRefCuidador = useRef(null);
 
   async function getPatient(patientId) {
     try {
@@ -59,9 +67,11 @@ const EditUtente = () => {
         setDate(birthDate);
 
         const associatedUser = patientData.users[0]?._id;
-        setSelectedUser(associatedUser);
-        const index = users.findIndex(user => user.value === associatedUser);
-        dropdownRef.current.selectIndex(index);
+        const associatedCuidador = patientData.users[1]?._id;
+        getUsers(associatedUser, associatedCuidador);
+
+        
+        
       }
     } catch (error) {
       console.error(error);
@@ -69,19 +79,33 @@ const EditUtente = () => {
     }
   }
 
-  async function getUsers() {
+  async function getUsers(associatedUser, associatedCuidador) {
     try {
-      const response = await api.get('/users?type=user');
+      const response = await api.get('/users');
       const data = response.data.body;
 
       if (data) {
-        const usersOptions = data.map(item => {
+        const usersOptions = data.filter(item => item.type == "user").map(item => {
           return {
             label: item.name,
             value: item._id,
           };
         });
         setUsers(usersOptions);
+        setSelectedUser(associatedUser);
+        const index = usersOptions.findIndex(user => user.value === associatedUser);
+        dropdownRef.current.selectIndex(index);
+
+        const cuidadoresOptions = data.filter(item => item.type == "caretaker").map(item => {
+          return {
+            label: item.name,
+            value: item._id,
+          };
+        });
+        setCuidadores(cuidadoresOptions);
+        setSelectedCuidador(associatedCuidador);
+        const index1 = cuidadoresOptions.findIndex(user => user.value === associatedCuidador);
+        dropdownRefCuidador.current.selectIndex(index1);
       }
     } catch (error) {
       console.error(error);
@@ -91,7 +115,7 @@ const EditUtente = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      getUsers();
+      
       getPatient(patient);
     }, [patient]),
   );
@@ -110,7 +134,7 @@ const EditUtente = () => {
     const data = {
       name: name,
       sex: selectedSexo,
-      users: selectedUser,
+      users: [selectedUser,selectedCuidador],
       birth_date: date,
     };
 
@@ -150,6 +174,7 @@ const EditUtente = () => {
       });
     }
   }
+
   const showDateTimePicker = () => {
     setShowPicker(true);
   };
@@ -235,11 +260,27 @@ const EditUtente = () => {
         <SelectDropdown
           data={users}
           ref={dropdownRef}
+          disabled={user.type == "admin" ? false : true}
           onSelect={(selectedUser, index) =>
             setSelectedUser(selectedUser.value)
           }
           defaultButtonText="--"
           buttonTextAfterSelection={(selectedUser, index) => selectedUser.label}
+          rowTextForSelection={(item, index) => item.label}
+          buttonStyle={styles.input}
+        />
+
+        <Text style={styles.label}>Selecione um cuidador</Text>
+
+        <SelectDropdown
+          data={cuidadores}
+          ref={dropdownRefCuidador}
+          disabled={user.type == "admin" ? false : true}
+          onSelect={(selectedCuidador, index) =>
+            setSelectedCuidador(selectedCuidador.value)
+          }
+          defaultButtonText="--"
+          buttonTextAfterSelection={(selectedCuidador, index) => selectedCuidador.label}
           rowTextForSelection={(item, index) => item.label}
           buttonStyle={styles.input}
         />
