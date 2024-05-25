@@ -208,9 +208,9 @@ const EditUtente = () => {
                 isSelected={selectedSexo === option.value}
                 onPress={() => setSelectedSexo(option.value)}
                 borderWidth={1}
-                buttonInnerColor={'#007aff'}
+                buttonInnerColor={'green'}
                 buttonOuterColor={
-                  selectedSexo === option.value ? '#007aff' : '#000'
+                  selectedSexo === option.value ? 'green' : '#000'
                 }
                 buttonSize={20}
                 buttonOuterSize={30}
@@ -223,7 +223,7 @@ const EditUtente = () => {
                 onPress={() => setSelectedSexo(option.value)}
                 labelStyle={{
                   fontSize: 16,
-                  color: selectedSexo === option.value ? '#007aff' : '#000',
+                  color: selectedSexo === option.value ? 'green' : '#000',
                 }}
                 labelWrapStyle={{}}
               />
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

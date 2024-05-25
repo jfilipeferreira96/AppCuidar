@@ -8,7 +8,7 @@ import {useIsFocused} from '@react-navigation/native';
 import Modal from '../../components/Modal';
 import AuthContext from '../../contexts/auth';
 
-const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
+const ListItem = ({item, onDeletePress, onEditPress, onViewPress, onModalPress}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const {user} = useContext(AuthContext);
@@ -39,7 +39,7 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
   };
   
   return (
-    <TouchableOpacity onPress={() => onViewPress(item)}>
+    <TouchableOpacity onPress={() => userType === 'user' ? handleOpenModal() : onViewPress(item)}>
       <View style={styles.itemContainer}>
         <View style={styles.titles}>
           <Text style={[styles.itemText, styles.itemDate]}>
@@ -53,21 +53,34 @@ const ListItem = ({item, onDeletePress, onEditPress, onViewPress}) => {
 
         <View style={styles.itemActions}>
           
+        {(userType === 'admin' || userType === 'caretaker') &&  (
           <TouchableOpacity onPress={() => onEditPress(item)}>
             <Icon
               name="pencil"
               size={20}
-              color="#007aff"
+              color="green"
               style={styles.itemIcon}
             />
           </TouchableOpacity>
-          
+           )}
+
           {userType === 'admin' && (
           <TouchableOpacity onPress={() => onDeletePress(item)}>
             <Icon
               name="trash-o"
               size={20}
               color="#FF3B30"
+              style={styles.itemIcon}
+            />
+          </TouchableOpacity>
+          )}
+
+          {userType === 'user' && (
+          <TouchableOpacity onPress={() => onViewPress(item)}>
+            <Icon
+              name="list"
+              size={20}
+              color="green"
               style={styles.itemIcon}
             />
           </TouchableOpacity>
@@ -96,8 +109,8 @@ const ListRegistos = () => {
       const response = await api.get('/dailyRecords');
       const recordsDataOriginal = response.data.body;
 
-      console.log("---------------------------")
-      console.log(JSON.stringify(recordsDataOriginal));
+      //console.log("---------------------------")
+      //console.log(JSON.stringify(recordsDataOriginal));
 
       if (recordsDataOriginal) {
 
@@ -143,6 +156,7 @@ const ListRegistos = () => {
     navigation.navigate('ViewRegisto', {id: item.patient});
   };
 
+ 
   return (
     <>
       <Header title="Lista de Registos"/>
@@ -151,7 +165,7 @@ const ListRegistos = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('AddRegisto')}>
-          <Icon name="plus" size={30} color="#007aff" />
+          <Icon name="plus" size={30} color="green" />
           <Text style={styles.buttonText}>Adicionar Registo</Text>
         </TouchableOpacity>
       </View>
@@ -196,12 +210,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: '#007aff',
+    borderColor: 'green',
     marginTop: 20,
     marginBottom: 10,
   },
   buttonText: {
-    color: '#007aff',
+    color: 'green',
     marginLeft: 8,
     fontSize: 16,
     fontWeight: 'bold',

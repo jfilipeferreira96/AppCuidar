@@ -74,7 +74,7 @@ const UserHomeScreen = () => {
   }
 
   const handleUtentePress = id => {
-    navigation.navigate('ListUtenteRegisto', {id});
+    navigation.navigate('ListRegistos', {id});
   };
 
   return (
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#27B4FD',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

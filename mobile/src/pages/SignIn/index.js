@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 16,
     textDecorationLine: 'underline',
-    color: '#007aff',
+    color: 'green',
     marginVertical: 10,
   },
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

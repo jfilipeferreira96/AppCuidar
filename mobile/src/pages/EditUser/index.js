@@ -21,7 +21,7 @@ import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import api from '../../services/api';
 
 import Header from '../../components/Header';
-import userlogo from '../../assets/user.png';
+import userlogo from '../../assets/signup.png';
 
 const EditUtente = () => {
   const navigation = useNavigation();
@@ -121,10 +121,9 @@ const EditUtente = () => {
 
   return (
     <View style={{flex: 1}}>
+      <Header title="Editar Utilizador" view="ListUsers"/>
       <ScrollView ref={scrollViewRef}>
-        <Header />
 
-        <Text style={styles.headerTitle}>Editar utilizador</Text>
         <View style={styles.container}>
           <Image source={userlogo} style={styles.image} />
           <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
@@ -138,9 +137,9 @@ const EditUtente = () => {
                   isSelected={selectedOption === option.value}
                   onPress={() => setSelectedOption(option.value)}
                   borderWidth={1}
-                  buttonInnerColor={'#007aff'}
+                  buttonInnerColor={'green'}
                   buttonOuterColor={
-                    selectedOption === option.value ? '#007aff' : '#000'
+                    selectedOption === option.value ? 'green' : '#000'
                   }
                   buttonSize={20}
                   buttonOuterSize={30}
@@ -153,7 +152,7 @@ const EditUtente = () => {
                   onPress={() => setSelectedOption(option.value)}
                   labelStyle={{
                     fontSize: 16,
-                    color: selectedOption === option.value ? '#007aff' : '#000',
+                    color: selectedOption === option.value ? 'green' : '#000',
                   }}
                   labelWrapStyle={{}}
                 />
@@ -237,7 +236,7 @@ const styles = StyleSheet.create({
   image: {
     width: '60%',
     resizeMode: 'contain',
-    marginBottom: -30,
+    marginBottom: 10,
   },
   labelDate: {
     color: '#484848',
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

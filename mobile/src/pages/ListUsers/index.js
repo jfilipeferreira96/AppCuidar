@@ -26,7 +26,7 @@ const ListItem = ({item, onDeletePress, onEditPress}) => {
           <Icon
             name="pencil"
             size={20}
-            color="#007aff"
+            color="green"
             style={styles.itemIcon}
           />
         </TouchableOpacity>
@@ -104,7 +104,7 @@ const ListUsers = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('AddUser')}>
-          <Icon name="plus" size={30} color="#007aff" />
+          <Icon name="plus" size={30} color="green" />
           <Text style={styles.buttonText}>Adicionar Utilizador</Text>
         </TouchableOpacity>
       </View>
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     borderWidth: 1,
-    borderColor: '#007aff',
+    borderColor: 'green',
     marginTop: 20,
     marginBottom: 10,
   },
   buttonText: {
-    color: '#007aff',
+    color: 'green',
     marginLeft: 8,
     fontSize: 16,
     fontWeight: 'bold',

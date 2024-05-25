@@ -105,9 +105,9 @@ const SignUp = () => {
                 isSelected={selectedOption === option.value}
                 onPress={() => setSelectedOption(option.value)}
                 borderWidth={1}
-                buttonInnerColor={'#007aff'}
+                buttonInnerColor={'green'}
                 buttonOuterColor={
-                  selectedOption === option.value ? '#007aff' : '#000'
+                  selectedOption === option.value ? 'green' : '#000'
                 }
                 buttonSize={20}
                 buttonOuterSize={30}
@@ -120,7 +120,7 @@ const SignUp = () => {
                 onPress={() => setSelectedOption(option.value)}
                 labelStyle={{
                   fontSize: 16,
-                  color: selectedOption === option.value ? '#007aff' : '#000',
+                  color: selectedOption === option.value ? 'green' : '#000',
                 }}
                 labelWrapStyle={{}}
               />
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
