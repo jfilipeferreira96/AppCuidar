@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
     width: 330,
     height: 160,
     borderRadius: 15,
+    borderColor: 'green',
+    borderWidth: 1,
     backgroundColor: '#FFFFFF',
     overflow: 'hidden',
     margin: 0,
@@ -34,13 +36,13 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '75%',
+    height: '70%',
   },
   textContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#27B4FD',
+    backgroundColor: 'green',
   },
   text: {
     fontWeight: 'bold',

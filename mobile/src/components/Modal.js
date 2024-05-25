@@ -18,9 +18,13 @@ const InfoModal = ({visible, onClose, title, date, rest}) => {
     <Modal visible={visible} animationType="slide">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{title}</Text>
+          <Text style={styles.modalTitle}>Resumo do Dia</Text>
 
           <View style={styles.fieldsContainer}>
+          <Text style={styles.header}>
+              Utente:
+              <Text style={styles.value}> {title}</Text>
+            </Text>
             <Text style={styles.header}>
               Data registo:
               <Text style={styles.value}> {date.slice(0, -14)}</Text>
@@ -31,51 +35,26 @@ const InfoModal = ({visible, onClose, title, date, rest}) => {
             </Text>
           </View>
 
-          <StarRatingComponent rating={dayClassification} disableInteraction />
+          <View style={styles.detailsContainer}>
+            <Text style={styles.header}>
+                Classificação:
+            </Text>
+          </View>
 
           <View style={styles.retangulo}>
-            <Text style={styles.label}>Banho</Text>
-            <Text
-              style={[
-                styles.switchText,
-                {color: bath ? '#008000' : '#FF5A5F'},
-              ]}>
-              {bath ? 'Sim' : 'Não'}
-            </Text>
+            <StarRatingComponent rating={dayClassification} disableInteraction />
           </View>
-          <View style={styles.retangulo}>
-            <Text style={styles.label}>Pequeno-almoço</Text>
-            <Text
-              style={[
-                styles.switchText,
-                {color: breakfast ? '#008000' : '#FF5A5F'},
-              ]}>
-              {breakfast ? 'Sim' : 'Não'}
-            </Text>
-          </View>
-          <View style={styles.retangulo}>
-            <Text style={styles.label}>Almoço</Text>
-            <Text
-              style={[
-                styles.switchText,
-                {color: lunch ? '#008000' : '#FF5A5F'},
-              ]}>
-              {lunch ? 'Sim' : 'Não'}
-            </Text>
-          </View>
-          <View style={styles.retangulo}>
-            <Text style={styles.label}>Jantar</Text>
-            <Text
-              style={[
-                styles.switchText,
-                {color: dinner ? '#008000' : '#FF5A5F'},
-              ]}>
-              {dinner ? 'Sim' : 'Não'}
-            </Text>
-          </View>
+          
           {extra.length > 0 && (
-            <View style={styles.retangulo}>
-              <Text style={styles.value}>{extra}</Text>
+            <View>
+              <View style={styles.detailsContainer}>
+              <Text style={styles.header}>
+                  Observações:
+              </Text>
+            </View>
+              <View style={styles.retangulo}>
+                <Text style={styles.value}>{extra}</Text>
+              </View>
             </View>
           )}
           <TouchableOpacity style={styles.modalCloseButton} onPress={onClose}>
@@ -90,6 +69,9 @@ const InfoModal = ({visible, onClose, title, date, rest}) => {
 const styles = StyleSheet.create({
   fieldsContainer: {
     alignItems: 'center', // Adicionado para alinhar ao centro
+  },
+  detailsContainer: {
+    marginTop: 10,
   },
   header: {
     fontSize: 14,
@@ -133,7 +115,7 @@ const styles = StyleSheet.create({
     color: '#999999', // Cor do texto da data
   },
   modalCloseButton: {
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     borderRadius: 8,
     paddingVertical: 12, // Aumentado o espaçamento vertical
     paddingHorizontal: 24, // Aumentado o espaçamento horizontal
