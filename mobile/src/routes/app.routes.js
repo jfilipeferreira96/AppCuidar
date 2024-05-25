@@ -158,7 +158,7 @@ const AppRoutes = () => {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#0A4499',
+    backgroundColor: 'green',
     height: 180,
     alignItems: 'center',
     justifyContent: 'center',
