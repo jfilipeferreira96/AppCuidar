@@ -93,10 +93,9 @@ const AddUser = () => {
 
   return (
     <View style={{flex: 1}}>
+      <Header title="Adicionar Utilizador" view="ListUsers"/>
       <ScrollView ref={scrollViewRef}>
-        <Header />
 
-        <Text style={styles.headerTitle}>Adicionar utilizador</Text>
         <View style={styles.container}>
           <Image source={signup} style={styles.image} />
           <Toast visible={showToast} message="Isso é uma mensagem de Toast!" />
@@ -109,9 +108,9 @@ const AddUser = () => {
                   isSelected={selectedOption === option.value}
                   onPress={() => setSelectedOption(option.value)}
                   borderWidth={1}
-                  buttonInnerColor={'#007aff'}
+                  buttonInnerColor={'green'}
                   buttonOuterColor={
-                    selectedOption === option.value ? '#007aff' : '#000'
+                    selectedOption === option.value ? 'green' : '#000'
                   }
                   buttonSize={20}
                   buttonOuterSize={30}
@@ -124,7 +123,7 @@ const AddUser = () => {
                   onPress={() => setSelectedOption(option.value)}
                   labelStyle={{
                     fontSize: 16,
-                    color: selectedOption === option.value ? '#007aff' : '#000',
+                    color: selectedOption === option.value ? 'green' : '#000',
                   }}
                   labelWrapStyle={{}}
                 />
@@ -179,8 +178,7 @@ const styles = StyleSheet.create({
   image: {
     width: '60%',
     resizeMode: 'contain',
-    marginBottom: -100,
-    marginTop: -60,
+    marginBottom: 10,
   },
   label: {
     color: '#484848',
@@ -201,7 +199,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

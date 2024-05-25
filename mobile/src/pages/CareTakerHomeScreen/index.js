@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 50,
-    color: '#007aff',
+    color: 'green',
     alignSelf: 'flex-start',
     paddingHorizontal: '10%',
   },
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,

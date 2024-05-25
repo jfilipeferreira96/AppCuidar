@@ -15,20 +15,20 @@ const AdminHomeScreen = () => {
       id: 1,
       title: 'Lista de utilizadores',
       image:
-        'https://media.istockphoto.com/id/1346125184/photo/group-of-successful-multiethnic-business-team.jpg?s=612x612&w=0&k=20&c=5FHgRQZSZed536rHji6w8o5Hco9JVMRe8bpgTa69hE8=',
+        'https://cdn-icons-png.flaticon.com/512/1165/1165674.png',
       navigate: () => navigation.navigate('ListUsers'),
     },
     {
       id: 2,
       title: 'Lista de utentes',
       image:
-        'https://clinicarecanto.com.br/wp-content/uploads/2019/03/estatudo-do-idoso.png',
+        'https://cdn-icons-png.flaticon.com/512/12059/12059846.png',
       navigate: () => navigation.navigate('ListUtentes'),
     },
     {
       id: 3,
       title: 'Registos diarios',
-      image: 'https://www.sns.gov.pt/wp-content/uploads/2016/09/foto_sns_3.jpg',
+      image: 'https://cdn-icons-png.flaticon.com/512/2464/2464568.png',
       navigate: () => navigation.navigate('ListRegistos'),
     },
   ];
@@ -63,14 +63,14 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 50,
-    color: '#007aff',
+    color: 'green',
     alignSelf: 'flex-start',
     paddingHorizontal: '10%',
   },
   button: {
     width: '90%',
     height: 50,
-    backgroundColor: '#007aff',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
