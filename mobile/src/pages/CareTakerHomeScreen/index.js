@@ -15,13 +15,13 @@ const CareTakerHomeScreen = () => {
       id: 1,
       title: 'Lista de utentes',
       image:
-        'https://clinicarecanto.com.br/wp-content/uploads/2019/03/estatudo-do-idoso.png',
+        'https://cdn-icons-png.flaticon.com/512/12059/12059846.png',
       navigate: () => navigation.navigate('ListUtentes'),
     },
     {
       id: 2,
       title: 'Registos diarios',
-      image: 'https://www.sns.gov.pt/wp-content/uploads/2016/09/foto_sns_3.jpg',
+      image: 'https://cdn-icons-png.flaticon.com/512/2464/2464568.png',
       navigate: () => navigation.navigate('ListRegistos'),
     },
   ];

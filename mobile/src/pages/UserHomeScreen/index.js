@@ -31,8 +31,7 @@ const UserHomeScreen = () => {
         const patientsObject = patients.map(item => ({
           id: item._id,
           title: item.name,
-          image:
-            'https://media.consumeraffairs.com/files/news/Seniors_walking_in_the_park_pressmaster_Fotolia.jpg',
+          image:            'https://cdn-icons-png.flaticon.com/512/12059/12059846.png',
         }));
 
         setData(patientsObject);

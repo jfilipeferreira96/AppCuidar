@@ -14,15 +14,13 @@ const AdminHomeScreen = () => {
     {
       id: 1,
       title: 'Lista de utilizadores',
-      image:
-        'https://cdn-icons-png.flaticon.com/512/1165/1165674.png',
+      image: 'https://cdn-icons-png.flaticon.com/512/1165/1165674.png',
       navigate: () => navigation.navigate('ListUsers'),
     },
     {
       id: 2,
       title: 'Lista de utentes',
-      image:
-        'https://cdn-icons-png.flaticon.com/512/12059/12059846.png',
+      image: 'https://cdn-icons-png.flaticon.com/512/12059/12059846.png',
       navigate: () => navigation.navigate('ListUtentes'),
     },
     {
